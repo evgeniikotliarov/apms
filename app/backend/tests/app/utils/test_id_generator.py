@@ -2,7 +2,7 @@ import unittest
 
 import re
 
-from utils.id_generator import IdGenerator
+from backend.utils.id_generator import IdGenerator
 
 
 class IdGeneratorTestCase(unittest.TestCase):

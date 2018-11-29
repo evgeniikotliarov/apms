@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from domain.models.Employee import Employee
+from backend.domain.models.Employee import Employee
 
 
 class EmployeeProvider:
