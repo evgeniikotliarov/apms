@@ -10,6 +10,7 @@ class Employee:
         self.email = None
         self.password = None
         self.activated = None
+        self.vacation = None
         self.employment_date = None
 
     @property
