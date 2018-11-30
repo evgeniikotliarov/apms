@@ -36,7 +36,7 @@ class EmployeeProvider:
         return employee
 
     @staticmethod
-    def deactivated(employee):
+    def deactivate(employee):
         employee.activated = False
         return employee
 

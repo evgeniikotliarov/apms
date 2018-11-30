@@ -58,3 +58,12 @@ class ProvideEmployeeTestCase(unittest.TestCase):
 
         employee = EmployeeProvider.update_with(employee, password="new_password")
         self.assertEqual(employee.password, "new_password")
+
+        employee = EmployeeProvider.activate(employee)
+        self.assertEqual(employee.activated, True)
+
+        employee = EmployeeProvider.deactivate(employee)
+        self.assertEqual(employee.activated, False)
+
+        employee = EmployeeProvider.set_balance_vac(employee, 10)
+        self.assertEqual(employee.vacation, 10)
