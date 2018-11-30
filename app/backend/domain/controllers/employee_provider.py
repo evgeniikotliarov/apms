@@ -1,13 +1,12 @@
 from datetime import datetime
 
-from backend.domain.models.employee import Employee
+from domain.models.employee import Employee
 
 
 class EmployeeProvider:
     @staticmethod
-    def create_simple(employee_id, name, password, email):
+    def create_simple(name, password, email):
         employee = Employee()
-        employee.id = employee_id
         employee.name = name
         employee.password = password
         employee.email = email

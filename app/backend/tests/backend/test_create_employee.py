@@ -1,12 +1,12 @@
 import unittest
 from _datetime import datetime
 
-from backend.domain.controllers.employee_provider import EmployeeProvider
+from domain.controllers.employee_provider import EmployeeProvider
 
 
 class CreateEmployeeTestCase(unittest.TestCase):
     def test_create_employee(self):
-        employee = EmployeeProvider.create_simple(0, "Some Name", "some_password", "some@email.com")
+        employee = EmployeeProvider.create_simple("Some Name", "some_password", "some@email.com")
         self.assertIsNotNone(employee)
         self.assertEqual(employee.id, 0)
         self.assertEqual(employee.name, "Some Name")
@@ -15,7 +15,7 @@ class CreateEmployeeTestCase(unittest.TestCase):
         self.assertEqual(employee.activated, False)
 
     def test_register_employee(self):
-        employee = EmployeeProvider.create_simple(0, "Some Name", "some_password", "some@email.com")
+        employee = EmployeeProvider.create_simple("Some Name", "some_password", "some@email.com")
         now_date = datetime.now()
         employee = EmployeeProvider.register(employee=employee,
                                              employment_date=now_date,
@@ -29,7 +29,7 @@ class CreateEmployeeTestCase(unittest.TestCase):
         self.assertEqual(employee.vacation, 5)
 
     def test_register_employee_without_balance_vacation(self):
-        employee = EmployeeProvider.create_simple(0, "Some Name", "some_password", "some@email.com")
+        employee = EmployeeProvider.create_simple("Some Name", "some_password", "some@email.com")
         now_date = datetime.now()
         employee = EmployeeProvider.register(employee=employee,
                                              employment_date=now_date)

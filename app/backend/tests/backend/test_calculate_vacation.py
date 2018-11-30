@@ -1,9 +1,9 @@
 import unittest
 from datetime import datetime
 
-from backend.domain.controllers.rate_calculator import RateCalculator
-from backend.domain.controllers.time_sheet_provider import TimeSheetProvider
-from backend.domain.controllers.vacation_calculator import VacationCalculator
+from domain.controllers.rate_calculator import RateCalculator
+from domain.controllers.time_sheet_provider import TimeSheetProvider
+from domain.controllers.vacation_calculator import VacationCalculator
 
 
 class TestRateCalculator(unittest.TestCase):

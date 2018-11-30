@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime
 
-from backend.domain.controllers.rate_calculator import RateCalculator
+from domain.controllers.rate_calculator import RateCalculator
 
 
 class TestRateCalculator(unittest.TestCase):
