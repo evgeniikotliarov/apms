@@ -6,7 +6,7 @@ from domain.models.time_sheet import TimeSheet
 
 class TimeSheetProvider:
     @staticmethod
-    def create(time_sheet_id, date: datetime, employee_id, employee_rate, norm, work_days_sheet):
+    def create(time_sheet_id, date: datetime, work_days_sheet, employee_id, employee_rate, norm=None):
         time_sheet = TimeSheet()
         time_sheet.id = time_sheet_id
         time_sheet.norm = norm
