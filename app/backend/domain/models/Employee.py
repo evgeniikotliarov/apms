@@ -4,3 +4,4 @@ class Employee:
         self.name = None
         self.email = None
         self.password = None
+        self.activated = None

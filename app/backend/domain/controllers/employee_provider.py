@@ -7,10 +7,11 @@ class EmployeeProvider:
     @staticmethod
     def create_simple(employee_id, name, password, email):
         employee = Employee()
+        employee.id = employee_id
         employee.name = name
         employee.password = password
         employee.email = email
-        employee.id = employee_id
+        employee.activated = False
         return employee
 
     @staticmethod
@@ -18,4 +19,6 @@ class EmployeeProvider:
         employee.registration_date = datetime.now()
         employee.employment_date = employment_date
         employee.vacation = balance_vac
+        employee.activated = True
         return employee
+
