@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from backend.domain.models.Employee import Employee
+from backend.domain.models.employee import Employee
 
 
 class EmployeeProvider:
@@ -28,4 +28,19 @@ class EmployeeProvider:
         employee.password = password if password else employee.password
         employee.email = email if email else employee.email
         employee.name = name if name else employee.name
+        return employee
+
+    @staticmethod
+    def activate(employee):
+        employee.activated = True
+        return employee
+
+    @staticmethod
+    def deactivated(employee):
+        employee.activated = False
+        return employee
+
+    @staticmethod
+    def set_balance_vac(employee, balance_vac):
+        employee.vacation = balance_vac
         return employee
