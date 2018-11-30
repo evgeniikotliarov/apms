@@ -1,7 +1,7 @@
 import unittest
 from _datetime import datetime
 
-from domain.controllers.EmployeeProvider import EmployeeProvider
+from backend.domain.controllers.employee_provider import EmployeeProvider
 
 
 class CreateEmployeeTestCase(unittest.TestCase):
