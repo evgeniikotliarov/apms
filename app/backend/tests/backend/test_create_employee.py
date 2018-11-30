@@ -12,6 +12,7 @@ class CreateEmployeeTestCase(unittest.TestCase):
         self.assertEqual(employee.name, "Some Name")
         self.assertEqual(employee.password, "some_password")
         self.assertEqual(employee.email, "some@email.com")
+        self.assertEqual(employee.activated, False)
 
     def test_register_employee(self):
         employee = EmployeeProvider.create_simple(0, "Some Name", "some_password", "some@email.com")
@@ -24,7 +25,7 @@ class CreateEmployeeTestCase(unittest.TestCase):
         self.assertEqual(employee.registration_date.month, now_date.month)
         self.assertEqual(employee.registration_date.day, now_date.day)
         self.assertEqual(employee.employment_date, now_date)
-        self.assertEqual(employee.activated, False)
+        self.assertEqual(employee.activated, True)
         self.assertEqual(employee.vacation, 5)
 
     def test_register_employee_without_balance_vacation(self):
@@ -37,7 +38,6 @@ class CreateEmployeeTestCase(unittest.TestCase):
         self.assertEqual(employee.registration_date.month, now_date.month)
         self.assertEqual(employee.registration_date.day, now_date.day)
         self.assertEqual(employee.employment_date, now_date)
-        self.assertEqual(employee.activated, True)
         self.assertEqual(employee.vacation, 0)
 
 if __name__ == '__main__':
