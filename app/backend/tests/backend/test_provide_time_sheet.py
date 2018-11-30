@@ -26,14 +26,14 @@ class ProvideTimeSheetTestCase(unittest.TestCase):
             norm=22
         )
         self.assertIsNotNone(time_sheet)
-        self.assertEquals(time_sheet.id, 0)
-        self.assertEquals(time_sheet.norm, 22)
-        self.assertEquals(time_sheet.rate, RateCalculator.DAYS_FOR_3_YEARS)
-        self.assertEquals(time_sheet.sheet, self.sheet)
-        self.assertEquals(time_sheet.year, 2018)
-        self.assertEquals(time_sheet.month, 1)
-        self.assertEquals(time_sheet.employee_id, 0)
-        self.assertEquals(time_sheet.closed, False)
+        self.assertEqual(time_sheet.id, 0)
+        self.assertEqual(time_sheet.norm, 22)
+        self.assertEqual(time_sheet.rate, RateCalculator.DAYS_FOR_3_YEARS)
+        self.assertEqual(time_sheet.sheet, self.sheet)
+        self.assertEqual(time_sheet.year, 2018)
+        self.assertEqual(time_sheet.month, 1)
+        self.assertEqual(time_sheet.employee_id, 0)
+        self.assertEqual(time_sheet.closed, False)
 
     def test_create_time_sheet_without_norm(self):
         time_sheet = TimeSheetProvider.create(
@@ -56,13 +56,13 @@ class ProvideTimeSheetTestCase(unittest.TestCase):
             norm=22
         )
         time_sheet = TimeSheetProvider.update_with(time_sheet, norm=28)
-        self.assertEquals(time_sheet.norm, 28)
+        self.assertEqual(time_sheet.norm, 28)
 
         new_sheet = self.sheet.copy()
         new_sheet['1'] = 0
         new_sheet['2'] = 0
         time_sheet = TimeSheetProvider.update_with(time_sheet, work_days_sheet=new_sheet)
-        self.assertEquals(time_sheet.sheet, new_sheet)
+        self.assertEqual(time_sheet.sheet, new_sheet)
 
     def test_close_time_sheet(self):
         time_sheet = TimeSheetProvider.create(
@@ -78,4 +78,4 @@ class ProvideTimeSheetTestCase(unittest.TestCase):
             TimeSheetProvider.update_with(time_sheet, 10)
             raise Exception("Closed time sheet has been updated")
         except AccessDeniedToUpdateTimeSheet:
-            self.assertEquals(time_sheet.closed, True)
+            self.assertEqual(time_sheet.closed, True)
