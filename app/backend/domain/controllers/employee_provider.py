@@ -15,7 +15,7 @@ class EmployeeProvider:
         return employee
 
     @staticmethod
-    def register(employee, employment_date, balance_vac=0):
+    def register(employee: Employee, employment_date, balance_vac=0):
         employee.registration_date = datetime.now()
         employee.employment_date = employment_date
         employee.vacation = balance_vac
@@ -31,16 +31,16 @@ class EmployeeProvider:
         return employee
 
     @staticmethod
-    def activate(employee):
+    def activate(employee: Employee):
         employee.activated = True
         return employee
 
     @staticmethod
-    def deactivate(employee):
+    def deactivate(employee: Employee):
         employee.activated = False
         return employee
 
     @staticmethod
-    def set_balance_vac(employee, balance_vac):
+    def set_balance_vac(employee: Employee, balance_vac):
         employee.vacation = balance_vac
         return employee
