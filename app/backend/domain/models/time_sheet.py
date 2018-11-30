@@ -6,5 +6,6 @@ class TimeSheet:
         self.year = None
         self.month = None
         self.sheet = None
+        self.vacation = None
         self.employee_id = None
         self.closed = None
