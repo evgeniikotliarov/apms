@@ -29,3 +29,14 @@ class TimeSheetProvider:
     def close(time_sheet: TimeSheet):
         time_sheet.closed = True
         return time_sheet
+
+    @classmethod
+    def serialize(cls, time_sheet: TimeSheet):
+        return time_sheet.__dict__
+
+    @classmethod
+    def deserialize(cls, serialized_time_sheet: dict):
+        time_sheet = TimeSheet()
+        for key, value in serialized_time_sheet.items():
+            setattr(time_sheet, key, value)
+        return time_sheet
