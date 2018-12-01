@@ -45,7 +45,7 @@ class EmployeeProvider:
         return employee
 
     @classmethod
-    def serialize(cls, employee):
+    def serialize(cls, employee: Employee):
         if employee.employment_date:
             employee.employment_date = employee.employment_date.strftime('Y%.%m.%d')
         if employee.registration_date:
@@ -53,7 +53,7 @@ class EmployeeProvider:
         return employee.__dict__
 
     @classmethod
-    def deserialize(cls, serialized_employee):
+    def deserialize(cls, serialized_employee: dict):
         employee = Employee()
         for key, value in serialized_employee.items():
             if 'date' in key and value:
