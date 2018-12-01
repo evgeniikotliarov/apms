@@ -9,7 +9,6 @@ class ProvideEmployeeTestCase(unittest.TestCase):
     def test_create_employee(self):
         employee = EmployeeProvider.create_simple("Some Name", "some_password", "some@email.com")
         self.assertIsNotNone(employee)
-        self.assertEqual(employee.id, 0)
         self.assertEqual(employee.name, "Some Name")
         self.assertEqual(employee.password, "some_password")
         self.assertEqual(employee.email, "some@email.com")
@@ -67,3 +66,67 @@ class ProvideEmployeeTestCase(unittest.TestCase):
 
         employee = EmployeeProvider.set_balance_vac(employee, 10)
         self.assertEqual(employee.vacation, 10)
+
+    def test_serialize_employee(self):
+        employee = EmployeeProvider.create_simple("Some Name", "some_password", "some@email.com")
+        now = datetime.now()
+        employee = EmployeeProvider.register(employee=employee,
+                                             employment_date=now,
+                                             balance_vac=5)
+        serialized_employee = EmployeeProvider.serialize(employee)
+        self.assertIsNotNone(serialized_employee)
+        self.assertEqual(serialized_employee['id'], None)
+        self.assertEqual(serialized_employee['name'], 'Some Name')
+        self.assertEqual(serialized_employee['password'], 'some_password')
+        self.assertEqual(serialized_employee['email'], 'some@email.com')
+        self.assertTrue(str(now.year) in serialized_employee['employment_date'])
+        self.assertTrue(str(now.month) in serialized_employee['employment_date'])
+        self.assertTrue(str(now.day) in serialized_employee['employment_date'])
+        self.assertIsNotNone(serialized_employee['registration_date'])
+        self.assertEqual(serialized_employee['vacation'], 5)
+        self.assertEqual(serialized_employee['activated'], True)
+
+    def test_deserialize_employee(self):
+        employee = EmployeeProvider.create_simple("Some Name", "some_password", "some@email.com")
+        now = datetime.now()
+        employee = EmployeeProvider.register(employee=employee,
+                                             employment_date=now,
+                                             balance_vac=5)
+        serialized_employee = EmployeeProvider.serialize(employee)
+        employee = EmployeeProvider.deserialize(serialized_employee)
+        self.assertIsNotNone(employee)
+        self.assertEqual(employee.id, None)
+        self.assertEqual(employee.name, 'Some Name')
+        self.assertEqual(employee.password, 'some_password')
+        self.assertEqual(employee.email, 'some@email.com')
+        self.assertTrue(str(now.year), employee.employment_date)
+        self.assertTrue(str(now.month), employee.employment_date)
+        self.assertTrue(str(now.day), employee.employment_date)
+        self.assertIsNotNone(employee.registration_date)
+        self.assertEqual(employee.vacation, 5)
+        self.assertEqual(employee.activated, True)
+
+    def test_serialize_unregistered_employee(self):
+        employee = EmployeeProvider.create_simple("Some Name", "some_password", "some@email.com")
+        serialized_employee = EmployeeProvider.serialize(employee)
+        self.assertIsNotNone(serialized_employee)
+        self.assertEqual(serialized_employee['id'], None)
+        self.assertEqual(serialized_employee['name'], 'Some Name')
+        self.assertEqual(serialized_employee['password'], 'some_password')
+        self.assertEqual(serialized_employee['email'], 'some@email.com')
+        self.assertEqual(serialized_employee['employment_date'], None)
+        self.assertEqual(serialized_employee['vacation'], None)
+        self.assertEqual(serialized_employee['activated'], False)
+
+    def test_deserialize_unregistered_employee(self):
+        employee = EmployeeProvider.create_simple("Some Name", "some_password", "some@email.com")
+        serialized_employee = EmployeeProvider.serialize(employee)
+        employee = EmployeeProvider.deserialize(serialized_employee)
+        self.assertIsNotNone(employee)
+        self.assertEqual(employee.id, None)
+        self.assertEqual(employee.name, 'Some Name')
+        self.assertEqual(employee.password, 'some_password')
+        self.assertEqual(employee.email, 'some@email.com')
+        self.assertEqual(employee.employment_date, None)
+        self.assertEqual(employee.vacation, None)
+        self.assertEqual(employee.activated, False)
