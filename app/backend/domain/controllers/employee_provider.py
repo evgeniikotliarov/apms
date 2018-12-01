@@ -43,3 +43,20 @@ class EmployeeProvider:
     def set_balance_vac(cls, employee: Employee, balance_vac):
         employee.vacation = balance_vac
         return employee
+
+    @classmethod
+    def serialize(cls, employee):
+        if employee.employment_date:
+            employee.employment_date = employee.employment_date.strftime('Y%.%m.%d')
+        if employee.registration_date:
+            employee.registration_date = employee.registration_date.strftime('Y%.%m.%d')
+        return employee.__dict__
+
+    @classmethod
+    def deserialize(cls, serialized_employee):
+        employee = Employee()
+        for key, value in serialized_employee.items():
+            if 'date' in key and value:
+                value = datetime.strftime(value, 'Y%.%m.%d')
+            setattr(employee, key, value)
+        return employee
