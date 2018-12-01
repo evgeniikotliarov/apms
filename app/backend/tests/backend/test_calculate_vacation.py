@@ -44,14 +44,12 @@ class TestRateCalculator(unittest.TestCase):
             26: 1, 27: 1, 28: 1
         }
         self.january_time_sheet = TimeSheetProvider.create(
-            time_sheet_id=0,
             date=datetime(2018, 1, 31),
             work_days_sheet=self.january,
             employee_id=0,
             employee_rate=RateCalculator.DAYS_FOR_3_YEARS,
         )
         self.february_time_sheet = TimeSheetProvider.create(
-            time_sheet_id=1,
             date=datetime(2018, 2, 28),
             work_days_sheet=self.february,
             employee_id=0,
