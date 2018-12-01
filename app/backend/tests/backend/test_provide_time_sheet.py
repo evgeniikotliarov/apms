@@ -18,7 +18,6 @@ class ProvideTimeSheetTestCase(unittest.TestCase):
 
     def test_create_time_sheet(self):
         time_sheet = TimeSheetProvider.create(
-            time_sheet_id=0,
             date=datetime(2018, 1, 30),
             work_days_sheet=self.sheet,
             employee_id=0,
@@ -37,7 +36,6 @@ class ProvideTimeSheetTestCase(unittest.TestCase):
 
     def test_create_time_sheet_without_norm(self):
         time_sheet = TimeSheetProvider.create(
-            time_sheet_id=0,
             date=datetime(2018, 1, 30),
             work_days_sheet=self.sheet,
             employee_id=0,
@@ -48,7 +46,6 @@ class ProvideTimeSheetTestCase(unittest.TestCase):
 
     def test_update_time_sheet(self):
         time_sheet = TimeSheetProvider.create(
-            time_sheet_id=0,
             date=datetime(2018, 1, 30),
             work_days_sheet=self.sheet,
             employee_id=0,
@@ -66,7 +63,6 @@ class ProvideTimeSheetTestCase(unittest.TestCase):
 
     def test_close_time_sheet(self):
         time_sheet = TimeSheetProvider.create(
-            time_sheet_id=0,
             date=datetime(2018, 1, 30),
             work_days_sheet=self.sheet,
             employee_id=0,
