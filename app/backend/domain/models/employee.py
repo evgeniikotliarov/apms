@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from backend.domain.controllers.rate_calculator import RateCalculator
+from domain.controllers.rate_calculator import RateCalculator
 
 
 class Employee:
@@ -12,6 +12,7 @@ class Employee:
         self.activated = None
         self.vacation = None
         self.employment_date = None
+        self.registration_date = None
 
     @property
     def rate(self):
