@@ -11,6 +11,7 @@ class EmployeeProvider:
         employee.password = password
         employee.email = email
         employee.activated = False
+        employee.is_admin = False
         return employee
 
     @classmethod
@@ -42,6 +43,16 @@ class EmployeeProvider:
     @classmethod
     def set_balance_vac(cls, employee: Employee, balance_vac):
         employee.vacation = balance_vac
+        return employee
+
+    @classmethod
+    def grant_to_admin(cls, employee: Employee):
+        employee.is_admin = True
+        return employee
+
+    @classmethod
+    def pick_up_admin(cls, employee: Employee):
+        employee.is_admin = False
         return employee
 
     @classmethod

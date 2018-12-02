@@ -11,6 +11,7 @@ class Employee:
         self.password = None
         self.activated = None
         self.vacation = None
+        self.is_admin = None
         self.employment_date = None
         self.registration_date = None
 
