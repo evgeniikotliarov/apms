@@ -13,6 +13,7 @@ class ProvideEmployeeTestCase(unittest.TestCase):
         self.assertEqual(employee.password, "some_password")
         self.assertEqual(employee.email, "some@email.com")
         self.assertEqual(employee.activated, False)
+        self.assertEqual(employee.is_admin, False)
 
     def test_register_employee(self):
         employee = EmployeeProvider.create_simple("Some Name", "some_password", "some@email.com")
@@ -26,6 +27,7 @@ class ProvideEmployeeTestCase(unittest.TestCase):
         self.assertEqual(employee.registration_date.day, now_date.day)
         self.assertEqual(employee.employment_date, now_date)
         self.assertEqual(employee.activated, True)
+        self.assertEqual(employee.is_admin, False)
         self.assertEqual(employee.vacation, 5)
 
     def test_register_employee_without_balance_vacation(self):
@@ -39,6 +41,7 @@ class ProvideEmployeeTestCase(unittest.TestCase):
         self.assertEqual(employee.registration_date.day, now_date.day)
         self.assertEqual(employee.employment_date, now_date)
         self.assertEqual(employee.activated, True)
+        self.assertEqual(employee.is_admin, False)
         self.assertEqual(employee.vacation, 0)
 
     def test_update_employee(self):
@@ -64,8 +67,25 @@ class ProvideEmployeeTestCase(unittest.TestCase):
         employee = EmployeeProvider.deactivate(employee)
         self.assertEqual(employee.activated, False)
 
+        self.assertEqual(employee.is_admin, False)
+
         employee = EmployeeProvider.set_balance_vac(employee, 10)
         self.assertEqual(employee.vacation, 10)
+
+    def test_grant_to_admin_employee(self):
+        employee = EmployeeProvider.create_simple("Some Name", "some_password", "some@email.com")
+        employee = EmployeeProvider.register(employee=employee,
+                                             employment_date=datetime.now())
+        employee = EmployeeProvider.grant_to_admin(employee)
+        self.assertTrue(employee.is_admin)
+
+    def test_pick_up_admin_employee(self):
+        employee = EmployeeProvider.create_simple("Some Name", "some_password", "some@email.com")
+        employee = EmployeeProvider.register(employee=employee,
+                                             employment_date=datetime.now())
+        employee.is_admin = True
+        employee = EmployeeProvider.pick_up_admin(employee)
+        self.assertFalse(employee.is_admin)
 
     def test_serialize_employee(self):
         employee = EmployeeProvider.create_simple("Some Name", "some_password", "some@email.com")
@@ -85,6 +105,7 @@ class ProvideEmployeeTestCase(unittest.TestCase):
         self.assertIsNotNone(serialized_employee['registration_date'])
         self.assertEqual(serialized_employee['vacation'], 5)
         self.assertEqual(serialized_employee['activated'], True)
+        self.assertEqual(serialized_employee['is_admin'], False)
 
     def test_deserialize_employee(self):
         employee = EmployeeProvider.create_simple("Some Name", "some_password", "some@email.com")
@@ -105,6 +126,7 @@ class ProvideEmployeeTestCase(unittest.TestCase):
         self.assertIsNotNone(employee.registration_date)
         self.assertEqual(employee.vacation, 5)
         self.assertEqual(employee.activated, True)
+        self.assertEqual(employee.is_admin, False)
 
     def test_serialize_unregistered_employee(self):
         employee = EmployeeProvider.create_simple("Some Name", "some_password", "some@email.com")
@@ -117,6 +139,7 @@ class ProvideEmployeeTestCase(unittest.TestCase):
         self.assertEqual(serialized_employee['employment_date'], None)
         self.assertEqual(serialized_employee['vacation'], None)
         self.assertEqual(serialized_employee['activated'], False)
+        self.assertEqual(serialized_employee['is_admin'], False)
 
     def test_deserialize_unregistered_employee(self):
         employee = EmployeeProvider.create_simple("Some Name", "some_password", "some@email.com")
@@ -130,3 +153,4 @@ class ProvideEmployeeTestCase(unittest.TestCase):
         self.assertEqual(employee.employment_date, None)
         self.assertEqual(employee.vacation, None)
         self.assertEqual(employee.activated, False)
+        self.assertEqual(employee.is_admin, False)
