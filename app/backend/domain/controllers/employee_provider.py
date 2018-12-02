@@ -15,7 +15,7 @@ class EmployeeProvider:
         return employee
 
     @classmethod
-    def register(cls, employee: Employee, employment_date, balance_vac=0):
+    def register(cls, employee: Employee, employment_date: datetime, balance_vac=0):
         employee.registration_date = datetime.now()
         employee.employment_date = employment_date
         employee.vacation = balance_vac
@@ -23,7 +23,8 @@ class EmployeeProvider:
         return employee
 
     @classmethod
-    def update_with(cls, employee, name=None, password=None, email=None, employment_date=None):
+    def update_with(cls, employee, name=None, password=None, email=None,
+                    employment_date: datetime=None):
         employee.employment_date = employment_date if employment_date else employee.employment_date
         employee.password = password if password else employee.password
         employee.email = email if email else employee.email
