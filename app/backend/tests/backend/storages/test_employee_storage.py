@@ -1,7 +1,7 @@
 import unittest
 
 from domain.controllers.employee_provider import EmployeeProvider
-from storages.employees_storage import EmployeesStorage
+from storages.storages import EmployeesStorage
 # noinspection PyPackageRequirements
 from tests.fake_db import FakeEmployeesDb
 
