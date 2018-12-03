@@ -12,7 +12,6 @@ class CreateEmployeeUseCase:
     def create_employee(self, name, password, email):
         employee = self.employee_provider.create_simple(name, password, email)
         self.storage.save(employee)
-        return employee
 
 
 class RegisterEmployeeUseCase:
@@ -24,7 +23,6 @@ class RegisterEmployeeUseCase:
         employee = self.storage.find_by_id(employee_id)
         employee = self.employee_provider.register(employee, employment_date, balance_vac)
         self.storage.update(employee)
-        return employee
 
 
 class UpdateEmployeeUseCase:
@@ -36,7 +34,6 @@ class UpdateEmployeeUseCase:
         employee = self.storage.find_by_id(employee_id)
         employee = self.employee_provider.update_with(employee, name, password, email)
         self.storage.update(employee)
-        return employee
 
 
 class AdminRightsEmployeeUseCase:
@@ -48,10 +45,8 @@ class AdminRightsEmployeeUseCase:
         employee = self.storage.find_by_id(employee_id)
         employee = self.employee_provider.grant_to_admin(employee)
         self.storage.update(employee)
-        return employee
 
     def pick_up_admin(self, employee_id):
         employee = self.storage.find_by_id(employee_id)
         employee = self.employee_provider.pick_up_admin(employee)
         self.storage.update(employee)
-        return employee
