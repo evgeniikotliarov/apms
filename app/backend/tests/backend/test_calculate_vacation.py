@@ -4,54 +4,22 @@ from datetime import datetime
 from domain.controllers.rate_calculator import RateCalculator
 from domain.controllers.time_sheet_provider import TimeSheetProvider
 from domain.controllers.vacation_calculator import VacationCalculator
+# noinspection PyPackageRequirements
+from tests.fixtures.sheets import january, february, half_january, compensation_january, \
+    full_january
 
 
 class TestRateCalculator(unittest.TestCase):
     def setUp(self):
-        self.full_january = {
-            1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1, 7: 1,
-            8: 1, 9: 1, 10: 1, 11: 1, 12: 1, 13: 1, 14: 1,
-            15: 1, 16: 1, 17: 1, 18: 1, 19: 1, 20: 1, 21: 1,
-            22: 1, 23: 1, 24: 1, 25: 1, 26: 1, 27: 1, 28: 1,
-            29: 1, 30: 1, 31: 1
-        }
-        self.compensation_january = {
-            1: 0, 2: 1, 3: 1, 4: 1, 5: 1, 6: 0, 7: 1,
-            8: 0, 9: 1, 10: 1, 11: 1, 12: 1, 13: 0, 14: 1,
-            15: 0, 16: 1, 17: 1, 18: 1, 19: 1, 20: 0, 21: 1,
-            22: 0, 23: 1, 24: 1, 25: 1, 26: 1, 27: 0, 28: 1,
-            29: 1, 30: 1, 31: 1
-        }
-        self.half_january = {
-            1: 1, 2: 1, 3: 1, 4: 0, 5: 0, 6: 0, 7: 0,
-            8: 1, 9: 1, 10: 1, 11: 0, 12: 0, 13: 0, 14: 0,
-            15: 1, 16: 1, 17: 1, 18: 0, 19: 0, 20: 0, 21: 0,
-            22: 1, 23: 1, 24: 1, 25: 0, 26: 0, 27: 0, 28: 0,
-            29: 1, 30: 1, 31: 1
-        }
-        self.january = {
-            1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 0, 7: 0,
-            8: 1, 9: 1, 10: 1, 11: 1, 12: 1, 13: 0, 14: 0,
-            15: 1, 16: 1, 17: 1, 18: 1, 19: 1, 20: 0, 21: 0,
-            22: 1, 23: 1, 24: 1, 25: 1, 26: 1, 27: 0, 28: 0,
-            29: 1, 30: 1, 31: 1
-        }
-        self.february = {
-            1: 1, 2: 1, 3: 0, 4: 0,
-            5: 1, 6: 1, 7: 1, 8: 1, 9: 1, 10: 0, 11: 0,
-            12: 1, 13: 1, 14: 1, 15: 1, 16: 1, 17: 0, 18: 0,
-            19: 1, 20: 1, 21: 1, 22: 1, 23: 1, 24: 0, 25: 0,
-            26: 1, 27: 1, 28: 1
-        }
         self.january_time_sheet = TimeSheetProvider.create(
             date=datetime(2018, 1, 31),
-            work_days_sheet=self.january,
+            work_days_sheet=january,
             employee_id=0,
             employee_rate=RateCalculator.DAYS_FOR_3_YEARS,
         )
         self.february_time_sheet = TimeSheetProvider.create(
             date=datetime(2018, 2, 28),
-            work_days_sheet=self.february,
+            work_days_sheet=february,
             employee_id=0,
             employee_rate=RateCalculator.MAX_DAYS,
         )
@@ -91,7 +59,7 @@ class TestRateCalculator(unittest.TestCase):
 
     def test_calculate_with_half_time_sheet(self):
         time_sheet = self.january_time_sheet
-        time_sheet.sheet = self.half_january
+        time_sheet.sheet = half_january
         calculator = VacationCalculator()
 
         time_sheet.rate = RateCalculator.MIN_DAYS
@@ -112,7 +80,7 @@ class TestRateCalculator(unittest.TestCase):
 
     def test_calculate_with_compensation_sheet(self):
         time_sheet = self.january_time_sheet
-        time_sheet.sheet = self.compensation_january
+        time_sheet.sheet = compensation_january
         calculator = VacationCalculator()
 
         time_sheet.rate = RateCalculator.MIN_DAYS
@@ -134,7 +102,7 @@ class TestRateCalculator(unittest.TestCase):
 
     def test_calculate_with_full_sheet(self):
         time_sheet = self.january_time_sheet
-        time_sheet.sheet = self.full_january
+        time_sheet.sheet = full_january
         calculator = VacationCalculator()
 
         time_sheet.rate = RateCalculator.MIN_DAYS

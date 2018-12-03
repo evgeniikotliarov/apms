@@ -3,6 +3,8 @@ from datetime import datetime
 from domain.controllers.employee_provider import EmployeeProvider
 from domain.controllers.rate_calculator import RateCalculator
 from domain.controllers.time_sheet_provider import TimeSheetProvider
+# noinspection PyPackageRequirements
+from tests.fixtures.sheets import january
 
 
 class List(list):
@@ -70,14 +72,7 @@ class FakeEmployeesDb(FakeBaseDb):
 class FakeTimeSheetsDb(FakeBaseDb):
     def __init__(self):
         super().__init__()
-        self.january = {
-            1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 0, 7: 0,
-            8: 1, 9: 1, 10: 1, 11: 1, 12: 1, 13: 0, 14: 0,
-            15: 1, 16: 1, 17: 1, 18: 1, 19: 1, 20: 0, 21: 0,
-            22: 1, 23: 1, 24: 1, 25: 1, 26: 1, 27: 0, 28: 0,
-            29: 1, 30: 1, 31: 1
-        }
-        time_sheet = TimeSheetProvider.create(datetime.now(), self.january,
+        time_sheet = TimeSheetProvider.create(datetime.now(), january,
                                               0, RateCalculator.MIN_DAYS, norm=1)
         time_sheet.id = 0
         self.origin_entities.append(time_sheet)
