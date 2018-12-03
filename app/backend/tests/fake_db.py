@@ -24,9 +24,11 @@ class Query:
             return self.entities
         found_entities = List()
         for entity in self.entities:
+            check_condition = True
             for param, value in kwargs.items():
-                if getattr(entity, param) == value:
-                    found_entities.append(entity)
+                check_condition = check_condition and getattr(entity, param) == value
+            if check_condition:
+                found_entities.append(entity)
         return found_entities
 
 
@@ -72,8 +74,9 @@ class FakeEmployeesDb(FakeBaseDb):
 class FakeTimeSheetsDb(FakeBaseDb):
     def __init__(self):
         super().__init__()
-        time_sheet = TimeSheetProvider.create(datetime.now(), january,
+        time_sheet = TimeSheetProvider.create(datetime(2010, 1, 1), january,
                                               0, RateCalculator.MIN_DAYS, norm=1)
         time_sheet.id = 0
+        time_sheet.vacation = 10
         self.origin_entities.append(time_sheet)
         self.entities.append(time_sheet)
