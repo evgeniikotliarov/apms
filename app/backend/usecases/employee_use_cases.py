@@ -4,6 +4,30 @@ from domain.controllers.employee_provider import EmployeeProvider
 from storages.storages import EmployeesStorage
 
 
+class GetEmployeeUseCase:
+    def __init__(self, employee_provider: EmployeeProvider, storage: EmployeesStorage):
+        self.employee_provider = employee_provider
+        self.storage = storage
+
+    def get_employee(self, employee_id):
+        employee = self.storage.find_by_id(employee_id)
+        return self.employee_provider.serialize(employee)
+
+
+class GetAllEmployeeUseCase:
+    def __init__(self, employee_provider: EmployeeProvider, storage: EmployeesStorage):
+        self.employee_provider = employee_provider
+        self.storage = storage
+
+    def get_employees(self):
+        employees = self.storage.get_all()
+        serialized_employees = []
+        for employee in employees:
+            serialized_employee = self.employee_provider.serialize(employee)
+            serialized_employees.append(serialized_employee)
+        return serialized_employees
+
+
 class CreateEmployeeUseCase:
     def __init__(self, employee_provider: EmployeeProvider, storage: EmployeesStorage):
         self.employee_provider = employee_provider

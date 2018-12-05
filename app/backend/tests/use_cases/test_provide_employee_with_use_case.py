@@ -6,10 +6,34 @@ from storages.storages import EmployeesStorage
 # noinspection PyPackageRequirements
 from tests.fake_db import FakeEmployeesDb
 from usecases.employee_use_cases import CreateEmployeeUseCase, RegisterEmployeeUseCase, \
-    UpdateEmployeeUseCase, AdminRightsEmployeeUseCase
+    UpdateEmployeeUseCase, AdminRightsEmployeeUseCase, GetEmployeeUseCase, GetAllEmployeeUseCase
 
 
 class TestProvideEmployeeUseCase(unittest.TestCase):
+    def test_get_employee(self):
+        storage = EmployeesStorage(FakeEmployeesDb())
+        controller = EmployeeProvider()
+        use_case = GetEmployeeUseCase(controller, storage)
+
+        saved_employee = use_case.get_employee(0)
+        self.assertEqual(saved_employee['name'], "name")
+        self.assertEqual(saved_employee['password'], "password")
+        self.assertEqual(saved_employee['email'], "some@mail.com")
+        self.assertEqual(saved_employee['activated'], False)
+
+    def test_get_all_employee(self):
+        storage = EmployeesStorage(FakeEmployeesDb())
+        controller = EmployeeProvider()
+        use_case = GetAllEmployeeUseCase(controller, storage)
+
+        employees = use_case.get_employees()
+        self.assertEqual(employees.__len__(), 1)
+        saved_employee = employees[0]
+        self.assertEqual(saved_employee['name'], "name")
+        self.assertEqual(saved_employee['password'], "password")
+        self.assertEqual(saved_employee['email'], "some@mail.com")
+        self.assertEqual(saved_employee['activated'], False)
+
     def test_create_employee(self):
         storage = EmployeesStorage(FakeEmployeesDb())
         controller = EmployeeProvider()
