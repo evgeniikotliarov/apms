@@ -2,7 +2,6 @@ import unittest
 from datetime import datetime
 
 from domain.controllers.employee_provider import EmployeeProvider
-from domain.controllers.rate_calculator import RateCalculator
 from domain.controllers.time_sheet_provider import TimeSheetProvider
 from domain.controllers.vacation_calculator import VacationCalculator
 from storages.storages import EmployeesStorage, TimeSheetsStorage
@@ -24,14 +23,17 @@ class TestProvideEmployeeUseCase(unittest.TestCase):
         employee = employee_storage.find_by_id(0)
         employee.vacation = 10
         employee.employment_date = datetime(2016, 8, 1)
+        employee_storage.update(employee)
         use_case.calculate_vacation(0, january, datetime(2018, 1, 1))
         saved_employee = employee_storage.find_by_id(0)
         self.assertEqual(saved_employee.vacation, 13.29)
 
+        employee.id = 1
         employee.vacation = 10
         employee.employment_date = datetime(2017, 12, 1)
-        use_case.calculate_vacation(0, january, datetime(2018, 1, 1))
-        saved_employee = employee_storage.find_by_id(0)
+        employee_storage.save(employee)
+        use_case.calculate_vacation(1, january, datetime(2018, 1, 1))
+        saved_employee = employee_storage.find_by_id(1)
         self.assertEqual(saved_employee.vacation, 12.3)
 
     def test_calculate_vacation_with_minus(self):
@@ -45,12 +47,35 @@ class TestProvideEmployeeUseCase(unittest.TestCase):
         employee = employee_storage.find_by_id(0)
         employee.vacation = 10
         employee.employment_date = datetime(2016, 8, 1)
+
         use_case.calculate_vacation(0, half_january, datetime(2018, 1, 1))
         saved_employee = employee_storage.find_by_id(0)
         self.assertEqual(saved_employee.vacation, 4.14)
 
+        employee.id = 1
         employee.vacation = 10
         employee.employment_date = datetime(2017, 12, 1)
+        employee_storage.save(employee)
+        use_case.calculate_vacation(1, half_january, datetime(2018, 1, 1))
+        saved_employee = employee_storage.find_by_id(1)
+        self.assertEqual(saved_employee.vacation, 3.5)
+
+    def test_recalculate_vacation(self):
+        employee_storage = EmployeesStorage(FakeEmployeesDb())
+        time_sheet_storage = TimeSheetsStorage(FakeTimeSheetsDb())
+        employee_controller = EmployeeProvider()
+        time_sheet_controller = TimeSheetProvider()
+        calculator = VacationCalculator()
+        use_case = CalculateVacationUseCase(employee_controller, time_sheet_controller, calculator,
+                                            employee_storage, time_sheet_storage)
+        employee = employee_storage.find_by_id(0)
+        employee.vacation = 10
+        employee.employment_date = datetime(2016, 8, 1)
+
+        use_case.calculate_vacation(0, january, datetime(2018, 1, 1))
+        saved_employee = employee_storage.find_by_id(0)
+        self.assertEqual(saved_employee.vacation, 13.29)
+
         use_case.calculate_vacation(0, half_january, datetime(2018, 1, 1))
         saved_employee = employee_storage.find_by_id(0)
-        self.assertEqual(saved_employee.vacation, 3.5)
+        self.assertEqual(saved_employee.vacation, 4.14)
