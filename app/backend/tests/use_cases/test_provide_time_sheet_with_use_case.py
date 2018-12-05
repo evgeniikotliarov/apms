@@ -1,6 +1,7 @@
 import unittest
 from datetime import datetime
 
+from domain.controllers.rate_calculator import RateCalculator
 from domain.controllers.time_sheet_provider import TimeSheetProvider
 from storages.storages import TimeSheetsStorage
 # noinspection PyPackageRequirements
@@ -8,10 +9,81 @@ from tests.fake_db import FakeTimeSheetsDb
 # noinspection PyPackageRequirements
 from tests.fixtures.sheets import january, february
 from usecases.time_sheet_use_cases import CreateTimeSheetUseCase, UpdateTimeSheetUseCase, \
-    CloseTimeSheetUseCase
+    CloseTimeSheetUseCase, GetTimeSheetUseCase, GetAllTimeSheetUseCase
 
 
 class TestTimeSheetEmployeeUseCase(unittest.TestCase):
+    def test_get_time_sheet(self):
+        storage = TimeSheetsStorage(FakeTimeSheetsDb())
+        controller = TimeSheetProvider()
+        use_case = GetTimeSheetUseCase(controller, storage)
+
+        time_sheet = use_case.get_for_employee(employee_id=0, year=2010, month=1)
+        self.assertEqual(time_sheet['year'], 2010)
+        self.assertEqual(time_sheet['month'], 1)
+        self.assertEqual(time_sheet['sheet'], january)
+        self.assertEqual(time_sheet['employee_id'], 0)
+        self.assertEqual(time_sheet['rate'], RateCalculator.MIN_DAYS)
+        self.assertEqual(time_sheet['norm'], 1)
+
+        time_sheet = use_case.get_by_id(time_sheet_id=0)
+        self.assertEqual(time_sheet['year'], 2010)
+        self.assertEqual(time_sheet['month'], 1)
+        self.assertEqual(time_sheet['sheet'], january)
+        self.assertEqual(time_sheet['employee_id'], 0)
+        self.assertEqual(time_sheet['rate'], RateCalculator.MIN_DAYS)
+        self.assertEqual(time_sheet['norm'], 1)
+
+    def test_get_time_sheets(self):
+        storage = TimeSheetsStorage(FakeTimeSheetsDb())
+        controller = TimeSheetProvider()
+        use_case = GetAllTimeSheetUseCase(controller, storage)
+
+        time_sheets = use_case.get_for_employee(employee_id=0, year=2010, month=1)
+        time_sheet = time_sheets[0]
+        self.assertEqual(time_sheet['year'], 2010)
+        self.assertEqual(time_sheet['month'], 1)
+        self.assertEqual(time_sheet['sheet'], january)
+        self.assertEqual(time_sheet['employee_id'], 0)
+        self.assertEqual(time_sheet['rate'], RateCalculator.MIN_DAYS)
+        self.assertEqual(time_sheet['norm'], 1)
+
+        time_sheets = use_case.get_for_employee(employee_id=0, year=2010)
+        time_sheet = time_sheets[0]
+        self.assertEqual(time_sheet['year'], 2010)
+        self.assertEqual(time_sheet['month'], 1)
+        self.assertEqual(time_sheet['sheet'], january)
+        self.assertEqual(time_sheet['employee_id'], 0)
+        self.assertEqual(time_sheet['rate'], RateCalculator.MIN_DAYS)
+        self.assertEqual(time_sheet['norm'], 1)
+
+        time_sheets = use_case.get_for_employee(employee_id=0, month=1)
+        time_sheet = time_sheets[0]
+        self.assertEqual(time_sheet['year'], 2010)
+        self.assertEqual(time_sheet['month'], 1)
+        self.assertEqual(time_sheet['sheet'], january)
+        self.assertEqual(time_sheet['employee_id'], 0)
+        self.assertEqual(time_sheet['rate'], RateCalculator.MIN_DAYS)
+        self.assertEqual(time_sheet['norm'], 1)
+
+        time_sheets = use_case.get_for_employee(employee_id=0)
+        time_sheet = time_sheets[0]
+        self.assertEqual(time_sheet['year'], 2010)
+        self.assertEqual(time_sheet['month'], 1)
+        self.assertEqual(time_sheet['sheet'], january)
+        self.assertEqual(time_sheet['employee_id'], 0)
+        self.assertEqual(time_sheet['rate'], RateCalculator.MIN_DAYS)
+        self.assertEqual(time_sheet['norm'], 1)
+
+        time_sheets = use_case.get_all()
+        time_sheet = time_sheets[0]
+        self.assertEqual(time_sheet['year'], 2010)
+        self.assertEqual(time_sheet['month'], 1)
+        self.assertEqual(time_sheet['sheet'], january)
+        self.assertEqual(time_sheet['employee_id'], 0)
+        self.assertEqual(time_sheet['rate'], RateCalculator.MIN_DAYS)
+        self.assertEqual(time_sheet['norm'], 1)
+
     def test_create_time_sheet(self):
         storage = TimeSheetsStorage(FakeTimeSheetsDb())
         controller = TimeSheetProvider()
