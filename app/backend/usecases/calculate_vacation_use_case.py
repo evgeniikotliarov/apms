@@ -18,7 +18,7 @@ class CalculateVacationUseCase:
         self.employee_storage = employee_storage
         self.time_sheet_storage = time_sheet_storage
 
-    def calculate_vacation(self, employee_id, sheet: dict,
+    def calculate_vacation(self, employee_id, sheet,
                            date: datetime = datetime.now(), norm=None):
         time_sheets = self.time_sheet_storage.find_by(year=date.year, month=date.month,
                                                       employee_id=employee_id)

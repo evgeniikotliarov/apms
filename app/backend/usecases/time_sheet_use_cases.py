@@ -51,7 +51,7 @@ class CreateTimeSheetUseCase:
         self.controller = controller
         self.storage = storage
 
-    def create_time_sheet(self, date: datetime, sheet: dict,
+    def create_time_sheet(self, date: datetime, sheet,
                           employee_id: int, rate: int, norm: int=None):
         time_sheet = self.controller.create(date, sheet, employee_id, rate, norm)
         self.storage.save(time_sheet)
