@@ -33,7 +33,7 @@ class VacationCalculator:
 
     @classmethod
     def _calculate_days_worked(cls, sheet):
-        return reduce(lambda days_worked, day: days_worked + sheet[day], sheet, .0)
+        return reduce(lambda days_worked, worked_out: days_worked + sheet[worked_out], sheet, .0)
 
     @classmethod
     def _calculate_vacation(cls, days_worked, rate):
