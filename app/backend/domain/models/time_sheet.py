@@ -12,8 +12,3 @@ class TimeSheet:
         self.vacation = None
         self.employee_id = None
         self.closed = None
-
-    # TODO: удалить после подключения postgres
-    @property
-    def sheet_str(self):
-        return json.dumps(self.sheet)

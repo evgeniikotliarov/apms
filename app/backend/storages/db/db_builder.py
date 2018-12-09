@@ -5,6 +5,7 @@ from sqlalchemy.orm import sessionmaker, mapper, relationship, clear_mappers
 import settings
 from domain.models.employee import Employee
 from domain.models.time_sheet import TimeSheet
+from storages.db.suctom_type import ArrayType
 
 
 class DbBuilder:
@@ -16,27 +17,28 @@ class DbBuilder:
         self.time_sheets = None
 
     def build(self):
-        self.metadata = MetaData()
+        self.create_engine()
         self.create_schema()
         self.create_session()
         return self.session
 
     def create_session(self):
         if self.session is None:
-            session = sessionmaker(self._create_engine())
+            session = sessionmaker(self.engine)
             self.session = session()
         return self.session
 
-    def _create_engine(self):
+    def create_engine(self):
         if self.engine is None:
             self.engine = create_engine(settings.DB_CONNECTION_STRING)
-            self.metadata.create_all(self.engine)
+            self.metadata = MetaData(bind=self.engine)
         return self.engine
 
     def create_schema(self):
         self.__build_employee_schema()
         self.__build_time_sheet_schema()
         self.__map_entities()
+        self.metadata.create_all(self.engine)
 
     def __build_employee_schema(self):
         self.employees = Table(
@@ -58,12 +60,9 @@ class DbBuilder:
             Column('id', Integer, primary_key=True, index=True),
             Column('year', Integer, index=True, nullable=False),
             Column('month', Integer, nullable=False),
-            Column('norm', Integer, unique=True, nullable=False),
+            Column('norm', Integer, nullable=False),
             Column('rate', Integer, nullable=False),
-            # TODO: заменить на Column('sheet', ARRAY(Float(8))),
-            # TODO, после подключения postgres
-            # TODO: https://suhas.org/sqlalchemy-tutorial/
-            Column('sheet_str', Text(128)),
+            Column('sheet', ArrayType()),
             Column('vacation', Float(8), nullable=True),
             Column('employee_id', Integer, ForeignKey('employees.id')),
             Column('closed', Boolean, nullable=False)
