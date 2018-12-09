@@ -94,7 +94,6 @@ class ProvideEmployeeTestCase(unittest.TestCase):
         self.assertIsNotNone(serialized_employee)
         self.assertEqual(serialized_employee['id'], 2)
         self.assertEqual(serialized_employee['name'], 'Unactivated User')
-        self.assertEqual(serialized_employee['password'], 'user')
         self.assertEqual(serialized_employee['email'], 'unactivated@email.com')
         self.assertEqual("2018.01.01", serialized_employee['employment_date'])
         self.assertEqual("2018.01.01", serialized_employee['registration_date'])

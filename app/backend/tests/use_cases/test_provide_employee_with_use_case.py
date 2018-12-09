@@ -17,7 +17,6 @@ class TestProvideEmployeeUseCase(unittest.TestCase):
 
         saved_employee = use_case.get_employee(employee_id=0)
         self.assertEqual(saved_employee['name'], "admin")
-        self.assertEqual(saved_employee['password'], "admin")
         self.assertEqual(saved_employee['email'], "admin@email.com")
         self.assertEqual(saved_employee['activated'], True)
 
@@ -30,7 +29,6 @@ class TestProvideEmployeeUseCase(unittest.TestCase):
         self.assertEqual(employees.__len__(), 3)
         saved_employee = employees[0]
         self.assertEqual(saved_employee['name'], "admin")
-        self.assertEqual(saved_employee['password'], "admin")
         self.assertEqual(saved_employee['email'], "admin@email.com")
         self.assertEqual(saved_employee['activated'], True)
         self.assertEqual(saved_employee['vacation'], 1.0)

@@ -61,7 +61,6 @@ class EmployeeProvider:
         serialized_employee = {
             'id': employee.id,
             'name': employee.name,
-            'password': employee.password,
             'email': employee.email,
             'vacation': employee.vacation,
             'is_admin': employee.is_admin,

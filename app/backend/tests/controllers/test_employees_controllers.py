@@ -15,13 +15,17 @@ class TestEmployeesControllers(unittest.TestCase):
 
     def test_get_employee(self):
         response = self.client.simulate_get('/api/employees/0')
-        self.assertEqual(response.json, fixtures.load("admin_user"))
+        user = fixtures.load("admin_user")
+        del user['password']
+        self.assertEqual(response.json, user)
 
     def test_get_employees(self):
         response = self.client.simulate_get('/api/employees/')
         first_employee = response.json[0]
         self.assertTrue(response.json.__len__() > 0)
-        self.assertEqual(first_employee, fixtures.load("admin_user"))
+        user = fixtures.load("admin_user")
+        del user['password']
+        self.assertEqual(first_employee, user)
 
     def test_create_employee(self):
         data = {
