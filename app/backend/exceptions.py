@@ -24,3 +24,8 @@ class InvalidDbQueryException(BaseError):
 class NotFoundException(BaseError):
     def get_http_code(self):
         return falcon.HTTP_404
+
+
+class EmailBusyException(BaseError):
+    def get_http_code(self):
+        return falcon.HTTP_400
