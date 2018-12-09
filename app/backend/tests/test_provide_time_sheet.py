@@ -4,15 +4,14 @@ from datetime import datetime
 from domain.controllers.rate_calculator import RateCalculator
 from domain.controllers.time_sheet_provider import TimeSheetProvider
 from exceptions import AccessDeniedToUpdateTimeSheet
-# noinspection PyPackageRequirements
-from tests.fixtures.sheets import january, february
+from tests import fixtures
 
 
 class ProvideTimeSheetTestCase(unittest.TestCase):
     def test_create_time_sheet(self):
         time_sheet = TimeSheetProvider.create(
             date=datetime(2018, 1, 30),
-            work_days_sheet=january,
+            work_days_sheet=fixtures.load("january"),
             employee_id=0,
             employee_rate=RateCalculator.DAYS_FOR_3_YEARS,
             norm=22
@@ -21,7 +20,7 @@ class ProvideTimeSheetTestCase(unittest.TestCase):
         self.assertEqual(time_sheet.id, None)
         self.assertEqual(time_sheet.norm, 22)
         self.assertEqual(time_sheet.rate, RateCalculator.DAYS_FOR_3_YEARS)
-        self.assertEqual(time_sheet.sheet, january)
+        self.assertEqual(time_sheet.sheet, fixtures.load("january"))
         self.assertEqual(time_sheet.year, 2018)
         self.assertEqual(time_sheet.month, 1)
         self.assertEqual(time_sheet.employee_id, 0)
@@ -30,7 +29,7 @@ class ProvideTimeSheetTestCase(unittest.TestCase):
     def test_create_time_sheet_without_norm(self):
         time_sheet = TimeSheetProvider.create(
             date=datetime(2018, 1, 30),
-            work_days_sheet=january,
+            work_days_sheet=fixtures.load("january"),
             employee_id=0,
             employee_rate=RateCalculator.DAYS_FOR_3_YEARS
         )
@@ -40,7 +39,7 @@ class ProvideTimeSheetTestCase(unittest.TestCase):
     def test_update_time_sheet(self):
         time_sheet = TimeSheetProvider.create(
             date=datetime(2018, 1, 30),
-            work_days_sheet=january,
+            work_days_sheet=fixtures.load("january"),
             employee_id=0,
             employee_rate=RateCalculator.DAYS_FOR_3_YEARS,
             norm=22
@@ -48,13 +47,14 @@ class ProvideTimeSheetTestCase(unittest.TestCase):
         time_sheet = TimeSheetProvider.update_with(time_sheet, norm=28)
         self.assertEqual(time_sheet.norm, 28)
 
-        time_sheet = TimeSheetProvider.update_with(time_sheet, work_days_sheet=february)
-        self.assertEqual(time_sheet.sheet, february)
+        time_sheet = TimeSheetProvider.update_with(time_sheet,
+                                                   work_days_sheet=fixtures.load("february"))
+        self.assertEqual(time_sheet.sheet, fixtures.load("february"))
 
     def test_close_time_sheet(self):
         time_sheet = TimeSheetProvider.create(
             date=datetime(2018, 1, 30),
-            work_days_sheet=january,
+            work_days_sheet=fixtures.load("january"),
             employee_id=0,
             employee_rate=RateCalculator.DAYS_FOR_3_YEARS,
             norm=22
@@ -69,7 +69,7 @@ class ProvideTimeSheetTestCase(unittest.TestCase):
     def test_serialize_time_sheet(self):
         time_sheet = TimeSheetProvider.create(
             date=datetime(2018, 1, 30),
-            work_days_sheet=january,
+            work_days_sheet=fixtures.load("january"),
             employee_id=0,
             employee_rate=RateCalculator.DAYS_FOR_3_YEARS,
             norm=22
@@ -83,7 +83,7 @@ class ProvideTimeSheetTestCase(unittest.TestCase):
         self.assertEqual(serialized_time_sheet['vacation'], None)
         self.assertEqual(serialized_time_sheet['employee_id'], 0)
         self.assertEqual(serialized_time_sheet['closed'], False)
-        self.assertEqual(serialized_time_sheet['sheet'], january)
+        self.assertEqual(serialized_time_sheet['sheet'], fixtures.load("january"))
 
         time_sheet = TimeSheetProvider.close(time_sheet)
         serialized_time_sheet = TimeSheetProvider.serialize(time_sheet)
@@ -92,7 +92,7 @@ class ProvideTimeSheetTestCase(unittest.TestCase):
     def test_deserialize_time_sheet(self):
         time_sheet = TimeSheetProvider.create(
             date=datetime(2018, 1, 30),
-            work_days_sheet=february,
+            work_days_sheet=fixtures.load("february"),
             employee_id=0,
             employee_rate=RateCalculator.DAYS_FOR_3_YEARS,
             norm=22
@@ -107,7 +107,7 @@ class ProvideTimeSheetTestCase(unittest.TestCase):
         self.assertEqual(time_sheet.vacation, None)
         self.assertEqual(time_sheet.employee_id, 0)
         self.assertEqual(time_sheet.closed, False)
-        self.assertEqual(time_sheet.sheet, february)
+        self.assertEqual(time_sheet.sheet, fixtures.load("february"))
 
         time_sheet = TimeSheetProvider.close(time_sheet)
         serialized_time_sheet = TimeSheetProvider.serialize(time_sheet)

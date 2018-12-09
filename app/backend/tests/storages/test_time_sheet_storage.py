@@ -4,13 +4,12 @@ from datetime import datetime
 from domain.controllers.rate_calculator import RateCalculator
 from domain.controllers.time_sheet_provider import TimeSheetProvider
 from storages.storages import TimeSheetsStorage
-# noinspection PyPackageRequirements
-from tests.fake_db import FakeTimeSheetsDb
+from tests.fake_db import FakeDb
 
 
 class TestTimeSheetStorage(unittest.TestCase):
     def test_get_time_sheet(self):
-        storage = TimeSheetsStorage(FakeTimeSheetsDb())
+        storage = TimeSheetsStorage(FakeDb().build())
         time_sheet = storage.find_by_id(0)
         self.assertIsNotNone(time_sheet)
         self.assertEqual(time_sheet.id, 0)
@@ -23,10 +22,10 @@ class TestTimeSheetStorage(unittest.TestCase):
         self.assertIsNotNone(time_sheet.closed)
 
     def test_get_all_employee(self):
-        storage = TimeSheetsStorage(FakeTimeSheetsDb())
+        storage = TimeSheetsStorage(FakeDb().build())
         employees = storage.get_all()
         self.assertIsNotNone(employees)
-        time_sheet = employees.first()
+        time_sheet = employees[0]
         self.assertEqual(time_sheet.id, 0)
         self.assertEqual(time_sheet.employee_id, 0)
         self.assertIsNotNone(time_sheet.year)
@@ -37,7 +36,7 @@ class TestTimeSheetStorage(unittest.TestCase):
         self.assertIsNotNone(time_sheet.closed)
 
     def test_save_employees(self):
-        storage = TimeSheetsStorage(FakeTimeSheetsDb())
+        storage = TimeSheetsStorage(FakeDb().build())
         first_time_sheet = storage.find_by_id(0)
         date = datetime(2018, 2, 1)
         time_sheet = TimeSheetProvider.create(date, first_time_sheet.sheet,
@@ -56,7 +55,7 @@ class TestTimeSheetStorage(unittest.TestCase):
         self.assertEqual(time_sheet.norm, 10)
 
     def test_update_employee(self):
-        storage = TimeSheetsStorage(FakeTimeSheetsDb())
+        storage = TimeSheetsStorage(FakeDb().build())
         time_sheet = storage.find_by_id(0)
         time_sheet.norm = 23
         time_sheet.rate = RateCalculator.DAYS_FOR_2_YEARS

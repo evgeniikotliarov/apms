@@ -3,7 +3,9 @@ from datetime import datetime
 from app import App
 from app_factory import IAppFactory, AppFactory
 from domain.controllers.rate_calculator import RateCalculator
-from tests.fixtures.sheets import january
+
+from domain.models.employee import Employee
+from tests import fixtures
 
 
 class TestAppFactory(IAppFactory):
@@ -17,15 +19,16 @@ class TestCopyOriginalAppFactory(AppFactory):
         self.load_data(app)
         return app
 
-    @classmethod
-    def load_data(cls, app):
-        app.create_employee_use_case.create_employee(
-            'name',
-            'password',
-            'some@mail.com')
+    def load_data(self, app):
+        serialized_employee = fixtures.load("admin_user")
+        admin_employee = self.employee_provider.deserialize(serialized_employee)
+        serialized_employee = fixtures.load("unregistered_user")
+        unregistered_employee = self.employee_provider.deserialize(serialized_employee)
+        self.employee_storage.save(admin_employee)
+        self.employee_storage.save(unregistered_employee)
         app.create_time_sheet_use_case.create_time_sheet(
             date=datetime(2018, 1, 1),
-            sheet=january,
+            sheet=fixtures.load("january"),
             employee_id=1,
             rate=RateCalculator.MAX_DAYS,
             norm=23

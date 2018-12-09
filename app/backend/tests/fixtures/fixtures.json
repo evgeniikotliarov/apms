@@ -1,0 +1,85 @@
+{
+  "admin_user": {
+    "id": 0,
+    "name": "admin",
+    "password": "admin",
+    "email": "admin@email.com",
+    "activated": true,
+    "is_admin": true,
+    "vacation": 1.0,
+    "employment_date": "2018.01.01",
+    "registration_date": "2018.01.01"
+  },
+  "unregistered_user": {
+    "id": 1,
+    "name": "Unregistered User",
+    "password": "user",
+    "email": "unregistered@email.com",
+    "activated": false,
+    "is_admin": false
+  },
+  "unactivated_user": {
+    "id": 2,
+    "name": "Unactivated User",
+    "password": "user",
+    "email": "unactivated@email.com",
+    "activated": false,
+    "is_admin": false,
+    "vacation": 1.0,
+    "employment_date": "2018.01.01",
+    "registration_date": "2018.01.01"
+  },
+  "user_with_vacation": {
+    "id": 3,
+    "name": "User with Vacation",
+    "password": "user",
+    "email": "with.vacation@email.com",
+    "activated": true,
+    "is_admin": false,
+    "vacation": 10.0,
+    "employment_date": "2018.01.01",
+    "registration_date": "2018.01.01"
+  },
+  "january": [
+    1, 1, 1, 1, 1, 0, 0,
+    1, 1, 1, 1, 1, 0, 0,
+    1, 1, 1, 1, 1, 0, 0,
+    1, 1, 1, 1, 1, 0, 0,
+    1, 1, 1
+  ],
+  "full_january": [
+    1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1
+  ],
+  "compensation_january": [
+    0, 1, 1, 1, 1, 0, 1,
+    0, 1, 1, 1, 1, 0, 1,
+    0, 1, 1, 1, 1, 0, 1,
+    0, 1, 1, 1, 1, 0, 1,
+    1, 1, 1
+  ],
+  "compensation_january_with_half_day": [
+    0, 1, 1, 1, 1, 0.5, 0.5,
+    0, 1, 1, 1, 1, 0.5, 0.5,
+    0, 1, 1, 1, 1, 0.5, 0.5,
+    0, 1, 1, 1, 1, 0.5, 0.5,
+    1, 1, 1
+  ],
+  "half_january": [
+    1, 1, 1, 0, 0, 0, 0,
+    1, 1, 1, 0, 0, 0, 0,
+    1, 1, 1, 0, 0, 0, 0,
+    1, 1, 1, 0, 0, 0, 0,
+    1, 1, 1
+  ],
+  "february": [
+    1, 1, 0, 0,
+    1, 1, 1, 1, 1, 0, 0,
+    1, 1, 1, 1, 1, 0, 0,
+    1, 1, 1, 1, 1, 0, 0,
+    1, 1, 1
+  ]
+}

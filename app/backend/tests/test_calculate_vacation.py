@@ -5,21 +5,20 @@ from domain.controllers.rate_calculator import RateCalculator
 from domain.controllers.time_sheet_provider import TimeSheetProvider
 from domain.controllers.vacation_calculator import VacationCalculator
 # noinspection PyPackageRequirements
-from tests.fixtures.sheets import january, february, half_january, compensation_january, \
-    full_january, compensation_january_with_half_day
+from tests import fixtures
 
 
 class TestRateCalculator(unittest.TestCase):
     def setUp(self):
         self.january_time_sheet = TimeSheetProvider.create(
             date=datetime(2018, 1, 31),
-            work_days_sheet=january,
+            work_days_sheet=fixtures.load("january"),
             employee_id=0,
             employee_rate=RateCalculator.DAYS_FOR_3_YEARS,
         )
         self.february_time_sheet = TimeSheetProvider.create(
             date=datetime(2018, 2, 28),
-            work_days_sheet=february,
+            work_days_sheet=fixtures.load("february"),
             employee_id=0,
             employee_rate=RateCalculator.MAX_DAYS,
         )
@@ -59,7 +58,7 @@ class TestRateCalculator(unittest.TestCase):
 
     def test_calculate_with_half_time_sheet(self):
         time_sheet = self.january_time_sheet
-        time_sheet.sheet = half_january
+        time_sheet.sheet = fixtures.load("half_january")
         calculator = VacationCalculator()
 
         time_sheet.rate = RateCalculator.MIN_DAYS
@@ -80,7 +79,7 @@ class TestRateCalculator(unittest.TestCase):
 
     def test_calculate_with_compensation_sheet(self):
         time_sheet = self.january_time_sheet
-        time_sheet.sheet = compensation_january
+        time_sheet.sheet = fixtures.load("compensation_january")
         calculator = VacationCalculator()
 
         time_sheet.rate = RateCalculator.MIN_DAYS
@@ -102,7 +101,7 @@ class TestRateCalculator(unittest.TestCase):
 
     def test_calculate_with_compensation_half_days_sheet(self):
         time_sheet = self.january_time_sheet
-        time_sheet.sheet = compensation_january_with_half_day
+        time_sheet.sheet = fixtures.load("compensation_january_with_half_day")
         calculator = VacationCalculator()
 
         time_sheet.rate = RateCalculator.MIN_DAYS
@@ -124,7 +123,7 @@ class TestRateCalculator(unittest.TestCase):
 
     def test_calculate_with_full_sheet(self):
         time_sheet = self.january_time_sheet
-        time_sheet.sheet = full_january
+        time_sheet.sheet = fixtures.load("full_january")
         calculator = VacationCalculator()
 
         time_sheet.rate = RateCalculator.MIN_DAYS
