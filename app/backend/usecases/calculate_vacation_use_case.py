@@ -22,8 +22,8 @@ class CalculateVacationUseCase:
                            date: datetime = datetime.now(), norm=None):
         time_sheets = self.time_sheet_storage.find_by(year=date.year, month=date.month,
                                                       employee_id=employee_id)
-        if time_sheets and time_sheets.first():
-            self._recalculate(employee_id, time_sheets.first(), norm, sheet)
+        if time_sheets and time_sheets[0]:
+            self._recalculate(employee_id, time_sheets[0], norm, sheet)
         else:
             self._calculate_as_new(date, employee_id, norm, sheet)
 

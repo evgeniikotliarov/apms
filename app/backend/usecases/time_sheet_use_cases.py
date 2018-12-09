@@ -10,7 +10,7 @@ class GetTimeSheetUseCase:
         self.storage = storage
 
     def get_for_employee(self, employee_id, year, month):
-        time_sheet = self.storage.find_by(employee_id=employee_id, year=year, month=month).first()
+        time_sheet = self.storage.find_by(employee_id=employee_id, year=year, month=month)[0]
         return self.controller.serialize(time_sheet)
 
     def get_by_id(self, time_sheet_id):
