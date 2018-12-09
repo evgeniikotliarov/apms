@@ -1,6 +1,6 @@
 from sqlalchemy.exc import InvalidRequestError
 
-from domain.exceptions import DbException, InvalidDbQueryException, NotFoundException
+from exceptions import DbException, InvalidDbQueryException, NotFoundException
 
 
 class Storage:

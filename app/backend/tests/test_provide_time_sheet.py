@@ -3,7 +3,7 @@ from datetime import datetime
 
 from domain.controllers.rate_calculator import RateCalculator
 from domain.controllers.time_sheet_provider import TimeSheetProvider
-from domain.exceptions import AccessDeniedToUpdateTimeSheet
+from exceptions import AccessDeniedToUpdateTimeSheet
 # noinspection PyPackageRequirements
 from tests.fixtures.sheets import january, february
 

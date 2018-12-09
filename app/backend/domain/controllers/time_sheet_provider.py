@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from domain.exceptions import AccessDeniedToUpdateTimeSheet
+from exceptions import AccessDeniedToUpdateTimeSheet
 from domain.models.time_sheet import TimeSheet
 
 
