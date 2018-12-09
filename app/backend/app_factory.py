@@ -30,35 +30,35 @@ class AppFactory(IAppFactory):
         if self.db is None:
             self.db = DbBuilder().build()
 
-        employee_storage = EmployeesStorage(self.db)
-        employee_provider = EmployeeProvider()
+        self.employee_storage = EmployeesStorage(self.db)
+        self.employee_provider = EmployeeProvider()
 
-        self.app.get_employee_use_case = GetEmployeeUseCase(employee_provider,
-                                                            employee_storage)
-        self.app.get_employees_use_case = GetAllEmployeeUseCase(employee_provider,
-                                                                employee_storage)
-        self.app.create_employee_use_case = CreateEmployeeUseCase(employee_provider,
-                                                                  employee_storage)
-        self.app.register_employee_use_case = RegisterEmployeeUseCase(employee_provider,
-                                                                      employee_storage)
-        self.app.update_employee_use_case = UpdateEmployeeUseCase(employee_provider,
-                                                                  employee_storage)
-        self.app.admin_rights_employee_use_case = AdminRightsEmployeeUseCase(employee_provider,
-                                                                             employee_storage)
+        self.app.get_employee_use_case = GetEmployeeUseCase(self.employee_provider,
+                                                            self.employee_storage)
+        self.app.get_employees_use_case = GetAllEmployeeUseCase(self.employee_provider,
+                                                                self.employee_storage)
+        self.app.create_employee_use_case = CreateEmployeeUseCase(self.employee_provider,
+                                                                  self.employee_storage)
+        self.app.register_employee_use_case = RegisterEmployeeUseCase(self.employee_provider,
+                                                                      self.employee_storage)
+        self.app.update_employee_use_case = UpdateEmployeeUseCase(self.employee_provider,
+                                                                  self.employee_storage)
+        self.app.admin_rights_employee_use_case = AdminRightsEmployeeUseCase(self.employee_provider,
+                                                                             self.employee_storage)
 
-        time_sheet_storage = TimeSheetsStorage(self.db)
-        time_sheet_provider = TimeSheetProvider()
+        self.time_sheet_storage = TimeSheetsStorage(self.db)
+        self.time_sheet_provider = TimeSheetProvider()
 
-        self.app.get_time_sheet_use_case = GetTimeSheetUseCase(time_sheet_provider,
-                                                               time_sheet_storage)
-        self.app.get_time_sheets_use_case = GetAllTimeSheetUseCase(time_sheet_provider,
-                                                                   time_sheet_storage)
-        self.app.create_time_sheet_use_case = CreateTimeSheetUseCase(time_sheet_provider,
-                                                                     time_sheet_storage)
-        self.app.update_time_sheet_use_case = UpdateTimeSheetUseCase(time_sheet_provider,
-                                                                     time_sheet_storage)
-        self.app.close_time_sheet_use_case = CloseTimeSheetUseCase(time_sheet_provider,
-                                                                   time_sheet_storage)
+        self.app.get_time_sheet_use_case = GetTimeSheetUseCase(self.time_sheet_provider,
+                                                               self.time_sheet_storage)
+        self.app.get_time_sheets_use_case = GetAllTimeSheetUseCase(self.time_sheet_provider,
+                                                                   self.time_sheet_storage)
+        self.app.create_time_sheet_use_case = CreateTimeSheetUseCase(self.time_sheet_provider,
+                                                                     self.time_sheet_storage)
+        self.app.update_time_sheet_use_case = UpdateTimeSheetUseCase(self.time_sheet_provider,
+                                                                     self.time_sheet_storage)
+        self.app.close_time_sheet_use_case = CloseTimeSheetUseCase(self.time_sheet_provider,
+                                                                   self.time_sheet_storage)
 
         self.create_employee_controller = CreateEmployeeController(
             self.app.create_employee_use_case)
