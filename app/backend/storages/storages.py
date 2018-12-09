@@ -1,6 +1,6 @@
 from domain.models.employee import Employee
 from domain.models.time_sheet import TimeSheet
-from exceptions import EmailBusyException
+from exceptions import EmailIsBusyError
 from storages.base_storage import Storage
 
 
@@ -14,14 +14,14 @@ class EmployeesStorage(Storage):
     def save(self, entity):
         exist_employee = self.find_by(email=entity.email)
         if exist_employee:
-            raise EmailBusyException
+            raise EmailIsBusyError
         else:
             super().save(entity)
 
     def update(self, entity):
         exist_employee = self.find_by(email=entity.email)
         if exist_employee.__len__() > 1:
-            raise EmailBusyException
+            raise EmailIsBusyError
         else:
             super().update(entity)
 

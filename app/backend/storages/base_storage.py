@@ -1,6 +1,6 @@
 from sqlalchemy.exc import InvalidRequestError
 
-from exceptions import DbException, InvalidDbQueryException, NotFoundException
+from exceptions import DbError, InvalidDbQueryError, NotFoundError
 
 
 class Storage:
@@ -27,7 +27,7 @@ class Storage:
     def find_by_id(self, entity_id):
         entity = self._find_by(id=entity_id).first()
         if not entity:
-            raise NotFoundException("{} with id {} not found".format(self.type.__name__, entity_id))
+            raise NotFoundError("{} with id {} not found".format(self.type.__name__, entity_id))
         return entity
 
     def find_by(self, **kwargs):
@@ -37,11 +37,11 @@ class Storage:
         try:
             return self.storage.query(self.type).filter_by(**kwargs)
         except InvalidRequestError as ex:
-            raise InvalidDbQueryException(ex)
+            raise InvalidDbQueryError(ex)
 
     def _commit(self):
         try:
             self.storage.commit()
         except Exception as ex:
             self.storage.rollback()
-            raise DbException(ex)
+            raise DbError(ex)

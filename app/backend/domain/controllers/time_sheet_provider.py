@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from exceptions import AccessDeniedToUpdateTimeSheet
+from exceptions import AccessDeniedToUpdateTimeSheetError
 from domain.models.time_sheet import TimeSheet
 
 
@@ -20,7 +20,7 @@ class TimeSheetProvider:
     @staticmethod
     def update_with(time_sheet: TimeSheet, norm=None, work_days_sheet=None):
         if time_sheet.closed:
-            raise AccessDeniedToUpdateTimeSheet()
+            raise AccessDeniedToUpdateTimeSheetError()
         time_sheet.norm = norm if norm else time_sheet.norm
         time_sheet.sheet = work_days_sheet if work_days_sheet else time_sheet.sheet
         return time_sheet

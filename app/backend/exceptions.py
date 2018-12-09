@@ -6,26 +6,31 @@ class BaseError(Exception):
         raise NotImplementedError
 
 
-class AccessDeniedToUpdateTimeSheet(BaseError):
+class AccessDeniedToUpdateTimeSheetError(BaseError):
     def get_http_code(self):
         return falcon.HTTP_401
 
 
-class DbException(BaseError):
+class DbError(BaseError):
     def get_http_code(self):
         return falcon.HTTP_500
 
 
-class InvalidDbQueryException(BaseError):
+class InvalidDbQueryError(BaseError):
     def get_http_code(self):
         return falcon.HTTP_500
 
 
-class NotFoundException(BaseError):
+class NotFoundError(BaseError):
     def get_http_code(self):
         return falcon.HTTP_404
 
 
-class EmailBusyException(BaseError):
+class EmailIsBusyError(BaseError):
     def get_http_code(self):
         return falcon.HTTP_400
+
+
+class AuthenticationError(BaseError):
+    def get_http_code(self):
+        return falcon.HTTP_401

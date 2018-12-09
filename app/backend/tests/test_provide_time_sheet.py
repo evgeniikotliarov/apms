@@ -3,7 +3,7 @@ from datetime import datetime
 
 from domain.controllers.rate_calculator import RateCalculator
 from domain.controllers.time_sheet_provider import TimeSheetProvider
-from exceptions import AccessDeniedToUpdateTimeSheet
+from exceptions import AccessDeniedToUpdateTimeSheetError
 from tests import fixtures
 
 
@@ -63,7 +63,7 @@ class ProvideTimeSheetTestCase(unittest.TestCase):
         try:
             TimeSheetProvider.update_with(time_sheet, 10)
             raise Exception("Closed time sheet has been updated")
-        except AccessDeniedToUpdateTimeSheet:
+        except AccessDeniedToUpdateTimeSheetError:
             self.assertEqual(time_sheet.closed, True)
 
     def test_serialize_time_sheet(self):
