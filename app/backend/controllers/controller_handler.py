@@ -24,11 +24,11 @@ def controller_handler(controller):
 def authorized_controller_handler(controller):
     def wrap(*args, **kwargs):
         try:
-            raw_token = args[REQUEST].headers['Authorization']
+            raw_token = args[REQUEST].headers['AUTHORIZATION']
             if not raw_token:
                 raise InvalidTokenError()
             data = tokenizer.get_data_by_token(raw_token)
-            user_id, user_email = data['id'], data['email']
+            user_email, user_password = data['email'], data['password']
             args[CONTROLLER].user_email = user_email
             args[RESPONSE].status = falcon.HTTP_200
             controller(*args, **kwargs)
