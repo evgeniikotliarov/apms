@@ -116,20 +116,19 @@ class ProvideEmployeeTestCase(unittest.TestCase):
         self.assertEqual(employee.activated, False)
         self.assertEqual(employee.is_admin, False)
 
-    def test_serialize_unregistered_employee(self):
+    def test_serialize_unaccepted_employee(self):
         employee = fixtures.load_instance("unaccepted_user", Employee)
         serialized_employee = EmployeeProvider.serialize(employee)
         self.assertIsNotNone(serialized_employee)
         self.assertEqual(serialized_employee['id'], 1)
         self.assertEqual(serialized_employee['name'], 'Unregistered User')
-        self.assertEqual(serialized_employee['password'], 'user')
-        self.assertEqual(serialized_employee['email'], 'unregistered@email.com')
+        self.assertEqual(serialized_employee['email'], 'unaccepted@email.com')
         self.assertIsNone(serialized_employee['employment_date'])
         self.assertIsNone(serialized_employee['vacation'])
         self.assertFalse(serialized_employee['activated'])
         self.assertFalse(serialized_employee['is_admin'])
 
-    def test_deserialize_unregistered_employee(self):
+    def test_deserialize_unaccepted_employee(self):
         serialized_employee = fixtures.load("unaccepted_user")
         employee = EmployeeProvider.deserialize(serialized_employee)
 
@@ -137,7 +136,7 @@ class ProvideEmployeeTestCase(unittest.TestCase):
         self.assertEqual(employee.id, 1)
         self.assertEqual(employee.name, 'Unregistered User')
         self.assertEqual(employee.password, 'user')
-        self.assertEqual(employee.email, 'unregistered@email.com')
+        self.assertEqual(employee.email, 'unaccepted@email.com')
         self.assertFalse(employee.activated)
         self.assertFalse(employee.is_admin)
         self.assertIsNone(employee.vacation)

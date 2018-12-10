@@ -14,7 +14,7 @@
     "id": 1,
     "name": "Unregistered User",
     "password": "user",
-    "email": "unregistered@email.com",
+    "email": "unaccepted@email.com",
     "activated": false,
     "is_admin": false
   },

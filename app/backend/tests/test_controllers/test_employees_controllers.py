@@ -34,6 +34,13 @@ class TestEmployeesControllers(unittest.TestCase):
         self.assertEqual(response.status, falcon.HTTP_200)
         self.assertIsNotNone(response.json['token'])
 
+    def test_accept_user(self):
+        unaccepted = fixtures.load("unaccepted")
+        url = '/api/employees/{}/arrange'.format(unaccepted['id'])
+        response = self.client.simulate_get(url)
+        self.assertEqual(response.json['name'], unaccepted['name'])
+        self.assertEqual(response.json['email'], unaccepted['email'])
+
     def test_get_employee(self):
         employee = fixtures.load('admin_user')
         headers = self.__get_authorization_header_for(employee)
