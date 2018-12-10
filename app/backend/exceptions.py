@@ -34,3 +34,11 @@ class EmailIsBusyError(BaseError):
 class AuthenticationError(BaseError):
     def get_http_code(self):
         return falcon.HTTP_401
+
+
+class InvalidTokenError(BaseError):
+    pass
+
+
+class TokenExpiredError(BaseError):
+    pass
