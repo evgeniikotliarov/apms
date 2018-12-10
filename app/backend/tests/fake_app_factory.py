@@ -13,20 +13,18 @@ class TestAppFactory(IAppFactory):
 
 
 class TestCopyOriginalAppFactory(AppFactory):
+    def __init__(self):
+        super().__init__()
+        self.tokens = {}
+
     def create_app(self):
         app = super().create_app()
         self.load_data(app)
         return app
 
     def load_data(self, app):
-        serialized_employee = fixtures.load("admin_user")
-        serialized_employee['password'] = ToHash().to_hash(serialized_employee['password'])
-        admin_employee = self.employee_provider.deserialize(serialized_employee)
-        serialized_employee = fixtures.load("unregistered_user")
-        serialized_employee['password'] = ToHash().to_hash(serialized_employee['password'])
-        unregistered_employee = self.employee_provider.deserialize(serialized_employee)
-        self.employee_storage.save(admin_employee)
-        self.employee_storage.save(unregistered_employee)
+        self.__load_user('admin_user')
+        self.__load_user('unregistered_user')
         app.create_time_sheet_use_case.create_time_sheet(
             date=datetime(2018, 1, 1),
             sheet=fixtures.load("january"),
@@ -34,3 +32,13 @@ class TestCopyOriginalAppFactory(AppFactory):
             rate=RateCalculator.MAX_DAYS,
             norm=23
         )
+
+    def __load_user(self, name):
+        serialized_employee = fixtures.load(name)
+        password = ToHash().to_hash(serialized_employee['password'])
+        serialized_employee['password'] = password
+        employee = self.employee_provider.deserialize(serialized_employee)
+        self.employee_storage.save(employee)
+        email = serialized_employee['email']
+        data = {'email': email, 'password': password}
+        self.tokens[email] = self.tokenizer.get_token_by_data(data)
