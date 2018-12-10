@@ -3,9 +3,8 @@ from datetime import datetime
 from app import App
 from app_factory import IAppFactory, AppFactory
 from domain.controllers.rate_calculator import RateCalculator
-
-from domain.models.employee import Employee
 from tests import fixtures
+from utils.hash_maker import ToHash
 
 
 class TestAppFactory(IAppFactory):
@@ -21,8 +20,10 @@ class TestCopyOriginalAppFactory(AppFactory):
 
     def load_data(self, app):
         serialized_employee = fixtures.load("admin_user")
+        serialized_employee['password'] = ToHash().to_hash(serialized_employee['password'])
         admin_employee = self.employee_provider.deserialize(serialized_employee)
         serialized_employee = fixtures.load("unregistered_user")
+        serialized_employee['password'] = ToHash().to_hash(serialized_employee['password'])
         unregistered_employee = self.employee_provider.deserialize(serialized_employee)
         self.employee_storage.save(admin_employee)
         self.employee_storage.save(unregistered_employee)

@@ -7,6 +7,8 @@ from tests import fixtures
 from tests.fake_db import FakeDb
 from usecases.employee_use_cases import CreateEmployeeUseCase, RegisterEmployeeUseCase, \
     UpdateEmployeeUseCase, AdminRightsEmployeeUseCase, GetEmployeeUseCase, GetAllEmployeeUseCase
+from utils.hash_maker import ToHash
+from utils.tokenizer import Tokenizer
 
 
 class TestProvideEmployeeUseCase(unittest.TestCase):
@@ -36,19 +38,19 @@ class TestProvideEmployeeUseCase(unittest.TestCase):
     def test_create_employee(self):
         storage = EmployeesStorage(FakeDb().build())
         controller = EmployeeProvider()
-        use_case = CreateEmployeeUseCase(controller, storage)
+        use_case = CreateEmployeeUseCase(controller, storage, Tokenizer(), ToHash())
 
         use_case.create_employee("some name", password="some password", email="user1@email.com")
         saved_employee = storage.find_by_email("user1@email.com")
         self.assertEqual(saved_employee.name, "some name")
-        self.assertEqual(saved_employee.password, "some password")
         self.assertEqual(saved_employee.email, "user1@email.com")
+        self.assertIsNotNone(saved_employee.password)
 
         use_case.create_employee("new user", "some password", "user2@email.com")
         saved_employee = storage.find_by_email("user2@email.com")
         self.assertEqual(saved_employee.name, "new user")
-        self.assertEqual(saved_employee.password, "some password")
         self.assertEqual(saved_employee.email, "user2@email.com")
+        self.assertIsNotNone(saved_employee.password)
         self.assertEqual(saved_employee.activated, False)
 
     def test_register_employee(self):
@@ -72,8 +74,8 @@ class TestProvideEmployeeUseCase(unittest.TestCase):
         use_case.update_employee(0, "new name", "new password", "new@email.com")
 
         saved_employee = storage.find_by_id(0)
+        self.assertIsNotNone(saved_employee.password)
         self.assertEqual(saved_employee.name, "new name")
-        self.assertEqual(saved_employee.password, "new password")
         self.assertEqual(saved_employee.email, "new@email.com")
         self.assertEqual(saved_employee.activated, True)
 

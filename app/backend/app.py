@@ -7,6 +7,7 @@ class App(falcon.API):
         self.get_employee_use_case = None
         self.get_employees_use_case = None
         self.create_employee_use_case = None
+        self.check_employee_use_case = None
         self.register_employee_use_case = None
         self.update_employee_use_case = None
         self.admin_rights_employee_use_case = None
