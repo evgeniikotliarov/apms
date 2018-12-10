@@ -18,7 +18,7 @@ class ProvideEmployeeTestCase(unittest.TestCase):
         self.assertEqual(employee.is_admin, False)
 
     def test_register_employee(self):
-        employee = fixtures.load_instance("unregistered_user", Employee)
+        employee = fixtures.load_instance("unaccepted_user", Employee)
         now_date = datetime.now()
         employee = EmployeeProvider.register(employee=employee,
                                              employment_date=now_date,
@@ -33,7 +33,7 @@ class ProvideEmployeeTestCase(unittest.TestCase):
         self.assertEqual(employee.vacation, 5)
 
     def test_register_employee_without_balance_vacation(self):
-        serialized_employee = fixtures.load("unregistered_user")
+        serialized_employee = fixtures.load("unaccepted_user")
         employee = EmployeeProvider.deserialize(serialized_employee)
         now_date = datetime.now()
         employee = EmployeeProvider.register(employee=employee,
@@ -75,7 +75,7 @@ class ProvideEmployeeTestCase(unittest.TestCase):
         self.assertEqual(employee.vacation, 10)
 
     def test_grant_to_admin_employee(self):
-        serialized_employee = fixtures.load("unregistered_user")
+        serialized_employee = fixtures.load("unaccepted_user")
         employee = EmployeeProvider.deserialize(serialized_employee)
         employee = EmployeeProvider.grant_to_admin(employee)
         self.assertTrue(employee.is_admin)
@@ -117,7 +117,7 @@ class ProvideEmployeeTestCase(unittest.TestCase):
         self.assertEqual(employee.is_admin, False)
 
     def test_serialize_unregistered_employee(self):
-        employee = fixtures.load_instance("unregistered_user", Employee)
+        employee = fixtures.load_instance("unaccepted_user", Employee)
         serialized_employee = EmployeeProvider.serialize(employee)
         self.assertIsNotNone(serialized_employee)
         self.assertEqual(serialized_employee['id'], 1)
@@ -130,7 +130,7 @@ class ProvideEmployeeTestCase(unittest.TestCase):
         self.assertFalse(serialized_employee['is_admin'])
 
     def test_deserialize_unregistered_employee(self):
-        serialized_employee = fixtures.load("unregistered_user")
+        serialized_employee = fixtures.load("unaccepted_user")
         employee = EmployeeProvider.deserialize(serialized_employee)
 
         self.assertIsNotNone(employee)

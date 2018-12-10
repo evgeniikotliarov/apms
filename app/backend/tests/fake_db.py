@@ -11,10 +11,10 @@ class FakeDb(DbBuilder):
     def build(self):
         session = super().build()
         admin = EmployeeProvider.deserialize(fixtures.load("admin_user"))
-        unregistered_user = EmployeeProvider.deserialize(fixtures.load("unregistered_user"))
+        unaccepted_user = EmployeeProvider.deserialize(fixtures.load("unaccepted_user"))
         user_with_vacation = EmployeeProvider.deserialize(fixtures.load("user_with_vacation"))
         session.add(admin)
-        session.add(unregistered_user)
+        session.add(unaccepted_user)
         session.add(user_with_vacation)
         session.commit()
         time_sheet = TimeSheetProvider.create(datetime(2010, 1, 1), fixtures.load("january"),

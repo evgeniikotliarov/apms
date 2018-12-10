@@ -10,7 +10,7 @@
     "employment_date": "2018.01.01",
     "registration_date": "2018.01.01"
   },
-  "unregistered_user": {
+  "unaccepted_user": {
     "id": 1,
     "name": "Unregistered User",
     "password": "user",

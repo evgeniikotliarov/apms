@@ -24,7 +24,7 @@ class TestCopyOriginalAppFactory(AppFactory):
 
     def load_data(self, app):
         self.__load_user('admin_user')
-        self.__load_user('unregistered_user')
+        self.__load_user('unaccepted_user')
         app.create_time_sheet_use_case.create_time_sheet(
             date=datetime(2018, 1, 1),
             sheet=fixtures.load("january"),

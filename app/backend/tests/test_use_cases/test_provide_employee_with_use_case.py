@@ -59,7 +59,7 @@ class TestProvideEmployeeUseCase(unittest.TestCase):
         use_case = RegisterEmployeeUseCase(controller, storage)
 
         now = datetime.now()
-        serialized_employee = fixtures.load("unregistered_user")
+        serialized_employee = fixtures.load("unaccepted_user")
         use_case.register_employee(serialized_employee["id"], employment_date=now)
 
         saved_employee = storage.find_by_email(serialized_employee["email"])
