@@ -8,7 +8,7 @@ class BaseError(Exception):
 
 class AccessDeniedToUpdateTimeSheetError(BaseError):
     def get_http_code(self):
-        return falcon.HTTP_401
+        return falcon.HTTP_403
 
 
 class DbError(BaseError):
@@ -28,7 +28,7 @@ class NotFoundError(BaseError):
 
 class EmailIsBusyError(BaseError):
     def get_http_code(self):
-        return falcon.HTTP_400
+        return '400 Email is busy'
 
 
 class AuthenticationError(BaseError):
@@ -37,8 +37,10 @@ class AuthenticationError(BaseError):
 
 
 class InvalidTokenError(BaseError):
-    pass
+    def get_http_code(self):
+        return falcon.HTTP_401
 
 
 class TokenExpiredError(BaseError):
-    pass
+    def get_http_code(self):
+        return '401 Token Expired'
