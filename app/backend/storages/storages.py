@@ -1,6 +1,6 @@
 from domain.models.employee import Employee
 from domain.models.time_sheet import TimeSheet
-from exceptions import EmailIsBusyError
+from exceptions import EmailIsBusyError, NotFoundError
 from storages.base_storage import Storage
 
 
@@ -9,7 +9,10 @@ class EmployeesStorage(Storage):
         super().__init__(db, Employee)
 
     def find_by_email(self, email):
-        return self.find_by(email=email)[0]
+        found_employees = self.find_by(email=email)
+        if not found_employees:
+            raise NotFoundError("Employee with {} email not found".format(email))
+        return found_employees[0]
 
     def save(self, entity):
         exist_employee = self.find_by(email=entity.email)
