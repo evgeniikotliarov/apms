@@ -2,3 +2,5 @@ Falcon==1.4.1
 gunicorn==19.7.1
 SQLAlchemy==1.2.0
 dictalchemy==0.1.2.7
+PyJWT==1.5.3
+passlib==1.7.1
