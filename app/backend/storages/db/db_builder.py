@@ -60,11 +60,11 @@ class DbBuilder:
             Column('id', Integer, primary_key=True, index=True),
             Column('year', Integer, index=True, nullable=False),
             Column('month', Integer, nullable=False),
-            Column('norm', Integer, nullable=False),
-            Column('rate', Integer, nullable=False),
+            Column('norm', Integer),
+            Column('rate', Integer),
             Column('sheet', ArrayType()),
-            Column('vacation', Float(8), nullable=True),
-            Column('employee_id', Integer, ForeignKey('employees.id')),
+            Column('vacation', Float(8)),
+            Column('employee_id', Integer, ForeignKey('employees.id'), nullable=False),
             Column('closed', Boolean, nullable=False)
         )
 
