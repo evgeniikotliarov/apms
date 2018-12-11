@@ -1,7 +1,6 @@
 import unittest
 from datetime import datetime
 
-from domain.controllers.rate_calculator import RateCalculator
 from domain.controllers.time_sheet_provider import TimeSheetProvider
 from storages.storages import TimeSheetsStorage
 from tests import fixtures
@@ -16,98 +15,98 @@ class TestTimeSheetEmployeeUseCase(unittest.TestCase):
         controller = TimeSheetProvider()
         use_case = GetTimeSheetUseCase(controller, storage)
 
-        time_sheet = use_case.get_for_employee(employee_id=0, year=2010, month=1)
-        self.assertEqual(time_sheet['year'], 2010)
+        time_sheet = use_case.get_for_employee(employee_id=0, year=2018, month=1)
+        self.assertEqual(time_sheet['year'], 2018)
         self.assertEqual(time_sheet['month'], 1)
         self.assertEqual(time_sheet['sheet'], fixtures.load('january'))
         self.assertEqual(time_sheet['employee_id'], 0)
-        self.assertEqual(time_sheet['rate'], RateCalculator.MIN_DAYS)
-        self.assertEqual(time_sheet['norm'], 1)
+        self.assertEqual(time_sheet['rate'], 10)
+        self.assertEqual(time_sheet['norm'], 23)
 
         time_sheet = use_case.get_by_id(time_sheet_id=0)
-        self.assertEqual(time_sheet['year'], 2010)
+        self.assertEqual(time_sheet['year'], 2018)
         self.assertEqual(time_sheet['month'], 1)
         self.assertEqual(time_sheet['sheet'], fixtures.load('january'))
         self.assertEqual(time_sheet['employee_id'], 0)
-        self.assertEqual(time_sheet['rate'], RateCalculator.MIN_DAYS)
-        self.assertEqual(time_sheet['norm'], 1)
+        self.assertEqual(time_sheet['rate'], 10)
+        self.assertEqual(time_sheet['norm'], 23)
 
     def test_get_time_sheets(self):
         storage = TimeSheetsStorage(FakeDb().build())
         controller = TimeSheetProvider()
         use_case = GetTimeSheetsUseCase(controller, storage)
 
-        time_sheets = use_case.get_for_employee(employee_id=0, year=2010, month=1)
+        time_sheets = use_case.get_for_employee(employee_id=0, year=2018, month=1)
         time_sheet = time_sheets[0]
-        self.assertEqual(time_sheet['year'], 2010)
+        self.assertEqual(time_sheet['year'], 2018)
         self.assertEqual(time_sheet['month'], 1)
         self.assertEqual(time_sheet['sheet'], fixtures.load('january'))
         self.assertEqual(time_sheet['employee_id'], 0)
-        self.assertEqual(time_sheet['rate'], RateCalculator.MIN_DAYS)
-        self.assertEqual(time_sheet['norm'], 1)
+        self.assertEqual(time_sheet['rate'], 10)
+        self.assertEqual(time_sheet['norm'], 23)
 
-        time_sheets = use_case.get_for_employee(employee_id=0, year=2010)
+        time_sheets = use_case.get_for_employee(employee_id=0, year=2018)
         time_sheet = time_sheets[0]
-        self.assertEqual(time_sheet['year'], 2010)
+        self.assertEqual(time_sheet['year'], 2018)
         self.assertEqual(time_sheet['month'], 1)
         self.assertEqual(time_sheet['sheet'], fixtures.load('january'))
         self.assertEqual(time_sheet['employee_id'], 0)
-        self.assertEqual(time_sheet['rate'], RateCalculator.MIN_DAYS)
-        self.assertEqual(time_sheet['norm'], 1)
+        self.assertEqual(time_sheet['rate'], 10)
+        self.assertEqual(time_sheet['norm'], 23)
 
-        time_sheets = use_case.get_for_all_employees(year=2010)
+        time_sheets = use_case.get_for_all_employees(year=2018)
         time_sheet = time_sheets[0]
-        self.assertEqual(time_sheet['year'], 2010)
+        self.assertEqual(time_sheet['year'], 2018)
         self.assertEqual(time_sheet['month'], 1)
         self.assertEqual(time_sheet['sheet'], fixtures.load('january'))
         self.assertEqual(time_sheet['employee_id'], 0)
-        self.assertEqual(time_sheet['rate'], RateCalculator.MIN_DAYS)
-        self.assertEqual(time_sheet['norm'], 1)
+        self.assertEqual(time_sheet['rate'], 10)
+        self.assertEqual(time_sheet['norm'], 23)
 
-        time_sheets = use_case.get_for_all_employees(year=2010, month=1)
+        time_sheets = use_case.get_for_all_employees(year=2018, month=1)
         time_sheet = time_sheets[0]
-        self.assertEqual(time_sheet['year'], 2010)
+        self.assertEqual(time_sheet['year'], 2018)
         self.assertEqual(time_sheet['month'], 1)
         self.assertEqual(time_sheet['sheet'], fixtures.load('january'))
         self.assertEqual(time_sheet['employee_id'], 0)
-        self.assertEqual(time_sheet['rate'], RateCalculator.MIN_DAYS)
-        self.assertEqual(time_sheet['norm'], 1)
+        self.assertEqual(time_sheet['rate'], 10)
+        self.assertEqual(time_sheet['norm'], 23)
 
         time_sheets = use_case.get_for_all_employees(month=1)
         time_sheet = time_sheets[0]
-        self.assertEqual(time_sheet['year'], 2010)
+        self.assertEqual(time_sheet['year'], 2018)
         self.assertEqual(time_sheet['month'], 1)
         self.assertEqual(time_sheet['sheet'], fixtures.load('january'))
         self.assertEqual(time_sheet['employee_id'], 0)
-        self.assertEqual(time_sheet['rate'], RateCalculator.MIN_DAYS)
-        self.assertEqual(time_sheet['norm'], 1)
+        self.assertEqual(time_sheet['rate'], 10)
+        self.assertEqual(time_sheet['norm'], 23)
 
         time_sheets = use_case.get_for_employee(employee_id=0, month=1)
         time_sheet = time_sheets[0]
-        self.assertEqual(time_sheet['year'], 2010)
+        self.assertEqual(time_sheet['year'], 2018)
         self.assertEqual(time_sheet['month'], 1)
         self.assertEqual(time_sheet['sheet'], fixtures.load('january'))
         self.assertEqual(time_sheet['employee_id'], 0)
-        self.assertEqual(time_sheet['rate'], RateCalculator.MIN_DAYS)
-        self.assertEqual(time_sheet['norm'], 1)
+        self.assertEqual(time_sheet['rate'], 10)
+        self.assertEqual(time_sheet['norm'], 23)
 
         time_sheets = use_case.get_for_employee(employee_id=0)
         time_sheet = time_sheets[0]
-        self.assertEqual(time_sheet['year'], 2010)
+        self.assertEqual(time_sheet['year'], 2018)
         self.assertEqual(time_sheet['month'], 1)
         self.assertEqual(time_sheet['sheet'], fixtures.load('january'))
         self.assertEqual(time_sheet['employee_id'], 0)
-        self.assertEqual(time_sheet['rate'], RateCalculator.MIN_DAYS)
-        self.assertEqual(time_sheet['norm'], 1)
+        self.assertEqual(time_sheet['rate'], 10)
+        self.assertEqual(time_sheet['norm'], 23)
 
         time_sheets = use_case.get_all()
         time_sheet = time_sheets[0]
-        self.assertEqual(time_sheet['year'], 2010)
+        self.assertEqual(time_sheet['year'], 2018)
         self.assertEqual(time_sheet['month'], 1)
         self.assertEqual(time_sheet['sheet'], fixtures.load('january'))
         self.assertEqual(time_sheet['employee_id'], 0)
-        self.assertEqual(time_sheet['rate'], RateCalculator.MIN_DAYS)
-        self.assertEqual(time_sheet['norm'], 1)
+        self.assertEqual(time_sheet['rate'], 10)
+        self.assertEqual(time_sheet['norm'], 23)
 
     def test_create_time_sheet(self):
         storage = TimeSheetsStorage(FakeDb().build())
@@ -116,7 +115,7 @@ class TestTimeSheetEmployeeUseCase(unittest.TestCase):
 
         now = datetime(2018, 2, 1)
         use_case.create_time_sheet(now, fixtures.load('january'), 0, 10, 10)
-        saved_time_sheet = storage.find_by_id(1)
+        saved_time_sheet = storage.find_by_id(2)
         self.assertEqual(saved_time_sheet.year, 2018)
         self.assertEqual(saved_time_sheet.month, 2)
         self.assertEqual(saved_time_sheet.sheet, fixtures.load('january'))

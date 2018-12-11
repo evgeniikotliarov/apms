@@ -40,6 +40,40 @@
     "employment_date": "2018.01.01",
     "acceptance_date": "2018.01.01"
   },
+  "january_time_sheet": {
+    "id": 0,
+    "norm": 23,
+    "rate": 10,
+    "year": 2018,
+    "month": 1,
+    "sheet": [
+      1, 1, 1, 1, 1, 0, 0,
+      1, 1, 1, 1, 1, 0, 0,
+      1, 1, 1, 1, 1, 0, 0,
+      1, 1, 1, 1, 1, 0, 0,
+      1, 1, 1
+    ],
+    "vacation": 0,
+    "employee_id": 0,
+    "closed": false
+  },
+  "half_january_time_sheet": {
+    "id": 1,
+    "norm": 23,
+    "rate": 10,
+    "year": 2018,
+    "month": 1,
+    "sheet": [
+      1, 1, 1, 0, 0, 0, 0,
+      1, 1, 1, 0, 0, 0, 0,
+      1, 1, 1, 0, 0, 0, 0,
+      1, 1, 1, 0, 0, 0, 0,
+      1, 1, 1
+    ],
+    "vacation": 0,
+    "employee_id": 0,
+    "closed": false
+  },
   "january": [
     1, 1, 1, 1, 1, 0, 0,
     1, 1, 1, 1, 1, 0, 0,
