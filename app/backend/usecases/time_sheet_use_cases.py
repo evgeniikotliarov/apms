@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from domain.controllers.time_sheet_provider import TimeSheetProvider
+from exceptions import NotFoundError
 from storages.storages import TimeSheetsStorage
 
 
@@ -18,20 +19,33 @@ class GetTimeSheetUseCase:
         return self.controller.serialize(time_sheet)
 
 
-class GetAllTimeSheetUseCase:
+class GetTimeSheetsUseCase:
     def __init__(self, controller: TimeSheetProvider, storage: TimeSheetsStorage):
         self.controller = controller
         self.storage = storage
 
     def get_for_employee(self, employee_id, year=None, month=None):
-        if employee_id and year and month:
+        if employee_id is None:
+            raise NotFoundError()
+        if year and month:
             time_sheets = self.storage.find_by(employee_id=employee_id, year=year, month=month)
-        elif employee_id and year:
+        elif year:
             time_sheets = self.storage.find_by(employee_id=employee_id, year=year)
-        elif employee_id and month:
+        elif month:
             time_sheets = self.storage.find_by(employee_id=employee_id, month=month)
         else:
             time_sheets = self.storage.find_by(employee_id=employee_id)
+        return self._serialize_many(time_sheets)
+
+    def get_for_all_employees(self, year=None, month=None):
+        if year and month:
+            time_sheets = self.storage.find_by(year=year, month=month)
+        elif year:
+            time_sheets = self.storage.find_by(year=year)
+        elif month:
+            time_sheets = self.storage.find_by(month=month)
+        else:
+            time_sheets = self.storage.find_by()
         return self._serialize_many(time_sheets)
 
     def get_all(self):
