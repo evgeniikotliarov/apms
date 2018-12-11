@@ -2,6 +2,8 @@ from app import App
 from controllers.employee_controllers import RegistrationEmployeeController, \
     GetEmployeeController, GetEmployeesController, AuthenticationEmployeeController, \
     AcceptEmployeeController
+from controllers.time_sheet_controllers import GetTimeSheetController, \
+    GetEmployeeTimeSheetsController, GetEmployeesTimeSheetsController
 from domain.controllers.employee_provider import EmployeeProvider
 from domain.controllers.time_sheet_provider import TimeSheetProvider
 from storages.db.db_builder import DbBuilder
@@ -9,7 +11,7 @@ from storages.storages import TimeSheetsStorage, EmployeesStorage
 from usecases.employee_use_cases import CreateEmployeeUseCase, GetEmployeeUseCase, \
     GetAllEmployeeUseCase, RegisterEmployeeUseCase, UpdateEmployeeUseCase, \
     AdminRightsEmployeeUseCase, CheckEmployeeUseCase, CheckAdminRightsUseCase
-from usecases.time_sheet_use_cases import GetTimeSheetUseCase, GetAllTimeSheetUseCase, \
+from usecases.time_sheet_use_cases import GetTimeSheetUseCase, GetTimeSheetsUseCase, \
     CreateTimeSheetUseCase, UpdateTimeSheetUseCase, CloseTimeSheetUseCase
 from utils.hash_maker import ToHash
 from utils.tokenizer import Tokenizer
@@ -64,8 +66,8 @@ class AppFactory(IAppFactory):
 
         self.app.get_time_sheet_use_case = GetTimeSheetUseCase(self.time_sheet_provider,
                                                                self.time_sheet_storage)
-        self.app.get_time_sheets_use_case = GetAllTimeSheetUseCase(self.time_sheet_provider,
-                                                                   self.time_sheet_storage)
+        self.app.get_time_sheets_use_case = GetTimeSheetsUseCase(self.time_sheet_provider,
+                                                                 self.time_sheet_storage)
         self.app.create_time_sheet_use_case = CreateTimeSheetUseCase(self.time_sheet_provider,
                                                                      self.time_sheet_storage)
         self.app.update_time_sheet_use_case = UpdateTimeSheetUseCase(self.time_sheet_provider,
@@ -82,6 +84,12 @@ class AppFactory(IAppFactory):
             self.app.register_employee_use_case)
         self.get_employee_controller = GetEmployeeController(self.app.get_employee_use_case)
         self.get_employees_controller = GetEmployeesController(self.app.get_employees_use_case)
+
+        self.get_time_sheet_controller = GetTimeSheetController(self.app.get_time_sheet_use_case)
+        self.get_employee_time_sheets_controller = GetEmployeeTimeSheetsController(
+            self.app.get_time_sheets_use_case)
+        self.get_employees_time_sheets_controller = GetEmployeesTimeSheetsController(
+            self.app.get_time_sheets_use_case)
         self._init_routes()
         return self.app
 
@@ -91,3 +99,8 @@ class AppFactory(IAppFactory):
         self.app.add_route('/api/employees/{employee_id}/accept', self.accept_employee_controller)
         self.app.add_route('/api/employees/{employee_id}', self.get_employee_controller)
         self.app.add_route('/api/employees', self.get_employees_controller)
+
+        self.app.add_route('/api/time-sheets/{time_sheets_id}', self.get_time_sheet_controller)
+        self.app.add_route('/api/employees/{employee_id}/time-sheets',
+                           self.get_employee_time_sheets_controller)
+        self.app.add_route('/api/employees/time-sheets', self.get_employees_time_sheets_controller)
