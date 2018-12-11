@@ -4,7 +4,6 @@ from datetime import datetime
 from domain.controllers.rate_calculator import RateCalculator
 from domain.controllers.time_sheet_provider import TimeSheetProvider
 from domain.controllers.vacation_calculator import VacationCalculator
-# noinspection PyPackageRequirements
 from tests import fixtures
 
 

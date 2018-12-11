@@ -1,4 +1,5 @@
 from app import App
+from controllers.calculation_controller import CalculationController
 from controllers.employee_controllers import RegistrationEmployeeController, \
     GetEmployeeController, GetEmployeesController, AuthenticationEmployeeController, \
     AcceptEmployeeController
@@ -6,8 +7,10 @@ from controllers.time_sheet_controllers import GetTimeSheetController, \
     GetEmployeeTimeSheetsController, GetEmployeesTimeSheetsController
 from domain.controllers.employee_provider import EmployeeProvider
 from domain.controllers.time_sheet_provider import TimeSheetProvider
+from domain.controllers.vacation_calculator import VacationCalculator
 from storages.db.db_builder import DbBuilder
 from storages.storages import TimeSheetsStorage, EmployeesStorage
+from usecases.calculate_vacation_use_case import CalculateVacationUseCase
 from usecases.employee_use_cases import CreateEmployeeUseCase, GetEmployeeUseCase, \
     GetAllEmployeeUseCase, RegisterEmployeeUseCase, UpdateEmployeeUseCase, \
     AdminRightsEmployeeUseCase, CheckEmployeeUseCase, CheckAdminRightsUseCase
@@ -75,6 +78,12 @@ class AppFactory(IAppFactory):
         self.app.close_time_sheet_use_case = CloseTimeSheetUseCase(self.time_sheet_provider,
                                                                    self.time_sheet_storage)
 
+        self.vacation_calculator = VacationCalculator()
+
+        self.app.calculate_vacation_use_case = CalculateVacationUseCase(self.vacation_calculator,
+                                                                        self.employee_storage,
+                                                                        self.time_sheet_storage)
+
         self.registration_employee_controller = RegistrationEmployeeController(
             self.app.create_employee_use_case)
         self.authentication_employee_controller = AuthenticationEmployeeController(
@@ -90,6 +99,10 @@ class AppFactory(IAppFactory):
             self.app.get_time_sheets_use_case)
         self.get_employees_time_sheets_controller = GetEmployeesTimeSheetsController(
             self.app.get_time_sheets_use_case)
+
+        self.calculate_vacation_controller = CalculationController(
+            self.app.calculate_vacation_use_case)
+
         self._init_routes()
         return self.app
 
@@ -104,3 +117,6 @@ class AppFactory(IAppFactory):
         self.app.add_route('/api/employees/{employee_id}/time-sheets',
                            self.get_employee_time_sheets_controller)
         self.app.add_route('/api/employees/time-sheets', self.get_employees_time_sheets_controller)
+
+        self.app.add_route('/api/employees/{employee_id}/calculate/vacation',
+                           self.get_employees_time_sheets_controller)
