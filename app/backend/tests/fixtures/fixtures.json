@@ -74,6 +74,23 @@
     "employee_id": 0,
     "closed": false
   },
+  "february_time_sheet": {
+    "id": 2,
+    "norm": 20,
+    "rate": 10,
+    "year": 2018,
+    "month": 2,
+    "sheet": [
+      1, 1, 0, 0,
+      1, 1, 1, 1, 1, 0, 0,
+      1, 1, 1, 1, 1, 0, 0,
+      1, 1, 1, 1, 1, 0, 0,
+      1, 1, 1
+    ],
+    "vacation": 0,
+    "employee_id": 0,
+    "closed": false
+  },
   "january": [
     1, 1, 1, 1, 1, 0, 0,
     1, 1, 1, 1, 1, 0, 0,
