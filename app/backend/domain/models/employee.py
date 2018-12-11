@@ -13,7 +13,7 @@ class Employee:
         self.vacation = None
         self.is_admin = None
         self.employment_date = None
-        self.registration_date = None
+        self.acceptance_date = None
 
     @property
     def rate(self):

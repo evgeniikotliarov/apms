@@ -16,7 +16,7 @@ class EmployeeProvider:
 
     @classmethod
     def register(cls, employee: Employee, employment_date: datetime, balance_vac=0):
-        employee.registration_date = datetime.now()
+        employee.acceptance_date = datetime.now()
         employee.employment_date = employment_date
         employee.activated = True
         employee.vacation = balance_vac
@@ -66,13 +66,13 @@ class EmployeeProvider:
             'is_admin': employee.is_admin,
             'activated': employee.activated,
             'employment_date': None,
-            'registration_date': None
+            'acceptance_date': None
         }
         if employee.employment_date:
             serialized_employee['employment_date'] = employee.employment_date \
                 .strftime('%Y.%m.%d')
-        if employee.registration_date:
-            serialized_employee['registration_date'] = employee.registration_date \
+        if employee.acceptance_date:
+            serialized_employee['acceptance_date'] = employee.acceptance_date \
                 .strftime('%Y.%m.%d')
         return serialized_employee
 

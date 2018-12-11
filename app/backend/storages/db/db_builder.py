@@ -51,7 +51,7 @@ class DbBuilder:
             Column('activated', Boolean, nullable=False),
             Column('is_admin', Boolean, nullable=False),
             Column('employment_date', DateTime, nullable=True),
-            Column('registration_date', DateTime, nullable=True)
+            Column('acceptance_date', DateTime, nullable=True)
         )
 
     def __build_time_sheet_schema(self):
