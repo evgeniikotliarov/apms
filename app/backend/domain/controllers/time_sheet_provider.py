@@ -1,15 +1,16 @@
 from datetime import datetime
 
-from exceptions import AccessDeniedToUpdateTimeSheetError
 from domain.models.time_sheet import TimeSheet
+from exceptions import AccessDeniedToUpdateTimeSheetError
 
 
 class TimeSheetProvider:
     @staticmethod
-    def create(date: datetime, work_days_sheet, employee_id, employee_rate, norm=None):
+    def create(date: datetime, work_days_sheet,
+               employee_id, employee_rate, norm=None):
         time_sheet = TimeSheet()
         time_sheet.norm = norm
-        time_sheet.employee_rate = employee_rate
+        time_sheet.rate = employee_rate
         time_sheet.year = date.year
         time_sheet.month = date.month
         time_sheet.sheet = work_days_sheet
@@ -32,7 +33,18 @@ class TimeSheetProvider:
 
     @classmethod
     def serialize(cls, time_sheet: TimeSheet):
-        return time_sheet.__dict__
+        serialized_time_sheet = {
+            'id': time_sheet.id,
+            'norm': time_sheet.norm,
+            'rate': time_sheet.rate,
+            'year': time_sheet.year,
+            'month': time_sheet.month,
+            'sheet': time_sheet.sheet,
+            'vacation': time_sheet.vacation,
+            'employee_id': time_sheet.employee_id,
+            'closed': time_sheet.closed,
+        }
+        return serialized_time_sheet
 
     @classmethod
     def deserialize(cls, serialized_time_sheet: dict):
