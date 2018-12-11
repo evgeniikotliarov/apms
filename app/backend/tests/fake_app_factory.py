@@ -18,19 +18,26 @@ class TestCopyOriginalAppFactory(AppFactory):
         self.tokens = {}
 
     def create_app(self):
-        app = super().create_app()
-        self.load_data(app)
-        return app
+        self.app = super().create_app()
+        self.load_data()
+        return self.app
 
-    def load_data(self, app):
+    def load_data(self):
         self.__load_user('admin_user')
         self.__load_user('unaccepted_user')
-        app.create_time_sheet_use_case.create_time_sheet(
-            date=datetime(2018, 1, 1),
-            sheet=fixtures.load("january"),
-            employee_id=1,
-            rate=RateCalculator.MAX_DAYS,
-            norm=23
+        self.__load_user('unactivated_user')
+        self.__load_user('user_with_vacation')
+        self.__create_and_load_time_sheet()
+        self.__create_and_load_time_sheet(employee_id=3)
+
+    def __create_and_load_time_sheet(self,
+                                     date: datetime = datetime(2018, 1, 1),
+                                     sheet=fixtures.load('january'),
+                                     employee_id=0,
+                                     rate=RateCalculator.MIN_DAYS,
+                                     norm=23):
+        self.app.create_time_sheet_use_case.create_time_sheet(
+            date=date, sheet=sheet, employee_id=employee_id, rate=rate, norm=norm
         )
 
     def __load_user(self, name):
