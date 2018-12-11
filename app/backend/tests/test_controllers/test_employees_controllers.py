@@ -35,11 +35,21 @@ class TestEmployeesControllers(unittest.TestCase):
         self.assertIsNotNone(response.json['token'])
 
     def test_accept_user(self):
-        unaccepted = fixtures.load("unaccepted")
-        url = '/api/employees/{}/arrange'.format(unaccepted['id'])
-        response = self.client.simulate_get(url)
-        self.assertEqual(response.json['name'], unaccepted['name'])
-        self.assertEqual(response.json['email'], unaccepted['email'])
+        admin = fixtures.load('admin_user')
+        headers = self.__get_authorization_header_for(admin)
+
+        unaccepted = fixtures.load('unaccepted_user')
+        path = '/api/employees/{}/accept'.format(unaccepted['id'])
+
+        body = json.dumps({'employment_date': '2018.1.2', 'vacation': '1'})
+        response = self.client.simulate_post(path=path, body=body, headers=headers)
+        self.assertEqual(response.status, falcon.HTTP_201)
+        accepted_employee = self.factory.employee_storage.find_by_email(unaccepted['email'])
+        self.assertEqual(accepted_employee.vacation, 1)
+        self.assertEqual(accepted_employee.employment_date.year, 2018)
+        self.assertEqual(accepted_employee.employment_date.month, 1)
+        self.assertEqual(accepted_employee.employment_date.day, 2)
+        self.assertTrue(accepted_employee.activated)
 
     def test_get_employee(self):
         employee = fixtures.load('admin_user')

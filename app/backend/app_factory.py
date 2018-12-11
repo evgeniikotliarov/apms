@@ -1,13 +1,14 @@
 from app import App
 from controllers.employee_controllers import RegistrationEmployeeController, \
-    GetEmployeeController, GetEmployeesController, AuthenticationEmployeeController
+    GetEmployeeController, GetEmployeesController, AuthenticationEmployeeController, \
+    AcceptEmployeeController
 from domain.controllers.employee_provider import EmployeeProvider
 from domain.controllers.time_sheet_provider import TimeSheetProvider
 from storages.db.db_builder import DbBuilder
 from storages.storages import TimeSheetsStorage, EmployeesStorage
 from usecases.employee_use_cases import CreateEmployeeUseCase, GetEmployeeUseCase, \
     GetAllEmployeeUseCase, RegisterEmployeeUseCase, UpdateEmployeeUseCase, \
-    AdminRightsEmployeeUseCase, CheckEmployeeUseCase
+    AdminRightsEmployeeUseCase, CheckEmployeeUseCase, CheckAdminRightsUseCase
 from usecases.time_sheet_use_cases import GetTimeSheetUseCase, GetAllTimeSheetUseCase, \
     CreateTimeSheetUseCase, UpdateTimeSheetUseCase, CloseTimeSheetUseCase
 from utils.hash_maker import ToHash
@@ -50,6 +51,7 @@ class AppFactory(IAppFactory):
                                                                 self.employee_storage,
                                                                 self.tokenizer,
                                                                 self.to_hash)
+        self.app.check_admin_rights_use_case = CheckAdminRightsUseCase(self.employee_storage)
         self.app.register_employee_use_case = RegisterEmployeeUseCase(self.employee_provider,
                                                                       self.employee_storage)
         self.app.update_employee_use_case = UpdateEmployeeUseCase(self.employee_provider,
@@ -75,6 +77,9 @@ class AppFactory(IAppFactory):
             self.app.create_employee_use_case)
         self.authentication_employee_controller = AuthenticationEmployeeController(
             self.app.check_employee_use_case)
+        self.accept_employee_controller = AcceptEmployeeController(
+            self.app.check_admin_rights_use_case,
+            self.app.register_employee_use_case)
         self.get_employee_controller = GetEmployeeController(self.app.get_employee_use_case)
         self.get_employees_controller = GetEmployeesController(self.app.get_employees_use_case)
         self._init_routes()
@@ -83,5 +88,6 @@ class AppFactory(IAppFactory):
     def _init_routes(self):
         self.app.add_route('/api/sign-up', self.registration_employee_controller)
         self.app.add_route('/api/sign-in', self.authentication_employee_controller)
+        self.app.add_route('/api/employees/{employee_id}/accept', self.accept_employee_controller)
         self.app.add_route('/api/employees/{employee_id}', self.get_employee_controller)
         self.app.add_route('/api/employees', self.get_employees_controller)

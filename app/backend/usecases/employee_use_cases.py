@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from domain.controllers.employee_provider import EmployeeProvider
-from exceptions import AuthenticationError, NotFoundError
+from exceptions import AuthenticationError, NotFoundError, AuthorizationError
 from storages.storages import EmployeesStorage
 from utils.hash_maker import ToHash
 from utils.tokenizer import Tokenizer
@@ -71,6 +71,16 @@ class CheckEmployeeUseCase:
             return self.tokenizer.get_token_by_data(token_data)
         except NotFoundError:
             raise AuthenticationError()
+
+
+class CheckAdminRightsUseCase:
+    def __init__(self, storage: EmployeesStorage):
+        self.storage = storage
+
+    def check_rights(self, email):
+        employee = self.storage.find_by_email(email)
+        if not employee.is_admin:
+            raise AuthorizationError()
 
 
 class RegisterEmployeeUseCase:

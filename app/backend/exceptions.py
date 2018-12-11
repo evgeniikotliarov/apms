@@ -36,6 +36,11 @@ class AuthenticationError(BaseError):
         return falcon.HTTP_401
 
 
+class AuthorizationError(BaseError):
+    def get_http_code(self):
+        return falcon.HTTP_403
+
+
 class InvalidTokenError(BaseError):
     def get_http_code(self):
         return falcon.HTTP_401
@@ -43,4 +48,4 @@ class InvalidTokenError(BaseError):
 
 class TokenExpiredError(BaseError):
     def get_http_code(self):
-        return '401 Token Expired'
+        return '401 Token expired'
