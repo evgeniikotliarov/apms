@@ -30,6 +30,13 @@ class Storage:
             raise NotFoundError("{} with id {} not found".format(self.type.__name__, entity_id))
         return entity
 
+    def find_first_by(self, **kwargs):
+        entity = self._find_by(**kwargs).first()
+        if not entity:
+            arguments = ', '.join(kwargs.values())
+            raise NotFoundError("{} with id {} not found".format(self.type.__name__, arguments))
+        return entity
+
     def find_by(self, **kwargs):
         return self._find_by(**kwargs).all()
 

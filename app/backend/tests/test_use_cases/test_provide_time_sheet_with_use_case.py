@@ -137,7 +137,7 @@ class TestTimeSheetEmployeeUseCase(unittest.TestCase):
 
         use_case.update_time_sheet_for(0, 2018, 1, sheet=fixtures.load('full_january'))
 
-        saved_time_sheet = storage.find_by(employee_id=0, year=2018, month=1)[0]
+        saved_time_sheet = storage.find_first_by(employee_id=0, year=2018, month=1)[0]
         self.assertEqual(saved_time_sheet.employee_id, 0)
         self.assertEqual(saved_time_sheet.sheet, fixtures.load('full_january'))
         self.assertEqual(saved_time_sheet.norm, 19)
