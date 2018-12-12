@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from domain.controllers.time_sheet_initializer import TimeSheetInitHelper
 from domain.models.time_sheet import TimeSheet
 from exceptions import AccessDeniedToUpdateTimeSheetError
 
@@ -14,6 +15,18 @@ class TimeSheetProvider:
         time_sheet.year = date.year
         time_sheet.month = date.month
         time_sheet.sheet = work_days_sheet
+        time_sheet.employee_id = employee_id
+        time_sheet.closed = False
+        return time_sheet
+
+    @staticmethod
+    def create_empty(date: datetime, employee_id):
+        initializer = TimeSheetInitHelper(date)
+        time_sheet = TimeSheet()
+        time_sheet.norm = initializer.norm
+        time_sheet.year = date.year
+        time_sheet.month = date.month
+        time_sheet.sheet = initializer.empty_sheet
         time_sheet.employee_id = employee_id
         time_sheet.closed = False
         return time_sheet
