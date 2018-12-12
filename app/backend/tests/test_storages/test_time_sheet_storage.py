@@ -21,6 +21,19 @@ class TestTimeSheetStorage(unittest.TestCase):
         self.assertIsNotNone(time_sheet.norm)
         self.assertIsNotNone(time_sheet.closed)
 
+    def test_get_first_by_filter_time_sheet(self):
+        storage = TimeSheetsStorage(FakeDb().build())
+        time_sheet = storage.find_first_by(id=0)
+        self.assertIsNotNone(time_sheet)
+        self.assertEqual(time_sheet.id, 0)
+        self.assertEqual(time_sheet.employee_id, 0)
+        self.assertIsNotNone(time_sheet.year)
+        self.assertIsNotNone(time_sheet.month)
+        self.assertIsNotNone(time_sheet.sheet)
+        self.assertIsNotNone(time_sheet.rate)
+        self.assertIsNotNone(time_sheet.norm)
+        self.assertIsNotNone(time_sheet.closed)
+
     def test_get_all_employee(self):
         storage = TimeSheetsStorage(FakeDb().build())
         employees = storage.get_all()

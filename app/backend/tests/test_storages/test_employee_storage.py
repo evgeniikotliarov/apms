@@ -15,6 +15,15 @@ class TestEmployeesStorage(unittest.TestCase):
         self.assertIsNotNone(employee.email)
         self.assertIsNotNone(employee.password)
 
+    def test_get_first_by_filter_employee(self):
+        storage = EmployeesStorage(FakeDb().build())
+        employee = storage.find_first_by(id=0)
+        self.assertIsNotNone(employee)
+        self.assertEqual(employee.id, 0)
+        self.assertIsNotNone(employee.name)
+        self.assertIsNotNone(employee.email)
+        self.assertIsNotNone(employee.password)
+
     def test_get_all_employee(self):
         storage = EmployeesStorage(FakeDb().build())
         employees = storage.get_all()
