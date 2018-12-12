@@ -94,3 +94,29 @@ class TestProvideEmployeeUseCase(unittest.TestCase):
         self.assertEqual(saved_employee.vacation, 4.14)
         saved_time_sheet = self.time_sheet_storage.find_by_id(1)
         self.assertEqual(saved_time_sheet.vacation, -5.86)
+
+    def test_calculate_vacation_with_custom_norm(self):
+        employee = self.employee_storage.find_by_email("admin@email.com")
+        employee.employment_date = datetime(2016, 8, 1)
+        employee.vacation = 10
+        self.employee_storage.update(employee)
+        self.use_case.calculate_vacation(0, 11.5)
+
+        saved_employee = self.employee_storage.find_by_email(employee.email)
+        self.assertEqual(saved_employee.vacation, 13.29)
+        saved_time_sheet = self.time_sheet_storage.find_by_id(0)
+        self.assertEqual(saved_time_sheet.vacation, 3.29)
+
+        employee = self.employee_storage.find_by_email("with.vacation@email.com")
+        employee.employment_date = datetime.today()
+        self.employee_storage.update(employee)
+        time_sheet = self.time_sheet_storage.find_by_id(0)
+        time_sheet.employee_id = 3
+        time_sheet.vacation = 0
+        self.time_sheet_storage.update(time_sheet)
+        self.use_case.calculate_vacation(0, 11.5)
+
+        saved_employee = self.employee_storage.find_by_email(employee.email)
+        self.assertEqual(saved_employee.vacation, 12.3)
+        saved_time_sheet = self.time_sheet_storage.find_by_id(0)
+        self.assertEqual(saved_time_sheet.vacation, 2.3)
