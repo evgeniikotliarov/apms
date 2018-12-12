@@ -26,6 +26,19 @@ class ProvideTimeSheetTestCase(unittest.TestCase):
         self.assertEqual(time_sheet.employee_id, 0)
         self.assertEqual(time_sheet.closed, False)
 
+    def test_create_empty_time_sheet(self):
+        time_sheet = TimeSheetProvider.create_empty(date=datetime(2018, 1, 30), employee_id=0)
+        self.assertIsNotNone(time_sheet)
+        self.assertIsNone(time_sheet.id)
+        self.assertIsNone(time_sheet.rate)
+        self.assertIsNone(time_sheet.vacation)
+        self.assertEqual(time_sheet.norm, 23)
+        self.assertEqual(time_sheet.sheet.__len__(), 31)
+        self.assertEqual(time_sheet.year, 2018)
+        self.assertEqual(time_sheet.month, 1)
+        self.assertEqual(time_sheet.employee_id, 0)
+        self.assertEqual(time_sheet.closed, False)
+
     def test_create_time_sheet_without_norm(self):
         time_sheet = TimeSheetProvider.create(
             date=datetime(2018, 1, 30),
