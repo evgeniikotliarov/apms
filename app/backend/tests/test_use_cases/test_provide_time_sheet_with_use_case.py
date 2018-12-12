@@ -135,6 +135,13 @@ class TestTimeSheetEmployeeUseCase(unittest.TestCase):
         self.assertEqual(saved_time_sheet.sheet, fixtures.load('february'))
         self.assertEqual(saved_time_sheet.norm, 19)
 
+        use_case.update_time_sheet_for(0, 2018, 1, sheet=fixtures.load('full_january'))
+
+        saved_time_sheet = storage.find_by(employee_id=0, year=2018, month=1)[0]
+        self.assertEqual(saved_time_sheet.employee_id, 0)
+        self.assertEqual(saved_time_sheet.sheet, fixtures.load('full_january'))
+        self.assertEqual(saved_time_sheet.norm, 19)
+
     def test_close_time_sheet(self):
         storage = TimeSheetsStorage(FakeDb().build())
         controller = TimeSheetProvider()
