@@ -2,6 +2,7 @@ import unittest
 from datetime import datetime
 
 from domain.controllers.time_sheet_provider import TimeSheetProvider
+from exceptions import NotFoundError
 from storages.storages import TimeSheetsStorage
 from tests import fixtures
 from tests.fake_db import FakeDb
@@ -137,10 +138,27 @@ class TestTimeSheetEmployeeUseCase(unittest.TestCase):
 
         use_case.update_time_sheet_for(0, 2018, 1, sheet=fixtures.load('full_january'))
 
-        saved_time_sheet = storage.find_first_by(employee_id=0, year=2018, month=1)[0]
+        saved_time_sheet = storage.find_first_by(employee_id=0, year=2018, month=1)
         self.assertEqual(saved_time_sheet.employee_id, 0)
         self.assertEqual(saved_time_sheet.sheet, fixtures.load('full_january'))
         self.assertEqual(saved_time_sheet.norm, 19)
+
+    def test_update_time_sheet_for_not_exist(self):
+        storage = TimeSheetsStorage(FakeDb().build())
+        controller = TimeSheetProvider()
+        use_case = UpdateTimeSheetUseCase(controller, storage)
+        try:
+            storage.find_first_by(employee_id=3, year=2018, month=5)
+            raise Exception('Time sheet should not exist')
+        except NotFoundError:
+            pass
+        use_case.update_time_sheet_for(employee_id=3,
+                                       year=2018,
+                                       month=5,
+                                       sheet=fixtures.load('february'))
+
+        saved_time_sheet = storage.find_first_by(employee_id=3, year=2018, month=5)
+        self.assertEqual(saved_time_sheet.sheet, fixtures.load('february'))
 
     def test_close_time_sheet(self):
         storage = TimeSheetsStorage(FakeDb().build())
