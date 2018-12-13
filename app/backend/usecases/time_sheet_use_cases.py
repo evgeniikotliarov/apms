@@ -11,7 +11,7 @@ class GetTimeSheetUseCase:
         self.storage = storage
 
     def get_for_employee(self, employee_id, year, month):
-        time_sheet = self.storage.find_first_by(employee_id=employee_id, year=year, month=month)[0]
+        time_sheet = self.storage.find_first_by(employee_id=employee_id, year=year, month=month)
         return self.controller.serialize(time_sheet)
 
     def get_by_id(self, time_sheet_id):
@@ -73,17 +73,21 @@ class CreateTimeSheetUseCase:
 
 class UpdateTimeSheetUseCase:
     def __init__(self, controller: TimeSheetProvider, storage: TimeSheetsStorage):
-        self.controller = controller
+        self.provider = controller
         self.storage = storage
 
     def update_time_sheet(self, time_sheet_id, norm=None, sheet=None):
         time_sheet = self.storage.find_by_id(time_sheet_id)
-        time_sheet = self.controller.update_with(time_sheet, norm, sheet)
+        time_sheet = self.provider.update_with(time_sheet, norm, sheet)
         self.storage.update(time_sheet)
 
-    def update_time_sheet_for(self, employee_id, year, month, sheet=None):
-        time_sheet = self.storage.find_first_by(employee_id=employee_id, year=year, month=month)[0]
-        time_sheet = self.controller.update_with(time_sheet, work_days_sheet=sheet)
+    def update_time_sheet_for(self, employee_id, year, month, sheet=None, norm=None):
+        try:
+            time_sheet = self.storage.find_first_by(employee_id=employee_id, year=year, month=month)
+        except NotFoundError:
+            date = datetime(year, month, 1)
+            time_sheet = self.provider.create_empty(date, employee_id)
+        time_sheet = self.provider.update_with(time_sheet, work_days_sheet=sheet, norm=norm)
         self.storage.update(time_sheet)
 
 

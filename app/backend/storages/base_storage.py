@@ -33,7 +33,8 @@ class Storage:
     def find_first_by(self, **kwargs):
         entity = self._find_by(**kwargs).first()
         if not entity:
-            arguments = ', '.join(kwargs.values())
+            args_list = map(lambda value: str(value), kwargs.values())
+            arguments = ', '.join(args_list)
             raise NotFoundError("{} with id {} not found".format(self.type.__name__, arguments))
         return entity
 
