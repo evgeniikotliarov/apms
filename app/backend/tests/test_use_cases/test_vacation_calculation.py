@@ -47,6 +47,9 @@ class TestProvideEmployeeUseCase(unittest.TestCase):
         employee = self.employee_storage.find_by_email('admin@email.com')
         employee.vacation = 10
         employee.employment_date = datetime(2016, 8, 1)
+        time_sheet = self.time_sheet_storage.find_by_id(1)
+        time_sheet.employee_id = 0
+        self.time_sheet_storage.update(time_sheet)
         self.employee_storage.update(employee)
         self.use_case.calculate_vacation(1)
 
