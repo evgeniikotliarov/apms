@@ -1,10 +1,10 @@
 from app import App
-from controllers.calculation_controller import CalculationController
+from controllers.calculation_controller import VacationCalculatorController
 from controllers.employee_controllers import RegistrationEmployeeController, \
     GetEmployeeController, GetEmployeesController, AuthenticationEmployeeController, \
     AcceptEmployeeController
 from controllers.time_sheet_controllers import GetTimeSheetController, \
-    GetEmployeeTimeSheetsController, GetEmployeesTimeSheetsController
+    EmployeeTimeSheetsController, GetEmployeesTimeSheetsController
 from domain.controllers.employee_provider import EmployeeProvider
 from domain.controllers.time_sheet_provider import TimeSheetProvider
 from domain.controllers.vacation_calculator import VacationCalculator
@@ -95,12 +95,12 @@ class AppFactory(IAppFactory):
         self.get_employees_controller = GetEmployeesController(self.app.get_employees_use_case)
 
         self.get_time_sheet_controller = GetTimeSheetController(self.app.get_time_sheet_use_case)
-        self.get_employee_time_sheets_controller = GetEmployeeTimeSheetsController(
-            self.app.get_time_sheets_use_case)
+        self.employee_time_sheets_controller = EmployeeTimeSheetsController(
+            self.app.get_time_sheets_use_case, self.app.update_time_sheet_use_case)
         self.get_employees_time_sheets_controller = GetEmployeesTimeSheetsController(
             self.app.get_time_sheets_use_case)
 
-        self.calculate_vacation_controller = CalculationController(
+        self.calculate_vacation_controller = VacationCalculatorController(
             self.app.calculate_vacation_use_case)
 
         self._init_routes()
@@ -109,14 +109,14 @@ class AppFactory(IAppFactory):
     def _init_routes(self):
         self.app.add_route('/api/sign-up', self.registration_employee_controller)
         self.app.add_route('/api/sign-in', self.authentication_employee_controller)
-        self.app.add_route('/api/employees/{employee_id}/accept', self.accept_employee_controller)
+        self.app.add_route('/api/employees/{employee_id}/register', self.accept_employee_controller)
         self.app.add_route('/api/employees/{employee_id}', self.get_employee_controller)
         self.app.add_route('/api/employees', self.get_employees_controller)
 
         self.app.add_route('/api/time-sheets/{time_sheets_id}', self.get_time_sheet_controller)
         self.app.add_route('/api/employees/{employee_id}/time-sheets',
-                           self.get_employee_time_sheets_controller)
+                           self.employee_time_sheets_controller)
         self.app.add_route('/api/employees/time-sheets', self.get_employees_time_sheets_controller)
 
-        self.app.add_route('/api/employees/{employee_id}/calculate/vacation',
-                           self.get_employees_time_sheets_controller)
+        self.app.add_route('/api/employees/{employee_id}/vacation',
+                           self.calculate_vacation_controller)
