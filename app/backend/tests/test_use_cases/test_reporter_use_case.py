@@ -1,9 +1,9 @@
+import os
 import unittest
 from datetime import datetime
 
-import re
-
 from domain.controllers.vacation_calculator import VacationCalculator
+from settings import ROOT_APP_PATH
 from storages.storages import EmployeesStorage, TimeSheetsStorage
 from tests.fake_db import FakeDb
 from usecases.reporter_use_case import ReporterUseCase
@@ -47,4 +47,6 @@ class TestProvideEmployeeUseCase(unittest.TestCase):
 
     def test_get_report(self):
         path = self.use_case.get_formed_report_by_date(datetime(2018, 1, 1))
-        self.assertTrue(re.match('.*/reports/1.2018.xlsx', path))
+        report_path = '{}/reports/{}.xlsx'.format(ROOT_APP_PATH, '1.2018')
+        self.assertEqual(path, report_path)
+        os.remove(path)
