@@ -108,7 +108,7 @@ class AppFactory(IAppFactory):
 
     def _init_routes(self):
         self.app.add_route('/api/sign-up', self.registration_employee_controller)
-        self.app.add_route('/api/sign-in', self.authentication_employee_controller)
+        self.app.add_route('/api/log-in', self.authentication_employee_controller)
         self.app.add_route('/api/employees/{employee_id}/register', self.accept_employee_controller)
         self.app.add_route('/api/employees/{employee_id}', self.get_employee_controller)
         self.app.add_route('/api/employees', self.get_employees_controller)
