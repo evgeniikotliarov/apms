@@ -11,6 +11,13 @@ class VacationCalculator:
         time_sheet.vacation = round(vacation - used_vacation, 2)
         return time_sheet
 
+    def calculate_days_worked(self, time_sheet: TimeSheet):
+        return self._calculate_days_worked(time_sheet.sheet)
+
+    def calculate_used_vacation(self, time_sheet: TimeSheet):
+        days_worked = self._calculate_days_worked(time_sheet.sheet)
+        return self._calculate_used_vacation(days_worked, time_sheet.norm)
+
     @classmethod
     def _calculate_days_worked(cls, sheet):
         return reduce(lambda days_worked, worked_out: days_worked + worked_out, sheet, .0)
