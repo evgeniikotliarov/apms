@@ -1,18 +1,19 @@
 import React from 'react';
 import './NotFound.css';
 
-const pathNames = ['/', '/login', '/signup'];
+const pathNames = ["/", "/log-in", "/sign-up"];
 
 const NotFound = props => {
   const checkPath = pathNames.indexOf(props.location.pathname);
   if (checkPath >= 0) {
     return null;
-  }else {
+  }else{
     return (
-      <div className="notFound">
+      <div className="notfound">
         <h3 className="notfound-h3">404 page not found</h3>
-        <h3 className="notfound-p">Страница не найдена</h3>
-      </div>
-    )
+        <p className="notfound-p">Страница не найдена.</p>
+      </div>)
   }
 };
+
+export default NotFound;

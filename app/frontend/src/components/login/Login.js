@@ -33,7 +33,7 @@ class Login extends Component {
   };
 
   onSignupClick = () => {
-    this.props.history.push('/signup');
+    this.props.history.push('/sign-up');
   };
 
   render = () => {

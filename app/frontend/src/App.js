@@ -3,7 +3,7 @@ import './App.css';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 import Login from "./components/login/Login";
 import Signup from "./components/signup/SignUp";
-// import NotFound from "./components/not_found/NotFound";
+import NotFound from "./components/not_found/NotFound";
 
 class App extends Component {
 
@@ -21,8 +21,8 @@ class App extends Component {
       <Router>
         <div>
           <Route exact path="/" component={(props) => <Login {...props}/>}/>
-          <Route exact path="/signup" component={(props) => <Signup {...props}/>}/>
-          {/*<Route exact path="*" component={(props) => <NotFound {...props}/>}/>*/}
+          <Route exact path="/sign-up" component={(props) => <Signup {...props}/>}/>
+          <Route exact path="*" component={(props) => <NotFound {...props}/>}/>
         </div>
       </Router>
     );

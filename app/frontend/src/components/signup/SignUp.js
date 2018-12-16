@@ -26,7 +26,7 @@ class Signup extends Component {
   };
 
   onLoginClick = () => {
-    this.props.history.push('/login')
+    this.props.history.push('/')
   };
 
   render = () => {
