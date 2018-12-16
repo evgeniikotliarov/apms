@@ -1,33 +1,25 @@
-import React, {Component} from 'react';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Router from './Router'
 import './App.css';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
-import Login from "./components/login/Login";
-import Signup from "./components/signup/SignUp";
-import NotFound from "./components/not_found/NotFound";
 
-class App extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: false,
-      redirect: false
-
-    };
-  }
-
-  render = () => {
-    return (
-      <Router>
-        <div>
-          <Route exact path="/" component={(props) => <Login {...props}/>}/>
-          <Route exact path="/sign-up" component={(props) => <Signup {...props}/>}/>
-          <Route exact path="*" component={(props) => <NotFound {...props}/>}/>
-        </div>
-      </Router>
-    );
+class App {
+  run = () => {
+    this.router = Router.create();
+    this.render();
   };
 
+  render = () => {
+    return ReactDOM.render((
+        <div className="container">
+          <div className="row">
+            {this.router}
+          </div>
+        </div>
+      ),
+      document.getElementById('root')
+    );
+  };
 }
 
 export default App;
