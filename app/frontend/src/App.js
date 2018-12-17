@@ -2,8 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Router from './Router'
 import './App.css';
+import UsersApi from "./api/usersApi";
 
 class App {
+  constructor() {
+    this.usersApi = new UsersApi();
+  }
+
   run = () => {
     this.router = Router.create();
     this.render();
