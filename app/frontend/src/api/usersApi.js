@@ -19,7 +19,7 @@ class UsersApi {
           JSON.stringify(data)
         )
       )
-      .map((response0) => response.data)
+      .map((response) => response.data)
   }
 
   signUp(name, email, password) {

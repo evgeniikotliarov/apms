@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import React, {Component} from 'react';
+import {withRouter} from 'react-router-dom';
+import UsersApi from '../../api/usersApi';
 import './Login.css'
 
 class Login extends Component {
@@ -22,13 +23,18 @@ class Login extends Component {
 
   onLoginClick = (e) => {
     e.preventDefault();
-    const credentials = {"email": this.state.email, "password": this.state.password};
-    if (!credentials.email && !credentials.password) {
+    const data = {"email": this.state.email, "password": this.state.password};
+    if (!data.email && !data.password) {
       this.setState({errorMessage: 'Введите email и пароль'})
-    } else if (!credentials.email) {
+    } else if (!data.email) {
       this.setState({errorMessage: 'Введите email'})
-    } else if (!credentials.password) {
+    } else if (!data.password) {
       this.setState({errorMessage: 'Введите пароль'})
+    } else {
+      const api = new UsersApi();
+      const r = api.logIn(data.email, data.password);
+      // TODO for example
+      r.subscribe( (x) => console.log(x));
     }
   };
 
@@ -37,10 +43,11 @@ class Login extends Component {
   };
 
   render = () => {
-    const message = this.state.errorMessage ? <div className="message">{this.state.errorMessage}</div> : null;
+    const message = this.state.errorMessage ?
+      <div className="message">{this.state.errorMessage}</div> : null;
     return (
       <div className="Login">
-        { message }
+        {message}
         <h1 className="h1-login">Войти</h1>
         <form>
           <label className="for-label">Email</label>
