@@ -30,7 +30,7 @@ class TestEmployeesControllers(unittest.TestCase):
             'email': 'admin@email.com',
         }
 
-        response = self.client.simulate_post('/api/sign-in', body=json.dumps(data))
+        response = self.client.simulate_post('/api/log-in', body=json.dumps(data))
         self.assertEqual(response.status, falcon.HTTP_200)
         self.assertIsNotNone(response.json['token'])
 
@@ -50,6 +50,13 @@ class TestEmployeesControllers(unittest.TestCase):
         self.assertEqual(accepted_employee.employment_date.month, 1)
         self.assertEqual(accepted_employee.employment_date.day, 2)
         self.assertTrue(accepted_employee.activated)
+
+    def test_get_profile(self):
+        employee = fixtures.load('admin_user')
+        headers = self.__get_authorization_header_for(employee)
+        response = self.client.simulate_get('/api/profile', headers=headers)
+        del employee['password']
+        self.assertEqual(response.json, employee)
 
     def test_get_employee(self):
         employee = fixtures.load('admin_user')

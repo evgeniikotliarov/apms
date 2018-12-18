@@ -22,6 +22,11 @@ class TestProvideEmployeeUseCase(unittest.TestCase):
         self.assertEqual(saved_employee['email'], "admin@email.com")
         self.assertEqual(saved_employee['activated'], True)
 
+        saved_employee = use_case.get_employee_by_email("admin@email.com")
+        self.assertEqual(saved_employee['name'], "admin")
+        self.assertEqual(saved_employee['email'], "admin@email.com")
+        self.assertEqual(saved_employee['activated'], True)
+
     def test_get_all_employee(self):
         storage = EmployeesStorage(FakeDb().build())
         controller = EmployeeProvider()
