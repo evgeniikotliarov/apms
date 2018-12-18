@@ -53,8 +53,8 @@ class Login extends Component {
     this.state.errorMessage = data.email && data.password ? null : data.email ? 'Введите пароль' :
       data.password ? 'Введите email' : 'Введите email и пароль';
     if (this.state.errorMessage) return;
-    Application.userRepository.logIn(data.email, data.password);
-    this.props.history.push('/profile');
+    Application.userRepository.logIn(data.email, data.password)
+      .subscribe(() => this.props.history.push('/profile'))
   };
 
   onSignupClick = () => {
