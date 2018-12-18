@@ -16,6 +16,10 @@ class GetEmployeeUseCase:
         employee = self.storage.find_by_id(employee_id)
         return self.employee_provider.serialize(employee)
 
+    def get_employee_by_email(self, email):
+        employee = self.storage.find_by_email(email)
+        return self.employee_provider.serialize(employee)
+
 
 class GetAllEmployeeUseCase:
     def __init__(self, employee_provider: EmployeeProvider, storage: EmployeesStorage):

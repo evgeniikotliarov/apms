@@ -2,7 +2,7 @@ from app import App
 from controllers.calculation_controller import VacationCalculatorController
 from controllers.employee_controllers import RegistrationEmployeeController, \
     GetEmployeeController, GetEmployeesController, AuthenticationEmployeeController, \
-    AcceptEmployeeController
+    AcceptEmployeeController, GetProfileController
 from controllers.time_sheet_controllers import GetTimeSheetController, \
     EmployeeTimeSheetsController, GetEmployeesTimeSheetsController
 from domain.controllers.employee_provider import EmployeeProvider
@@ -88,6 +88,8 @@ class AppFactory(IAppFactory):
             self.app.create_employee_use_case)
         self.authentication_employee_controller = AuthenticationEmployeeController(
             self.app.check_employee_use_case)
+        self.get_employee_profile_controller = GetProfileController(
+            self.app.get_employee_use_case)
         self.accept_employee_controller = AcceptEmployeeController(
             self.app.check_admin_rights_use_case,
             self.app.register_employee_use_case)
@@ -108,7 +110,8 @@ class AppFactory(IAppFactory):
 
     def _init_routes(self):
         self.app.add_route('/api/sign-up', self.registration_employee_controller)
-        self.app.add_route('/api/logдв-in', self.authentication_employee_controller)
+        self.app.add_route('/api/log-in', self.authentication_employee_controller)
+        self.app.add_route('/api/profile', self.get_employee_profile_controller)
         self.app.add_route('/api/employees/{employee_id}/register', self.accept_employee_controller)
         self.app.add_route('/api/employees/{employee_id}', self.get_employee_controller)
         self.app.add_route('/api/employees', self.get_employees_controller)
