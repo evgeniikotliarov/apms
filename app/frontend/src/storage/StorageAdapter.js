@@ -3,11 +3,11 @@ export default class StorageAdapter {
     this.storage = sessionStorage;
   }
 
-  getData = (key) => {
+  loadData = (key) => {
     this.storage.getItem(key);
   };
 
-  setData = (key, data) => {
+  saveData = (key, data) => {
     this.storage.setItem(key, data)
   };
 };
