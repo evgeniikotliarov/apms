@@ -4,38 +4,36 @@ import UsersApi from '../../api/usersApi';
 import './Login.css'
 
 class Login extends Component {
-
   state = {
     email: '',
     password: '',
     errorMessage: null
   };
 
-  emailChange = (event) => {
+  onEmailFieldChange = (event) => {
     const email = event.target.value;
     this.setState({email});
   };
 
-  passwordChange = (event) => {
+  onPasswordFieldChange = (event) => {
     const password = event.target.value;
     this.setState({password});
   };
 
   onLoginClick = (e) => {
     e.preventDefault();
-    const data = {"email": this.state.email, "password": this.state.password};
-    if (!data.email && !data.password) {
-      this.setState({errorMessage: 'Введите email и пароль'})
-    } else if (!data.email) {
-      this.setState({errorMessage: 'Введите email'})
-    } else if (!data.password) {
-      this.setState({errorMessage: 'Введите пароль'})
-    } else {
-      const api = new UsersApi();
-      const r = api.logIn(data.email, data.password);
-      // TODO for example
-      r.subscribe( (x) => console.log(x));
-    }
+    const data = {email: this.state.email, password: this.state.password};
+    this.state.errorMessage = data.email && data.password ? null : data.email ? 'Введите пароль' :
+      data.password ? 'Введите email' : 'Введите email и пароль';
+    if (this.state.errorMessage) return;
+    const api = new UsersApi();
+    api.logIn(data.email, data.password)
+      .subscribe((x) => {
+          // TODO save to tokenStorage
+          console.log(x);
+          this.props.history.push('/profile')
+        }
+      );
   };
 
   onSignupClick = () => {
@@ -52,12 +50,12 @@ class Login extends Component {
         <form>
           <label className="for-label">Email</label>
           <input className="for-input" type="text" placeholder="Email"
-                 onChange={this.emailChange}
+                 onChange={this.onEmailFieldChange}
                  value={this.state.email}/>
           <label className="for-label">Password</label>
           <input className="for-input"
                  type="password" placeholder="Password"
-                 onChange={this.passwordChange}
+                 onChange={this.onPasswordFieldChange}
                  value={this.state.password}/>
           <button className="btn-login" onClick={this.onLoginClick} type="submit">Войти</button>
         </form>
