@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
-import UsersApi from '../../api/usersApi';
 import './Login.css'
+import Application from "../../Application";
 
 class Login extends Component {
   state = {
@@ -10,42 +10,10 @@ class Login extends Component {
     errorMessage: null
   };
 
-  onEmailFieldChange = (event) => {
-    const email = event.target.value;
-    this.setState({email});
-  };
-
-  onPasswordFieldChange = (event) => {
-    const password = event.target.value;
-    this.setState({password});
-  };
-
-  onLoginClick = (e) => {
-    e.preventDefault();
-    const data = {email: this.state.email, password: this.state.password};
-    this.state.errorMessage = data.email && data.password ? null : data.email ? 'Введите пароль' :
-      data.password ? 'Введите email' : 'Введите email и пароль';
-    if (this.state.errorMessage) return;
-    const api = new UsersApi();
-    api.logIn(data.email, data.password)
-      .subscribe((x) => {
-          // TODO save to tokenStorage
-          console.log(x);
-          this.props.history.push('/profile')
-        }
-      );
-  };
-
-  onSignupClick = () => {
-    this.props.history.push('/sign-up');
-  };
-
   render = () => {
-    const message = this.state.errorMessage ?
-      <div className="message">{this.state.errorMessage}</div> : null;
     return (
       <div className="Login">
-        {message}
+        {this.renderErrorMessage()}
         <h1 className="h1-login">Войти</h1>
         <form>
           <label className="for-label">Email</label>
@@ -62,7 +30,36 @@ class Login extends Component {
         <span onClick={this.onSignupClick} className="for-signup">Регистрация</span>
       </div>
     )
+  };
+
+  renderErrorMessage() {
+    return this.state.errorMessage ?
+      <div className="message">{this.state.errorMessage}</div> : null;
   }
+
+  onEmailFieldChange = (event) => {
+    const email = event.target.value;
+    this.setState({email});
+  };
+
+  onPasswordFieldChange = (event) => {
+    const password = event.target.value;
+    this.setState({password});
+  };
+
+  onLoginClick = (event) => {
+    event.preventDefault();
+    const data = {email: this.state.email, password: this.state.password};
+    this.state.errorMessage = data.email && data.password ? null : data.email ? 'Введите пароль' :
+      data.password ? 'Введите email' : 'Введите email и пароль';
+    if (this.state.errorMessage) return;
+    Application.userRepository.logIn(data.email, data.password);
+    this.props.history.push('/profile');
+  };
+
+  onSignupClick = () => {
+    this.props.history.push('/sign-up');
+  };
 }
 
 export default withRouter(Login);
