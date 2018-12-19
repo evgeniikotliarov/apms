@@ -4,10 +4,12 @@ export default class StorageAdapter {
   }
 
   loadData = (key) => {
-    this.storage.getItem(key);
+    const rawData = this.storage.getItem(key);
+    return JSON.parse(rawData);
   };
 
   saveData = (key, data) => {
-    this.storage.setItem(key, data)
+    const parsedData = JSON.stringify(data);
+    this.storage.setItem(key, parsedData)
   };
 };
