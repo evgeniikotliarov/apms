@@ -1,3 +1,6 @@
+const TOKEN = 'token';
+const PROFILE = 'profile';
+
 export default class UsersRepository {
   constructor(storage, api) {
     this.storage = storage;
@@ -6,12 +9,24 @@ export default class UsersRepository {
 
   logIn = (email, password) => {
     return this.api.logIn(email, password)
-      .map(token => this.storage.saveData('token', token[token])
+      .map(data =>
+        this.storage.saveData(TOKEN, data[TOKEN])
       );
   };
 
   signUp = (name, email, password) => {
     return this.api.signUp(name, email, password)
-      .map(token => this.storage.saveData('token', token[token]))
+      .map(data =>
+        this.storage.saveData(TOKEN, data[TOKEN]))
+  };
+
+  getProfileData = () => {
+    const token = this.storage.loadData(TOKEN);
+    return this.api.getProfile(token)
+      .map(data => {
+        this.storage.saveData(PROFILE, data);
+        return data
+      }
+    )
   };
 }
