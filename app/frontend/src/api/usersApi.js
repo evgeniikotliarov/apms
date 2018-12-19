@@ -34,18 +34,40 @@ class UsersApi {
       .map((response) => response.data)
   }
 
-  getUsers(userId) {
+  getProfile(token) {
     return Rx.Observable
       .fromPromise(
-        this.client.get('api/employees'))
+        this.client.get(
+          'api/profile', {
+            headers: {Authorization: token}
+          }
+        )
+      )
+      .map((response) => response.data)
+  }
+
+  getUsers(token) {
+    return Rx.Observable
+      .fromPromise(
+        this.client.get(
+          'api/employees', {
+            headers: {Authorization: token}
+          }
+        )
+      )
       .map((response) => response.data);
   }
 
-  getUser(userId) {
+  getUser(token, userId) {
     return Rx.Observable
       .fromPromise(
-        this.client.get(`api/employees/${userId}`))
-      .map((response) => response.data)
+        this.client.get(
+          'api/employees/${userId}', {
+            headers: {Authorization: token}
+          }
+        )
+      )
+      .map((response) => response.data);
   }
 }
 
