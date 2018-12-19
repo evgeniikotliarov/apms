@@ -5,17 +5,13 @@ export default class UsersRepository {
   }
 
   logIn = (email, password) => {
-    this.api.logIn(email, password)
-      .subscribe((token) => {
-        this.storage.saveData('token', token[token]);
-        console.log(token);
-      })
+    return this.api.logIn(email, password)
+      .map(token => this.storage.saveData('token', token[token])
+      );
   };
 
   signUp = (name, email, password) => {
-    this.api.signUp(name, email, password)
-      .subscribe((token) => {
-        this.storage.saveData('token', token[token])
-      })
+    return this.api.signUp(name, email, password)
+      .map(token => this.storage.saveData('token', token[token]))
   };
 }
