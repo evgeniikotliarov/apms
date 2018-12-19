@@ -2,15 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Router from './Router'
 import './Application.css';
-import UsersApi from "./api/usersApi";
 
-class App {
-  constructor() {
-    this.usersApi = new UsersApi();
+class Application {
+  constructor(userRepository) {
+    Application.userRepository = userRepository;
   }
 
   run = () => {
-    this.router = Router.create();
     this.render();
   };
 
@@ -18,7 +16,7 @@ class App {
     return ReactDOM.render((
         <div className="container">
           <div className="row">
-            {this.router}
+            {Router.create()}
           </div>
         </div>
       ),
@@ -27,4 +25,4 @@ class App {
   };
 }
 
-export default App;
+export default Application;

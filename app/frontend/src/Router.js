@@ -3,7 +3,7 @@ import {BrowserRouter, Route} from 'react-router-dom';
 import Login from "./components/login/Login";
 import Signup from "./components/signup/SignUp";
 import NotFound from "./components/not_found/NotFound";
-import Profile from "./components/profile/Profile";
+import Profile from "./components/cabinet/profile/Profile";
 
 
 class Router {
