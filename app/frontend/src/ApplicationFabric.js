@@ -1,14 +1,14 @@
-import usersApi from "./api/usersApi";
+import UsersApi from "./api/usersApi";
 import StorageAdapter from "./storage/StorageAdapter";
-import Application from "./Application";
 import UsersRepository from "./repositories/usersRepository";
+import Application from "./Application";
 
 export default class ApplicationFabric {
   createApplication() {
-    this.usersApi = new usersApi();
+    this.usersApi = new UsersApi();
     this.storage = new StorageAdapter();
 
     const usersRepository = new UsersRepository(this.storage, this.usersApi);
-    return new Application(usersRepository);
+    return new Application(usersRepository, timeSheetsRepository);
   }
 }

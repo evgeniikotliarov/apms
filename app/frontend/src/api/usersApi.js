@@ -1,8 +1,6 @@
 import Rx from 'rxjs/Rx';
 import axios from 'axios';
 
-
-
 class UsersApi {
   constructor() {
     this.client = axios;
