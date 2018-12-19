@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
-import './Signup.css';
+import './SignUp.css';
 import Application from "../../Application";
 
 
@@ -69,8 +69,9 @@ class SignUp extends Component {
       password: this.state.password,
       fullname: this.state.fullname
     };
-    this.state.errorMessage = data.email && data.password ? null : data.email ? 'Введите пароль' :
+    const errorMessage = data.email && data.password ? null : data.email ? 'Введите пароль' :
       data.password ? 'Введите email' : 'Введите email и пароль';
+    this.setState(errorMessage);
     if (this.state.errorMessage) return;
     Application.userRepository.logIn(data.email, data.password)
       .subscribe(() => this.props.history.push('/profile'))

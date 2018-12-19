@@ -50,8 +50,9 @@ class Login extends Component {
   onLoginClick = (event) => {
     event.preventDefault();
     const data = {email: this.state.email, password: this.state.password};
-    this.state.errorMessage = data.email && data.password ? null : data.email ? 'Введите пароль' :
+    const errorMessage = data.email && data.password ? null : data.email ? 'Введите пароль' :
       data.password ? 'Введите email' : 'Введите email и пароль';
+    this.setState(errorMessage);
     if (this.state.errorMessage) return;
     Application.userRepository.logIn(data.email, data.password)
       .subscribe(() => this.props.history.push('/profile'))
