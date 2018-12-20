@@ -4,8 +4,9 @@ import Router from './Router'
 import './Application.css';
 
 class Application {
-  constructor(userRepository) {
+  constructor(userRepository, timeSheetsRepository) {
     Application.userRepository = userRepository;
+    Application.timeSheetsRepository = timeSheetsRepository;
   }
 
   run = () => {
