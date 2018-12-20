@@ -6,6 +6,7 @@ import falcon
 from controllers.controller_handler import controller_handler, authorized_controller_handler
 from usecases.employee_use_cases import CreateEmployeeUseCase, GetEmployeeUseCase, \
     GetAllEmployeeUseCase, CheckEmployeeUseCase, RegisterEmployeeUseCase, CheckAdminRightsUseCase
+from utils.to_num_converter import ToNum
 
 
 class RegistrationEmployeeController:
@@ -59,7 +60,9 @@ class AcceptEmployeeController:
         self.check_admin_use_case.check_rights(self.user_email)
 
         date = datetime.strptime(request.media['employment_date'], '%Y.%m.%d')
-        vacation = float(request.media['vacation'])
+        converter = ToNum()
+        vacation = converter.to_num(request.media['vacation'])
+        employee_id = converter.to_num(employee_id)
 
         self.accept_use_cage.register_employee(employee_id, date, vacation)
         response.status = falcon.HTTP_201
@@ -73,7 +76,9 @@ class GetEmployeeController:
 
     @authorized_controller_handler
     def on_get(self, request, response, employee_id):
-        employee = self.use_case.get_employee(int(employee_id))
+        converter = ToNum()
+        employee_id = converter.to_num(employee_id)
+        employee = self.use_case.get_employee(employee_id)
         response.body = json.dumps(employee)
 
 
