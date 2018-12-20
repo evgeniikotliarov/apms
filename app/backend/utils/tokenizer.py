@@ -4,6 +4,7 @@ import jwt as jwt
 from jwt import DecodeError
 
 from exceptions import InvalidTokenError, TokenExpiredError
+from utils.to_num_converter import ToNum
 
 
 class Tokenizer:
@@ -47,6 +48,10 @@ class Tokenizer:
     @classmethod
     def __validate_expired_date(cls, credentials, date):
         exp_date_year, exp_date_month, exp_date_day = credentials['exp_date'].split('-')
-        expired_date = datetime(int(exp_date_year), int(exp_date_month), int(exp_date_day))
+        converter = ToNum()
+        expired_date = datetime(
+            converter.to_num(exp_date_year),
+            converter.to_num(exp_date_month),
+            converter.to_num(exp_date_day))
         if expired_date <= date:
             raise TokenExpiredError()

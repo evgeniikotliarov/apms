@@ -2,9 +2,9 @@ import json
 
 from controllers.controller_handler import authorized_controller_handler
 from usecases.calculate_vacation_use_case import CalculateVacationUseCase
+from utils.to_num_converter import ToNum
 
 
-# noinspection PyUnusedLocal
 class VacationCalculatorController:
     def __init__(self, use_case: CalculateVacationUseCase):
         self.use_case = use_case
@@ -15,5 +15,11 @@ class VacationCalculatorController:
         year = request.media['year']
         month = request.media['month']
         norm = request.media.get('norm')
-        employee = self.use_case.calculate_vacation_for(int(employee_id), year, month, norm)
+        converter = ToNum()
+        year = converter.to_num(year)
+        month = converter.to_num(month)
+        norm = converter.to_num(norm)
+        employee_id = converter.to_num(employee_id)
+
+        employee = self.use_case.calculate_vacation_for(employee_id, year, month, norm)
         response.body = json.dumps(employee)
