@@ -14,7 +14,7 @@ export default class TimeSheetProvider {
 
   createBySheet = (date, sheet) => {
     const timeSheet = [];
-    const dayInMonth = this.daysInMonth(date.getFullYear(), date.getMonth());
+    const daysInMonth = this.daysInMonth(date.getFullYear(), date.getMonth());
     for (let day = 1; day <= daysInMonth; day++) {
       const dayOfWeek = this.getDayOfWeek(date.getFullYear(), date.getMonth(), day);
       const sheetDay = {

@@ -13,7 +13,7 @@ export default class TimeSheetsApi {
     return Rx.Observable
       .fromPromise(
         this.client.post(
-          `api/${userId}/time-sheets`,
+          `api/employees/${userId}/time-sheets`,
           JSON.stringify(data),
           {headers: {Authorization: token}}
         )
@@ -26,7 +26,7 @@ export default class TimeSheetsApi {
     return Rx.Observable
       .fromPromise(
         this.client.patch(
-          `api/${userId}/time-sheets`,
+          `api/employees/${userId}/time-sheets`,
           JSON.stringify(data),
           {headers: {Authorization: token}}
         )
@@ -44,6 +44,6 @@ export default class TimeSheetsApi {
           {headers: {Authorization: token}}
         )
       )
-      .map((response) => response.data);
+      .map(response => response.data);
   }
 }

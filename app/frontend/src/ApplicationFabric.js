@@ -4,9 +4,9 @@ import UsersRepository from "./repositories/usersRepository";
 import Application from "./Application";
 import TimeSheetsApi from "./api/timeSheetsApi";
 import TimeSheetsRepository from "./repositories/timeSheetsRepository";
-import TimeSheetProvider from "./domain/TimeSheetProvider";
 import UsersUseCase from "./useCases/userUseCases";
 import TimeSheetUseCase from "./useCases/timeSheetUseCases";
+import TimeSheetProvider from "./domain/timeSheetProvider";
 
 export default class ApplicationFabric {
   createApplication() {
@@ -20,7 +20,7 @@ export default class ApplicationFabric {
     this.timeSheetsController = new TimeSheetProvider();
 
     const usersUseCase = new UsersUseCase(this.usersRepository);
-    const timeSheetsUseCase = new TimeSheetUseCase(this.timeSheetsRepository, this.timeSheetsController);
+    const timeSheetsUseCase = new TimeSheetUseCase(this.timeSheetsController, this.timeSheetsRepository);
 
     return new Application(usersUseCase, timeSheetsUseCase);
   }
