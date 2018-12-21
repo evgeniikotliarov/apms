@@ -23,7 +23,7 @@ class UserPage extends BaseCabinetPage {
   };
 
   fetchProfile = () => {
-    Application.userRepository.getProfileData()
+    Application.userUseCase.getProfileData()
       .subscribe(profile => {
         this.setState({name: profile.name});
       })

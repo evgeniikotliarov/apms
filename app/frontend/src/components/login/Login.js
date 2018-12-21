@@ -54,7 +54,7 @@ class Login extends Component {
       data.password ? 'Введите email' : 'Введите email и пароль';
     this.setState(errorMessage);
     if (this.state.errorMessage) return;
-    Application.userRepository.logIn(data.email, data.password)
+    Application.userUseCase.logIn(data.email, data.password)
       .subscribe(() => this.props.history.push('/profile'))
   };
 
