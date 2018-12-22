@@ -1,13 +1,11 @@
-export default class TimeSheetProvider {
+class TimeSheetProvider {
   createEmpty = (date) => {
     const timeSheet = [];
     const daysInMonth = this.daysInMonth(date.getFullYear(), date.getMonth());
     for (let day = 1; day <= daysInMonth; day++) {
       const dayOfWeek = this.getDayOfWeek(date.getFullYear(), date.getMonth(), day);
-      const sheetDay = {
-        day: day, dayOfWeek: dayOfWeek, value: 0
-      };
-      timeSheet.push(sheetDay);
+      const sheetDay = {day: day, dayOfWeek: dayOfWeek, value: 0};
+      timeSheet.push(sheetDay)
     }
     return timeSheet;
   };
@@ -17,16 +15,17 @@ export default class TimeSheetProvider {
     const daysInMonth = this.daysInMonth(date.getFullYear(), date.getMonth());
     for (let day = 1; day <= daysInMonth; day++) {
       const dayOfWeek = this.getDayOfWeek(date.getFullYear(), date.getMonth(), day);
-      const sheetDay = {
-        day: day, dayOfWeek: dayOfWeek, value: sheet[day - 1]
-      };
-      timeSheet.push(sheetDay);
+      const sheetDay = {day: day, dayOfWeek: dayOfWeek, value: sheet[day - 1]};
+      timeSheet.push(sheetDay)
     }
     return timeSheet;
   };
 
   getByTimeSheet = (timeSheet) => {
     const sheet = [];
+    for (const sheetDay in timeSheet) { // noinspection JSUnfilteredForInLoop
+      sheet.push(sheetDay['value']);
+    }
     return sheet;
   };
 
@@ -37,7 +36,8 @@ export default class TimeSheetProvider {
   getDayOfWeek = (year, month, day) => {
     const textDayInWeek = ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
     const dayWeek = new Date(year, month, day).getDay();
-    const dayOfWeek = textDayInWeek[dayWeek];
-    return dayOfWeek;
+    return textDayInWeek[dayWeek];
   }
 }
+
+export default TimeSheetProvider;

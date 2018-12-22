@@ -3,6 +3,7 @@ import {withRouter} from 'react-router-dom';
 import './Profile.css';
 import Application from "../../../Application";
 import BaseCabinetPage from "../basePage";
+import WorkingDaysTable from "../../working_days_table/WorkingDaysTable";
 
 class UserPage extends BaseCabinetPage {
   constructor() {
@@ -16,6 +17,7 @@ class UserPage extends BaseCabinetPage {
   renderContent = () => {
     return (
       <div className="Profile">
+        <WorkingDaysTable/>
         <h1 className="h1-user">User page</h1>
         <h1 className="name"> {this.state.name} </h1>
       </div>
@@ -23,10 +25,10 @@ class UserPage extends BaseCabinetPage {
   };
 
   fetchProfile = () => {
-    Application.userUseCase.getProfileData()
+    Application.userUseCase.getProfile()
       .subscribe(profile => {
         this.setState({name: profile.name});
-      })
+      });
   }
 }
 

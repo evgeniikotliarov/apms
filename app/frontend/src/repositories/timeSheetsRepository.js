@@ -10,7 +10,7 @@ export default class TimeSheetsRepository {
 
   getTimeSheetForCurrentDate = () => {
     const now = new Date();
-    return this.getTimeSheetForDate(now)
+    return this.getTimeSheetForDate(now);
   };
 
   getTimeSheetForDate = (date) => {
@@ -20,12 +20,10 @@ export default class TimeSheetsRepository {
     const month = date.getMonth() + 1;
     return this.api.getTimeSheet(token, profileId, year, month)
       .map(data => {
-        const timeSheets = this.storage.loadData(TIME_SHEETS);
-        timeSheets[`${month}.${year}`] = data;
-        this.storage.saveData(TIME_SHEETS, timeSheets);
-        return data
-      }
-    )
+          this.saveTimeSheets(`${month}.${year}`, data);
+          return data;
+        }
+      );
   };
 
   updateTimeSheetForDate = (date, sheet) => {
@@ -35,12 +33,10 @@ export default class TimeSheetsRepository {
     const month = date.getMonth() + 1;
     return this.api.updateTimeSheet(token, profileId, year, month, sheet)
       .map(data => {
-        const timeSheets = this.storage.loadData(TIME_SHEETS);
-        timeSheets[`${month}.${year}`] = data;
-        this.storage.saveData(TIME_SHEETS, timeSheets);
-        return data
-      }
-    )
+          this.saveTimeSheets(`${month}.${year}`, data);
+          return data;
+        }
+      );
   };
 
   getTimeSheetsForDate = (date) => {
@@ -49,12 +45,17 @@ export default class TimeSheetsRepository {
     const month = date.getMonth() + 1;
     return this.api.getTimeSheets(token, year, month)
       .map(data => {
-        const timeSheets = this.storage.loadData(TIME_SHEETS);
-        for (const timeSheet in data)
-          timeSheets[`${month}.${year}`] = data;
-        this.storage.saveData(TIME_SHEETS, timeSheets);
-        return data
-      }
+          this.saveTimeSheets(`${month}.${year}`, data);
+          return data;
+        }
       )
   };
+
+  saveTimeSheets(name, timeSheets) {
+    const loadedData = this.storage.loadData(TIME_SHEETS);
+    const loadedTimeSheets = loadedData === null ? {} : loadedData;
+    for (const timeSheet of timeSheets)
+      loadedTimeSheets[name] = timeSheet;
+    this.storage.saveData(TIME_SHEETS, loadedTimeSheets);
+  }
 }
