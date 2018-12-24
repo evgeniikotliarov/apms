@@ -27,7 +27,8 @@ class Storage:
     def find_by_id(self, entity_id):
         entity = self._find_by(id=entity_id).first()
         if not entity:
-            raise NotFoundError("{} with id {} not found".format(self.type.__name__, entity_id))
+            message = "{} with id {} not found".format(self.type.__name__, entity_id)
+            raise NotFoundError(message)
         return entity
 
     def find_first_by(self, **kwargs):
