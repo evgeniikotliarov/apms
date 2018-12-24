@@ -1,4 +1,4 @@
-export React, {Component} from 'react';
+import React, {Component} from 'react';
 import './WorkingDaysTable.css';
 
 export default class DayCage extends Component {
