@@ -9,24 +9,29 @@ export default class UsersRepository {
 
   logIn = (email, password) => {
     return this.api.logIn(email, password)
-      .map(data =>
-        this.storage.saveData(TOKEN, data[TOKEN])
+      .map(data => {
+          this.storage.saveData(TOKEN, data[TOKEN]);
+          return data;
+        }
       );
   };
 
   signUp = (name, email, password) => {
     return this.api.signUp(name, email, password)
-      .map(data =>
-        this.storage.saveData(TOKEN, data[TOKEN]))
+      .map(data => {
+          this.storage.saveData(TOKEN, data[TOKEN]);
+          return data;
+        }
+      )
   };
 
   getProfileData = () => {
     const token = this.storage.loadData(TOKEN);
     return this.api.getProfile(token)
       .map(data => {
-        this.storage.saveData(PROFILE, data);
-        return data
-      }
-    )
+          this.storage.saveData(PROFILE, data);
+          return data;
+        }
+      )
   };
 }
