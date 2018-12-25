@@ -13,12 +13,13 @@ export default class WorkingDaysTable extends Component {
   fetchTimeSheets() {
     Application.timeSheetsUseCase.getTimeSheetForCurrentDate()
       .subscribe(timeSheet => {
-        console.log(timeSheet);
+        this.setState({timeSheetId: timeSheet.id});
         this.setState({tableSheets: timeSheet.sheetsDay});
       });
   }
 
   state = {
+    timeSheetId: '',
     year: '',
     month: '',
     allMonth: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август",
@@ -36,7 +37,7 @@ export default class WorkingDaysTable extends Component {
     return (
       <div>
         <div className="date">{convertMonth}-{year}</div>
-        <div className="table">
+        <div>
           {this.renderCages()}
         </div>
       </div>
@@ -44,10 +45,16 @@ export default class WorkingDaysTable extends Component {
   };
 
   renderCages() {
+
     return this.state.tableSheets.map((day, index ) => {
       return (
-        <div key={index}>
-          <DayCage day={day} />
+
+        <div className="body" key={index}>
+          <div className="table">
+            <div>
+              <DayCage day={day} timeSheetId={this.state.timeSheetId} />
+            </div>
+          </div>
         </div>)
     })
   };
