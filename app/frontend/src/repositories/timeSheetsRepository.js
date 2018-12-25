@@ -31,12 +31,28 @@ export default class TimeSheetsRepository {
     const profileId = this.storage.loadData(PROFILE).id;
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
+    // noinspection JSUnusedLocalSymbols
     return this.api.updateTimeSheet(token, profileId, year, month, sheet)
-      .map(data => {
-          this.saveTimeSheets(`${month}.${year}`, data);
-          return data;
-        }
-      );
+      .map(response => {
+        const loadedTimeSheets = this.storage.loadData(TIME_SHEETS);
+        loadedTimeSheets[`${month}.${year}`].sheet = sheet;
+        this.storage.saveData(TIME_SHEETS, loadedTimeSheets);
+        return response;
+      });
+  };
+
+  updateOneDayOfTimeSheet = (timeSheetId, day, value) => {
+    const token = this.storage.loadData(TOKEN);
+    return this.api.updateOneDayOfTimeSheet(token, timeSheetId, day, value)
+      .map(status => {
+        const loadedTimeSheets = this.storage.loadData(TIME_SHEETS);
+        Object.entries(loadedTimeSheets, entry => {
+          const key = entry[0];
+          loadedTimeSheets[key].sheet[day - 1] = entry[1];
+        });
+        this.storage.saveData(TIME_SHEETS, loadedTimeSheets);
+        return status;
+      });
   };
 
   getTimeSheetsForDate = (date) => {

@@ -4,8 +4,8 @@ export default class TimeSheetUseCase {
     this.repository = repository;
   }
 
-  getTimeSheetForCurrentDay() {
-    return this.repository.getTimeSheetsForCurrentDate()
+  getTimeSheetForCurrentDate() {
+    return this.repository.getTimeSheetForCurrentDate()
       .map(timeSheets => {
         const timeSheet = timeSheets[0];
         timeSheet['sheetsDay'] = this.controller.createBySheet(new Date(), timeSheet.sheet);
@@ -13,13 +13,17 @@ export default class TimeSheetUseCase {
       })
   }
 
-  getTimeSheetsForCurrentDate(date) {
+  getTimeSheetsForDate(date) {
     return this.repository.getTimeSheetsForDate(date)
       .map(timeSheets => {
-        for (const timeSheet of timeSheets) {
-          timeSheet['sheetsDay'] = this.controller.createBySheet(date, timeSheet.sheet)
+        for (const timeSheet of timeSheets) { // noinspection JSUnfilteredForInLoop
+          timeSheet['sheetsDay'] = this.controller.createBySheet(date, timeSheet.sheet);
         }
         return timeSheets;
       })
+  }
+
+  updateOneDayOfTimeSheet(timeSheetId, day, value) {
+    return this.repository.updateOneDayOfTimeSheet(timeSheetId, day, value);
   }
 }
