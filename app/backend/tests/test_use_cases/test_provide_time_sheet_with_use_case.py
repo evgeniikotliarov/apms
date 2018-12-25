@@ -124,6 +124,15 @@ class TestTimeSheetEmployeeUseCase(unittest.TestCase):
         self.assertEqual(saved_time_sheet.rate, 10)
         self.assertEqual(saved_time_sheet.norm, 10)
 
+        storage = TimeSheetsStorage(FakeDb().build())
+        controller = TimeSheetProvider()
+        use_case = UpdateTimeSheetUseCase(controller, storage)
+
+        use_case.update_day_mark(0, 1, 0.5)
+
+        saved_time_sheet = storage.find_by_id(0)
+        self.assertEqual(saved_time_sheet.sheet[0], 0.5)
+
     def test_update_time_sheet(self):
         storage = TimeSheetsStorage(FakeDb().build())
         controller = TimeSheetProvider()

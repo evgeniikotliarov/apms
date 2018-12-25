@@ -57,6 +57,30 @@ class TestEmployeesControllers(unittest.TestCase):
         self.assertEqual(time_sheet['month'], 1)
         self.assertEqual(time_sheet['closed'], False)
 
+    def test_get_time_sheet(self):
+        employee = fixtures.load('admin_user')
+        headers = self.__get_authorization_header_for(employee)
+        path = '/api/time-sheets/{}'.format(1)
+        response = self.client.simulate_get(path=path, headers=headers)
+
+        self.assertEqual(response.status, falcon.HTTP_200)
+
+        time_sheet = response.json
+        saved_time_sheet = self.factory.time_sheet_storage.find_by_id(1)
+
+        self.assertEqual(time_sheet['sheet'], saved_time_sheet.sheet)
+
+    def test_update_one_day(self):
+        employee = fixtures.load('admin_user')
+        headers = self.__get_authorization_header_for(employee)
+        path = '/api/time-sheets/{}'.format(1)
+        body = json.dumps({'day': 1, 'value': 0.5})
+        response = self.client.simulate_patch(path=path, body=body, headers=headers)
+
+        self.assertEqual(response.status, falcon.HTTP_200)
+        time_sheet = self.factory.time_sheet_storage.find_by_id(1)
+        self.assertEqual(time_sheet.sheet[0], 0.5)
+
     def test_update_time_sheet(self):
         employee = fixtures.load('admin_user')
         headers = self.__get_authorization_header_for(employee)
