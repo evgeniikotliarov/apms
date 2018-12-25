@@ -3,7 +3,7 @@ from controllers.calculation_controller import VacationCalculatorController
 from controllers.employee_controllers import RegistrationEmployeeController, \
     GetEmployeeController, GetEmployeesController, AuthenticationEmployeeController, \
     AcceptEmployeeController, GetProfileController
-from controllers.time_sheet_controllers import GetTimeSheetController, \
+from controllers.time_sheet_controllers import TimeSheetController, \
     EmployeeTimeSheetsController, GetEmployeesTimeSheetsController
 from domain.controllers.employee_provider import EmployeeProvider
 from domain.controllers.time_sheet_provider import TimeSheetProvider
@@ -96,7 +96,10 @@ class AppFactory(IAppFactory):
         self.get_employee_controller = GetEmployeeController(self.app.get_employee_use_case)
         self.get_employees_controller = GetEmployeesController(self.app.get_employees_use_case)
 
-        self.get_time_sheet_controller = GetTimeSheetController(self.app.get_time_sheet_use_case)
+        self.time_sheet_controller = TimeSheetController(
+            self.app.get_time_sheet_use_case,
+            self.app.update_time_sheet_use_case
+        )
         self.employee_time_sheets_controller = EmployeeTimeSheetsController(
             self.app.get_time_sheets_use_case, self.app.update_time_sheet_use_case)
         self.get_employees_time_sheets_controller = GetEmployeesTimeSheetsController(
@@ -116,7 +119,7 @@ class AppFactory(IAppFactory):
         self.app.add_route('/api/employees/{employee_id}', self.get_employee_controller)
         self.app.add_route('/api/employees', self.get_employees_controller)
 
-        self.app.add_route('/api/time-sheets/{time_sheets_id}', self.get_time_sheet_controller)
+        self.app.add_route('/api/time-sheets/{time_sheet_id}', self.time_sheet_controller)
         self.app.add_route('/api/employees/{employee_id}/time-sheets',
                            self.employee_time_sheets_controller)
         self.app.add_route('/api/employees/time-sheets', self.get_employees_time_sheets_controller)

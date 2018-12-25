@@ -66,7 +66,7 @@ class CreateTimeSheetUseCase:
         self.storage = storage
 
     def create_time_sheet(self, date: datetime, sheet,
-                          employee_id: int, rate: int, norm: int=None):
+                          employee_id: int, rate: int, norm: int = None):
         time_sheet = self.controller.create(date, sheet, employee_id, rate, norm)
         self.storage.save(time_sheet)
 
@@ -75,6 +75,14 @@ class UpdateTimeSheetUseCase:
     def __init__(self, controller: TimeSheetProvider, storage: TimeSheetsStorage):
         self.provider = controller
         self.storage = storage
+
+    def update_day_mark(self, time_sheet_id, day, value):
+        time_sheet = self.storage.find_by_id(time_sheet_id)
+        sheet = time_sheet.sheet[:]
+        sheet[day - 1] = value
+        time_sheet.sheet = sheet
+
+        self.storage.update(time_sheet)
 
     def update_time_sheet(self, time_sheet_id, norm=None, sheet=None):
         time_sheet = self.storage.find_by_id(time_sheet_id)

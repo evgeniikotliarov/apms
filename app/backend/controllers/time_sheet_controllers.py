@@ -7,17 +7,27 @@ from utils.to_num_converter import ToNum
 
 
 # noinspection PyUnusedLocal
-class GetTimeSheetController:
-    def __init__(self, use_case: GetTimeSheetUseCase):
-        self.use_case = use_case
+class TimeSheetController:
+    def __init__(self, use_case_get: GetTimeSheetUseCase, use_case_update: UpdateTimeSheetUseCase):
+        self.use_case_get = use_case_get
+        self.use_case_update = use_case_update
         self.user_email = None
 
     @authorized_controller_handler
     def on_get(self, request, response, time_sheet_id):
         converter = ToNum()
         time_sheet_id = converter.to_num(time_sheet_id)
-        time_sheet = self.use_case.get_by_id(time_sheet_id)
+        time_sheet = self.use_case_get.get_by_id(time_sheet_id)
         response.body = json.dumps(time_sheet)
+
+    @authorized_controller_handler
+    def on_patch(self, request, response, time_sheet_id):
+        converter = ToNum()
+        time_sheet_id = converter.to_num(time_sheet_id)
+        day_value = converter.to_num(request.media.get('value'))
+        day = converter.to_num(request.media.get('day'))
+
+        self.use_case_update.update_day_mark(time_sheet_id, day, day_value)
 
 
 # noinspection PyUnusedLocal
