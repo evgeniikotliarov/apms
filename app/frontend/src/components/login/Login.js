@@ -52,10 +52,13 @@ class Login extends Component {
     const data = {email: this.state.email, password: this.state.password};
     const errorMessage = data.email && data.password ? null : data.email ? 'Введите пароль' :
       data.password ? 'Введите email' : 'Введите email и пароль';
-    this.setState(errorMessage);
+    this.setState({errorMessage});
     if (this.state.errorMessage) return;
     Application.userUseCase.logIn(data.email, data.password)
-      .subscribe(() => this.props.history.push('/profile'))
+      .subscribe(() => {
+        Application.userUseCase.getProfile()
+          .subscribe(() => this.props.history.push('/profile'))
+      });
   };
 
   onSignupClick = () => {

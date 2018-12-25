@@ -5,9 +5,9 @@ import Application from "../../Application";
 
 export default class DayCage extends Component {
   COLORS = {
-    0: '#e55',
-    0.5: '#ee5',
-    1: '#5e5',
+    0: '#ffd6cc',
+    0.5: '#ffffb3',
+    1: '#d9ffcc',
     weekend: '#aaa',
     workday: '#ddd'
   };
@@ -37,9 +37,9 @@ export default class DayCage extends Component {
     return (
       <div style={style}>
         <p>{day.dayOfWeek}</p>
-        <p>
+        <p><b>
           {day.day}
-        </p>
+        </b></p>
         <select value={this.state.value}
                 onChange={(event) => this.handleUpdateDay(event)}>
           <option>0</option>

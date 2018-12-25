@@ -5,12 +5,7 @@ import DayCage from "./DayCage";
 
 
 export default class WorkingDaysTable extends Component {
-  constructor() {
-    super();
-    this.fetchTimeSheets();
-  }
-
-  fetchTimeSheets() {
+  componentWillMount() {
     Application.timeSheetsUseCase.getTimeSheetForCurrentDate()
       .subscribe(timeSheet => {
         this.setState({timeSheetId: timeSheet.id});
@@ -37,7 +32,7 @@ export default class WorkingDaysTable extends Component {
     return (
       <div>
         <div className="date">{convertMonth}-{year}</div>
-        <div>
+        <div className="dayCage">
           {this.renderCages()}
         </div>
       </div>
@@ -48,7 +43,6 @@ export default class WorkingDaysTable extends Component {
 
     return this.state.tableSheets.map((day, index ) => {
       return (
-
         <div className="body" key={index}>
           <div className="table">
             <div>

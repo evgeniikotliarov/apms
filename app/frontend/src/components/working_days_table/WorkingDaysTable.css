@@ -11,8 +11,12 @@
     border: solid 1px black;
     margin: 0 auto 50px;
 }
+.dayCage {
+    text-align: center;
+    padding-bottom: 20px;
+}
 .table {
-    width: 150px;
+    width: 120px;
     margin: 0 auto;
     padding: 1px;
     text-align: center;
@@ -20,8 +24,8 @@
     border: solid 1px black;
 }
 .body {
-    width: 120px;
     display: inline-flex;
+    margin-bottom: 5px;
 }
 select {
     padding: 5px;
@@ -32,4 +36,12 @@ select {
 p {
     margin: 0;
     padding: 0;
+}
+.userStats {
+    display: flex;
+    border: solid 1px blue;
+}
+.userStats div {
+    padding: 10px;
+    border: solid 1px red;
 }
