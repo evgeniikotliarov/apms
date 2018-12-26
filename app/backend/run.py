@@ -1,8 +1,8 @@
 from wsgiref import simple_server
 
-from app_factory import AppFactory
+from tests.fake_app_factory import TestCopyOriginalAppFactory
 
-application_factory = AppFactory()
+application_factory = TestCopyOriginalAppFactory()
 application = application_factory.create_app()
 
 if __name__ == '__main__':
