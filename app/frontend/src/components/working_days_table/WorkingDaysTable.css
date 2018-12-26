@@ -1,7 +1,8 @@
 .container {
     width: 1400px;
-    border: solid black 1px;
     margin: 0 auto;
+    border-right: solid 1px blueviolet;
+    border-left: solid 1px blueviolet;
 }
 .date {
     text-align: center;
@@ -39,9 +40,15 @@ p {
 }
 .userStats {
     display: flex;
-    border: solid 1px blue;
 }
 .userStats div {
-    padding: 10px;
-    border: solid 1px red;
+    background-color: rgba(1, 0, 0, 0.1);
+    padding: 2px;
+    margin-right: 5px;
+    border-radius: 5px;
+    border: solid 1px #222222;
+}
+.userStats div:last-child {
+    margin-right: 0;
+
 }

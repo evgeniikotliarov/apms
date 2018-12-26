@@ -4,8 +4,8 @@ import '../working_days_table/WorkingDaysTable.css'
 
 class UserStats extends Component {
   state = {
-    vacation: null,
-    rate: null,
+    vacation: '',
+    rate: '',
     employment_date: '',
     acceptance_date: '',
     activated: '',
@@ -37,7 +37,7 @@ class UserStats extends Component {
     return (
       <div className="userStats">
         <div>
-          <p>Зачислено отпускных дней:<b>{this.state.vacation === null ? "0" : this.state.vacation }</b></p>
+          <p>Зачислено отпускных дней: <b>{this.state.vacation === null ? "0" : this.state.vacation }</b></p>
         </div>
         <div>
           <p>Тариф отпускных дней: <b>{this.state.rate}</b></p>
