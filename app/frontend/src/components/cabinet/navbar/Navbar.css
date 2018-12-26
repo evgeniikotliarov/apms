@@ -20,3 +20,6 @@
     border-radius: 3px;
     border: solid 1px black;
 }
+.name {
+    float: right;
+}
