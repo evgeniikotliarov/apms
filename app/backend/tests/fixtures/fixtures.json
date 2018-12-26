@@ -6,7 +6,7 @@
     "email": "admin@email.com",
     "activated": true,
     "is_admin": true,
-    "vacation": 1.0,
+    "vacation": 15.0,
     "employment_date": "2018.01.01",
     "acceptance_date": "2018.01.01"
   },
