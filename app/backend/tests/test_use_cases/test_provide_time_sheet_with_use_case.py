@@ -2,6 +2,7 @@ import unittest
 from datetime import datetime
 
 from domain.controllers.time_sheet_provider import TimeSheetProvider
+from domain.controllers.vacation_calculator import VacationCalculator
 from exceptions import NotFoundError
 from storages.storages import TimeSheetsStorage
 from tests import fixtures
@@ -124,19 +125,23 @@ class TestTimeSheetEmployeeUseCase(unittest.TestCase):
         self.assertEqual(saved_time_sheet.rate, 10)
         self.assertEqual(saved_time_sheet.norm, 10)
 
+    def test_update_one_day(self):
         storage = TimeSheetsStorage(FakeDb().build())
         controller = TimeSheetProvider()
-        use_case = UpdateTimeSheetUseCase(controller, storage)
+        calculator = VacationCalculator()
+        use_case = UpdateTimeSheetUseCase(controller, calculator, storage)
 
         use_case.update_day_mark(0, 1, 0.5)
 
         saved_time_sheet = storage.find_by_id(0)
         self.assertEqual(saved_time_sheet.sheet[0], 0.5)
+        self.assertNotEqual(saved_time_sheet.vacation, 1.0)
 
     def test_update_time_sheet(self):
         storage = TimeSheetsStorage(FakeDb().build())
         controller = TimeSheetProvider()
-        use_case = UpdateTimeSheetUseCase(controller, storage)
+        calculator = VacationCalculator()
+        use_case = UpdateTimeSheetUseCase(controller, calculator, storage)
 
         use_case.update_time_sheet(0, sheet=fixtures.load('february'), norm=19)
 
@@ -144,6 +149,7 @@ class TestTimeSheetEmployeeUseCase(unittest.TestCase):
         self.assertEqual(saved_time_sheet.id, 0)
         self.assertEqual(saved_time_sheet.sheet, fixtures.load('february'))
         self.assertEqual(saved_time_sheet.norm, 19)
+        self.assertNotEqual(saved_time_sheet.vacation, 1.0)
 
         use_case.update_time_sheet_for(0, 2018, 1, sheet=fixtures.load('full_january'))
 
@@ -151,11 +157,13 @@ class TestTimeSheetEmployeeUseCase(unittest.TestCase):
         self.assertEqual(saved_time_sheet.employee_id, 0)
         self.assertEqual(saved_time_sheet.sheet, fixtures.load('full_january'))
         self.assertEqual(saved_time_sheet.norm, 19)
+        self.assertNotEqual(saved_time_sheet.vacation, 1.0)
 
     def test_update_time_sheet_for_not_exist(self):
         storage = TimeSheetsStorage(FakeDb().build())
         controller = TimeSheetProvider()
-        use_case = UpdateTimeSheetUseCase(controller, storage)
+        calculator = VacationCalculator()
+        use_case = UpdateTimeSheetUseCase(controller, calculator, storage)
         try:
             storage.find_first_by(employee_id=3, year=2018, month=5)
             raise Exception('Time sheet should not exist')

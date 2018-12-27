@@ -73,13 +73,26 @@ class TestEmployeesControllers(unittest.TestCase):
     def test_update_one_day(self):
         employee = fixtures.load('admin_user')
         headers = self.__get_authorization_header_for(employee)
-        path = '/api/time-sheets/{}'.format(1)
-        body = json.dumps({'day': 1, 'value': 0.5})
+        path = '/api/time-sheets/{}/day/{}'.format(1, 1)
+        body = json.dumps({'value': 0.5})
         response = self.client.simulate_patch(path=path, body=body, headers=headers)
 
         self.assertEqual(response.status, falcon.HTTP_200)
-        time_sheet = self.factory.time_sheet_storage.find_by_id(1)
-        self.assertEqual(time_sheet.sheet[0], 0.5)
+        time_sheet = response.json
+        self.assertEqual(time_sheet['sheet'][0], 0.5)
+        self.assertNotEqual(time_sheet['vacation'], 1.)
+
+    def test_update_time_sheet_by_time_sheet_id(self):
+        employee = fixtures.load('admin_user')
+        headers = self.__get_authorization_header_for(employee)
+        path = '/api/time-sheets/{}'.format(1)
+        sheet = fixtures.load('full_january')
+        body = json.dumps({'year': 2018, 'month': 1, 'sheet': sheet})
+        response = self.client.simulate_patch(path=path, body=body, headers=headers)
+
+        self.assertEqual(response.status, falcon.HTTP_200)
+        time_sheet = response.json
+        self.assertEqual(time_sheet['sheet'], sheet)
 
     def test_update_time_sheet(self):
         employee = fixtures.load('admin_user')
@@ -90,11 +103,25 @@ class TestEmployeesControllers(unittest.TestCase):
         response = self.client.simulate_patch(path=path, body=body, headers=headers)
 
         self.assertEqual(response.status, falcon.HTTP_200)
-        time_sheet = self.factory.time_sheet_storage.find_by(
-            employee_id=employee['id'],
-            year=2018,
-            month=1)[0]
-        self.assertEqual(time_sheet.sheet, sheet)
+        time_sheet = response.json
+        self.assertEqual(time_sheet['sheet'], sheet)
+
+    def test_update_time_sheet_without_data(self):
+        employee = fixtures.load('admin_user')
+        headers = self.__get_authorization_header_for(employee)
+        path = '/api/employees/{}/time-sheets'.format(employee['id'])
+        sheet = fixtures.load('full_january')
+        body = json.dumps({'year': 2018, 'sheet': sheet})
+        response = self.client.simulate_patch(path=path, body=body, headers=headers)
+        self.assertEqual(response.status, falcon.HTTP_400)
+
+        body = json.dumps({'month': 1, 'sheet': sheet})
+        response = self.client.simulate_patch(path=path, body=body, headers=headers)
+        self.assertEqual(response.status, falcon.HTTP_400)
+
+        body = json.dumps({'year': 2018, 'month': 1})
+        response = self.client.simulate_patch(path=path, body=body, headers=headers)
+        self.assertEqual(response.status, falcon.HTTP_400)
 
     def __get_authorization_header_for(self, employee):
         email = employee['email']
