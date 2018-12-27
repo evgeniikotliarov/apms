@@ -24,3 +24,12 @@ class TestSheetInitializer(unittest.TestCase):
 
         time_sheet = TimeSheetProvider.update_with(time_sheet, norm=17)
         self.assertEqual(time_sheet.norm, 17)
+
+    def test_calculate_norm_for_day(self):
+        time_sheet = TimeSheet()
+
+        initializer = TimeSheetInitHelper(datetime(2018, 1, 1))
+        time_sheet.sheet = initializer.empty_sheet
+        time_sheet.norm = initializer.calculate_norm_for_day(16)
+        self.assertEqual(time_sheet.norm, 12)
+        self.assertEqual(time_sheet.sheet.__len__(), 31)

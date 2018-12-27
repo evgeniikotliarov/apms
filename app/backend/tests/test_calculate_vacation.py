@@ -11,6 +11,31 @@ class TestRateCalculator(unittest.TestCase):
         self.january_time_sheet = fixtures.load_instance('january_time_sheet', TimeSheet)
         self.february_time_sheet = fixtures.load_instance('february_time_sheet', TimeSheet)
 
+    def test_calculate_with_half_time_sheet_for_day(self):
+        time_sheet = self.january_time_sheet
+        time_sheet.sheet = fixtures.load("half_january")
+        calculator = VacationCalculator()
+
+        time_sheet.rate = RateCalculator.MIN_DAYS
+        time_sheet = calculator.calculate_vacation(time_sheet, 12)
+        self.assertEqual(time_sheet.vacation, 2.14)
+        self.assertEqual(time_sheet.norm, 23)
+
+        time_sheet.rate = RateCalculator.DAYS_FOR_3_YEARS
+        time_sheet = calculator.calculate_vacation(time_sheet, 12)
+        self.assertEqual(time_sheet.vacation, 1.88)
+        self.assertEqual(time_sheet.norm, 23)
+
+        time_sheet.rate = RateCalculator.DAYS_FOR_2_YEARS
+        time_sheet = calculator.calculate_vacation(time_sheet, 12)
+        self.assertEqual(time_sheet.vacation, 1.67)
+        self.assertEqual(time_sheet.norm, 23)
+
+        time_sheet.rate = RateCalculator.MAX_DAYS
+        time_sheet = calculator.calculate_vacation(time_sheet, 12)
+        self.assertEqual(time_sheet.vacation, 1.5)
+        self.assertEqual(time_sheet.norm, 23)
+
     def test_calculate_with_full_time_sheet(self):
         time_sheet = self.january_time_sheet
         calculator = VacationCalculator()

@@ -31,7 +31,7 @@ class ProvideTimeSheetTestCase(unittest.TestCase):
         self.assertIsNotNone(time_sheet)
         self.assertIsNone(time_sheet.id)
         self.assertIsNone(time_sheet.rate)
-        self.assertIsNone(time_sheet.vacation)
+        self.assertEqual(time_sheet.vacation, 0)
         self.assertEqual(time_sheet.norm, 23)
         self.assertEqual(time_sheet.sheet.__len__(), 31)
         self.assertEqual(time_sheet.year, 2018)
