@@ -23,3 +23,8 @@
 .name {
     float: right;
 }
+.name span {
+    border-right: solid 1px black;
+    padding-right: 3px;
+    padding-left: 2px;
+}
