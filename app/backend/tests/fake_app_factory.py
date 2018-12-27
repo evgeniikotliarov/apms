@@ -27,15 +27,15 @@ class TestCopyOriginalAppFactory(AppFactory):
         self.__load_user('unaccepted_user')
         self.__load_user('unactivated_user')
         self.__load_user('user_with_vacation')
-        self.__create_and_load_time_sheet(date=datetime(2018, 2, 1))
+        self.__create_and_load_time_sheet()
         self.__create_and_load_time_sheet(employee_id=3)
 
     def __create_and_load_time_sheet(self,
                                      date: datetime = datetime(2018, 1, 1),
-                                     sheet=fixtures.load('february'),
+                                     sheet=fixtures.load('january'),
                                      employee_id=0,
                                      rate=RateCalculator.MIN_DAYS,
-                                     norm=21):
+                                     norm=23):
         self.app.create_time_sheet_use_case.create_time_sheet(
             date=date, sheet=sheet, employee_id=employee_id, rate=rate, norm=norm
         )
