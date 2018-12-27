@@ -4,7 +4,7 @@ from controllers.employee_controllers import RegistrationEmployeeController, \
     GetEmployeeController, GetEmployeesController, AuthenticationEmployeeController, \
     AcceptEmployeeController, GetProfileController
 from controllers.time_sheet_controllers import TimeSheetController, \
-    EmployeeTimeSheetsController, GetEmployeesTimeSheetsController
+    EmployeeTimeSheetsController, GetEmployeesTimeSheetsController, DayOfTimeSheetController
 from domain.controllers.employee_provider import EmployeeProvider
 from domain.controllers.time_sheet_provider import TimeSheetProvider
 from domain.controllers.vacation_calculator import VacationCalculator
@@ -38,11 +38,15 @@ class AppFactory(IAppFactory):
         if self.db is None:
             self.db = DbBuilder().build()
 
-        self.employee_storage = EmployeesStorage(self.db)
-        self.employee_provider = EmployeeProvider()
-
-        self.tokenizer = Tokenizer()
         self.to_hash = ToHash()
+        self.tokenizer = Tokenizer()
+
+        self.vacation_calculator = VacationCalculator()
+        self.employee_storage = EmployeesStorage(self.db)
+        self.time_sheet_storage = TimeSheetsStorage(self.db)
+
+        self.employee_provider = EmployeeProvider()
+        self.time_sheet_provider = TimeSheetProvider()
 
         self.app.get_employee_use_case = GetEmployeeUseCase(self.employee_provider,
                                                             self.employee_storage)
@@ -64,9 +68,6 @@ class AppFactory(IAppFactory):
         self.app.admin_rights_employee_use_case = AdminRightsEmployeeUseCase(self.employee_provider,
                                                                              self.employee_storage)
 
-        self.time_sheet_storage = TimeSheetsStorage(self.db)
-        self.time_sheet_provider = TimeSheetProvider()
-
         self.app.get_time_sheet_use_case = GetTimeSheetUseCase(self.time_sheet_provider,
                                                                self.time_sheet_storage)
         self.app.get_time_sheets_use_case = GetTimeSheetsUseCase(self.time_sheet_provider,
@@ -74,11 +75,10 @@ class AppFactory(IAppFactory):
         self.app.create_time_sheet_use_case = CreateTimeSheetUseCase(self.time_sheet_provider,
                                                                      self.time_sheet_storage)
         self.app.update_time_sheet_use_case = UpdateTimeSheetUseCase(self.time_sheet_provider,
+                                                                     self.vacation_calculator,
                                                                      self.time_sheet_storage)
         self.app.close_time_sheet_use_case = CloseTimeSheetUseCase(self.time_sheet_provider,
                                                                    self.time_sheet_storage)
-
-        self.vacation_calculator = VacationCalculator()
 
         self.app.calculate_vacation_use_case = CalculateVacationUseCase(self.vacation_calculator,
                                                                         self.employee_storage,
@@ -97,6 +97,10 @@ class AppFactory(IAppFactory):
         self.get_employees_controller = GetEmployeesController(self.app.get_employees_use_case)
 
         self.time_sheet_controller = TimeSheetController(
+            self.app.get_time_sheet_use_case,
+            self.app.update_time_sheet_use_case
+        )
+        self.day_of_time_sheet_controller = DayOfTimeSheetController(
             self.app.get_time_sheet_use_case,
             self.app.update_time_sheet_use_case
         )
@@ -119,6 +123,8 @@ class AppFactory(IAppFactory):
         self.app.add_route('/api/employees/{employee_id}', self.get_employee_controller)
         self.app.add_route('/api/employees', self.get_employees_controller)
 
+        self.app.add_route('/api/time-sheets/{time_sheet_id}/day/{day}',
+                           self.day_of_time_sheet_controller)
         self.app.add_route('/api/time-sheets/{time_sheet_id}', self.time_sheet_controller)
         self.app.add_route('/api/employees/{employee_id}/time-sheets',
                            self.employee_time_sheets_controller)
