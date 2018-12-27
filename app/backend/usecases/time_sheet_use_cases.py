@@ -1,6 +1,8 @@
 from datetime import datetime
 
+from domain.controllers.time_sheet_initializer import TimeSheetInitHelper
 from domain.controllers.time_sheet_provider import TimeSheetProvider
+from domain.controllers.vacation_calculator import VacationCalculator
 from exceptions import NotFoundError
 from storages.storages import TimeSheetsStorage
 
@@ -72,8 +74,11 @@ class CreateTimeSheetUseCase:
 
 
 class UpdateTimeSheetUseCase:
-    def __init__(self, controller: TimeSheetProvider, storage: TimeSheetsStorage):
-        self.provider = controller
+    def __init__(self, provider: TimeSheetProvider,
+                 calculator: VacationCalculator,
+                 storage: TimeSheetsStorage):
+        self.provider = provider
+        self.calculator = calculator
         self.storage = storage
 
     def update_day_mark(self, time_sheet_id, day, value):
@@ -81,22 +86,33 @@ class UpdateTimeSheetUseCase:
         sheet = time_sheet.sheet[:]
         sheet[day - 1] = value
         time_sheet.sheet = sheet
-
+        norm = self._calculate_norm_for_day(time_sheet, day)
+        time_sheet = self.calculator.calculate_vacation(time_sheet, norm)
         self.storage.update(time_sheet)
 
     def update_time_sheet(self, time_sheet_id, norm=None, sheet=None):
         time_sheet = self.storage.find_by_id(time_sheet_id)
         time_sheet = self.provider.update_with(time_sheet, norm, sheet)
+        time_sheet = self.calculator.calculate_vacation(time_sheet)
         self.storage.update(time_sheet)
 
     def update_time_sheet_for(self, employee_id, year, month, sheet=None, norm=None):
         try:
             time_sheet = self.storage.find_first_by(employee_id=employee_id, year=year, month=month)
+            time_sheet = self.provider.update_with(time_sheet, work_days_sheet=sheet, norm=norm)
+            time_sheet = self.calculator.calculate_vacation(time_sheet)
         except NotFoundError:
             date = datetime(year, month, 1)
             time_sheet = self.provider.create_empty(date, employee_id)
-        time_sheet = self.provider.update_with(time_sheet, work_days_sheet=sheet, norm=norm)
+            time_sheet = self.provider.update_with(time_sheet, work_days_sheet=sheet, norm=norm)
         self.storage.update(time_sheet)
+
+    @classmethod
+    def _calculate_norm_for_day(cls, time_sheet, day):
+        current_date = datetime(time_sheet.year, time_sheet.month, 1)
+        norm_calculator = TimeSheetInitHelper(current_date)
+        norm = norm_calculator.calculate_norm_for_day(day)
+        return norm
 
 
 class CloseTimeSheetUseCase:
