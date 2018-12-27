@@ -21,6 +21,10 @@ class TimeSheetInitHelper:
         return reduce(lambda norm, day: norm + (1 if not self.__is_weekend(day) else 0),
                       self.__get_days_in_month())
 
+    def calculate_norm_for_day(self, target_day):
+        return reduce(lambda norm, day: norm + (1 if not self.__is_weekend(day) else 0),
+                      range(1, target_day + 1))
+
     def __is_weekend(self, day):
         day_of_week = datetime(self.year, self.month, day).weekday()
         return day_of_week in [self.SATURDAY, self.SUNDAY]

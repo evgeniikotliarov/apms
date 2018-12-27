@@ -24,6 +24,7 @@ class TimeSheetProvider:
         initializer = TimeSheetInitHelper(date)
         time_sheet = TimeSheet()
         time_sheet.norm = initializer.norm
+        time_sheet.vacation = 0
         time_sheet.year = date.year
         time_sheet.month = date.month
         time_sheet.sheet = initializer.empty_sheet

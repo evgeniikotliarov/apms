@@ -4,10 +4,11 @@ from domain.models.time_sheet import TimeSheet
 
 
 class VacationCalculator:
-    def calculate_vacation(self, time_sheet: TimeSheet):
+    def calculate_vacation(self, time_sheet: TimeSheet, norm=None):
         days_worked = self._calculate_days_worked(time_sheet.sheet)
         vacation = self._calculate_vacation(days_worked, time_sheet.rate)
-        used_vacation = self._calculate_used_vacation(days_worked, time_sheet.norm)
+        using_norm = norm if norm else time_sheet.norm
+        used_vacation = self._calculate_used_vacation(days_worked, using_norm)
         time_sheet.vacation = round(vacation - used_vacation, 2)
         return time_sheet
 
