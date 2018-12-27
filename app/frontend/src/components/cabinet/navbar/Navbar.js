@@ -19,9 +19,9 @@ class Navbar extends Component {
         <ul className="ul">
           <li className="li"><a href="#">My statistic</a></li>
           <li className="li"><a href="#">Other</a></li>
-          <li className="li name"><a href="#">Logout</a>
-            <span></span>
-            <a href="#"> {this.state.name}</a></li>
+          <li className="li name"><a href="#"> {this.state.name}</a>
+            <span><a href="#">Logout</a></span>
+          </li>
         </ul>
       </div>
     )
