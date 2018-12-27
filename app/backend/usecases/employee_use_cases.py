@@ -1,7 +1,8 @@
 from datetime import datetime
 
 from domain.controllers.employee_provider import EmployeeProvider
-from exceptions import AuthenticationError, NotFoundError, AuthorizationError
+from exceptions import AuthenticationError, NotFoundError, AuthorizationError, \
+    DeactivatedEmployeeError
 from storages.storages import EmployeesStorage
 from utils.hash_maker import ToHash
 from utils.tokenizer import Tokenizer
@@ -71,6 +72,8 @@ class CheckEmployeeUseCase:
             check_password = self.hash_maker.check_with_hash(password, employee.password)
             if not check_password:
                 raise AuthenticationError()
+            if not employee.activated:
+                raise DeactivatedEmployeeError()
             token_data = {'email': email, 'password': employee.password}
             return self.tokenizer.get_token_by_data(token_data)
         except NotFoundError:

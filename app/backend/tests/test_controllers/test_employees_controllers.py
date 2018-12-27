@@ -3,6 +3,7 @@ import unittest
 
 from falcon import testing, falcon
 
+from exceptions import DeactivatedEmployeeError
 from tests import fixtures
 from tests.fake_app_factory import TestCopyOriginalAppFactory
 
@@ -33,6 +34,15 @@ class TestEmployeesControllers(unittest.TestCase):
         response = self.client.simulate_post('/api/log-in', body=json.dumps(data))
         self.assertEqual(response.status, falcon.HTTP_200)
         self.assertIsNotNone(response.json['token'])
+
+    def test_authentication_deactivated_user(self):
+        data = {
+            'password': 'user',
+            'email': 'unactivated@email.com',
+        }
+
+        response = self.client.simulate_post('/api/log-in', body=json.dumps(data))
+        self.assertEqual(response.status, DeactivatedEmployeeError().get_http_code())
 
     def test_register_user(self):
         admin = fixtures.load('admin_user')
