@@ -45,6 +45,7 @@ class DayOfTimeSheetController:
     def on_get(self, request, response, time_sheet_id, day):
         converter = ToNum()
         time_sheet_id = converter.to_num(time_sheet_id)
+        day = converter.to_num(day)
         time_sheet = self.use_case_get.get_by_id(time_sheet_id)
         response.body = json.dumps(time_sheet['sheet'][day - 1])
 

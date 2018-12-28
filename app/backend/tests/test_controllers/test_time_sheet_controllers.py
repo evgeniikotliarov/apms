@@ -70,6 +70,16 @@ class TestEmployeesControllers(unittest.TestCase):
 
         self.assertEqual(time_sheet['sheet'], saved_time_sheet.sheet)
 
+    def test_get_day_of_time_sheet(self):
+        employee = fixtures.load('admin_user')
+        headers = self.__get_authorization_header_for(employee)
+        path = '/api/time-sheets/{}/day/{}'.format(1, 1)
+        response = self.client.simulate_get(path=path, headers=headers)
+
+        self.assertEqual(response.status, falcon.HTTP_200)
+        day_value = response.json
+        self.assertEqual(day_value, 1)
+
     def test_update_one_day(self):
         employee = fixtures.load('admin_user')
         headers = self.__get_authorization_header_for(employee)
