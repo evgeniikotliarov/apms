@@ -37,11 +37,11 @@ export default class TimeSheetsApi {
   }
 
   updateOneDayOfTimeSheet(token, timeSheetId, day, value) {
-    const data = {day, value};
+    const data = {value};
     return Rx.Observable
       .fromPromise(
         this.client.patch(
-          `/api/time-sheets/${timeSheetId}`,
+          `/api/time-sheets/${timeSheetId}/day/${day}`,
           JSON.stringify(data),
           {headers: {Authorization: token}}
         )
