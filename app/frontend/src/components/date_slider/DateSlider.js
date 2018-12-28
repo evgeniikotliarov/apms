@@ -18,6 +18,8 @@ class DateSlider extends Component {
     const currentDate = this.state.currentDate;
     const month = currentDate.getMonth();
     currentDate.setMonth(month - 1);
+    currentDate.setDate(1);
+    this.props.handler(currentDate);
     this.setState({currentDate});
   };
 
@@ -27,6 +29,7 @@ class DateSlider extends Component {
     const currentDate = this.state.currentDate;
     const month = currentDate.getMonth();
     currentDate.setMonth(month + 1);
+    this.props.handler(currentDate);
     this.setState({currentDate});
   };
 

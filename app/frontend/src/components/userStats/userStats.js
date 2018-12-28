@@ -15,12 +15,12 @@ class UserStats extends Component {
   };
 
   componentWillMount() {
-    Application.timeSheetsUseCase.getTimeSheetForCurrentDate()
-      .subscribe(timeSheet => {
-        this.setState({rate: timeSheet.rate});
-        this.setState({closed: timeSheet.closed});
-        this.setState({norm: timeSheet.norm});
-      });
+    // Application.timeSheetsUseCase.getTimeSheetForCurrentDate()
+    //   .subscribe(timeSheet => {
+    //     this.setState({rate: timeSheet.rate});
+    //     this.setState({closed: timeSheet.closed});
+    //     this.setState({norm: timeSheet.norm});
+    //   });
   }
 
   componentDidMount = () => {
@@ -57,9 +57,9 @@ class UserStats extends Component {
         <div>
           <p>Закрыт период: <b>{this.state.closed === true ? "Да" : 'Нет'}</b></p>
         </div>
-
       </div>
     );
   }
 }
+
 export default UserStats;
