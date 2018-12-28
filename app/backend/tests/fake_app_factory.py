@@ -29,6 +29,18 @@ class TestCopyOriginalAppFactory(AppFactory):
         self.__load_user('user_with_vacation')
         self.__create_and_load_time_sheet()
         self.__create_and_load_time_sheet(employee_id=3)
+        self.__create_and_load_time_sheet(
+            date=datetime(2018, 2, 1),
+            sheet=fixtures.load('february')
+        )
+        self.__create_and_load_time_sheet(
+            date=datetime(2018, 3, 1),
+            sheet=fixtures.load('january')
+        )
+        self.__create_and_load_time_sheet(
+            date=datetime(2017, 12, 1),
+            sheet=fixtures.load('january')
+        )
 
     def __create_and_load_time_sheet(self,
                                      date: datetime = datetime(2018, 1, 1),
