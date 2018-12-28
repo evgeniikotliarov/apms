@@ -13,6 +13,16 @@ export default class TimeSheetUseCase {
       })
   }
 
+  getTimeSheetForDate(date) {
+    return this.repository.getTimeSheetForDate(date)
+      .map(timeSheets => {
+        const timeSheet = timeSheets[0];
+        console.log(timeSheet, 'asdasd');
+        timeSheet['sheetsDay'] = this.controller.createBySheet(date, timeSheet.sheet);
+        return timeSheet;
+      })
+  }
+
   getTimeSheetsForDate(date) {
     return this.repository.getTimeSheetsForDate(date)
       .map(timeSheets => {
