@@ -22,17 +22,19 @@ export default class DayCage extends Component {
 
   handleUpdateDay(event) {
     const value = event.target.value;
-    const timeSheetId = this.state.timeSheetId;
+    const timeSheetId = this.props.timeSheetId;
     const day = this.state.day;
     Application.timeSheetsUseCase.updateOneDayOfTimeSheet(timeSheetId, day, value)
-      .subscribe(() => {
+      .subscribe(timeSheet => {
         this.setState({value});
         this.setState({color: this.COLORS[value]});
+        this.props.handler(timeSheet);
       });
   }
 
   render() {
-    const {day} = this.props;
+    const day = this.props.day;
+    this.state.color = this.COLORS[day.value];
     const style = {backgroundColor: this.state.color};
     return (
       <div style={style}>
@@ -40,7 +42,7 @@ export default class DayCage extends Component {
         <p><b>
           {day.day}
         </b></p>
-        <select value={this.state.value}
+        <select value={day.value}
                 onChange={(event) => this.handleUpdateDay(event)}>
           <option>0</option>
           <option>0.5</option>
