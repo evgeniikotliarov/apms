@@ -2,13 +2,12 @@ import React, {Component} from 'react';
 import './WorkingDaysTable.css';
 import Application from "../../Application";
 import DayCage from "./DayCage";
-import DateSlider from "../date-slider/DateSlider";
+import DateSlider from "../date_slider/DateSlider";
+import UserStats from "../userStats/userStats";
 
 export default class WorkingDaysTable extends Component {
   state = {
-    timeSheetId: '',
-    tableSheets: [],
-    date: new Date()
+    timeSheet: null,
   };
 
   componentWillMount() {
@@ -18,15 +17,13 @@ export default class WorkingDaysTable extends Component {
   handleFetchTimeSheet = (date) => {
     Application.timeSheetsUseCase.getTimeSheetForDate(date)
       .subscribe(timeSheet => {
-        if (timeSheet === undefined) {
-          return;
-        }
-        console.log(timeSheet);
-        //TODO fixed timesheet
-        this.setState({date});
-        this.setState({timeSheetId: timeSheet.id});
-        this.setState({tableSheets: timeSheet.sheetsDay});
+        if(timeSheet === undefined) return;
+        this.setState({date, timeSheet})
       });
+  };
+
+  handleUpdateTimeSheet = (timeSheet) => {
+    this.setState({timeSheet})
   };
 
   render = () => {
@@ -38,17 +35,23 @@ export default class WorkingDaysTable extends Component {
         <div className="dayCage">
           {this.renderCages()}
         </div>
+        <UserStats timeSheet={this.state.timeSheet}/>
       </div>
     )
   };
 
   renderCages() {
-    return this.state.tableSheets.map((day, index) => {
+    const timeSheet = this.state.timeSheet;
+    if (timeSheet === null) return;
+    return timeSheet.sheetsDay.map((day, index) => {
       return (
         <div className="body" key={index}>
           <div className="table">
             <div>
-              <DayCage day={day} timeSheetId={this.state.timeSheetId}/>
+              <DayCage day={day}
+                       timeSheetId={timeSheet.id}
+                       handler={this.handleUpdateTimeSheet}
+              />
             </div>
           </div>
         </div>)
