@@ -7,7 +7,7 @@ import Application from "../../Application";
 class SignUp extends Component {
   state = {
     email: '',
-    fullname: '',
+    name: '',
     password: '',
     errorMessage: null
   };
@@ -25,7 +25,7 @@ class SignUp extends Component {
           <label className="for-label">Имя:</label>
           <input className="for-input" type="text" placeholder="Name"
                  onChange={this.onFullnameFieldChange}
-                 value={this.state.fullname}/>
+                 value={this.state.name}/>
           <label className="for-label">Пароль:</label>
           <input className="for-input" type="password" placeholder="Password"
                  onChange={this.onPasswordFieldChange}
@@ -51,7 +51,7 @@ class SignUp extends Component {
   };
 
   onFullnameFieldChange = (event) => {
-    this.setState({fullname: event.target.value});
+    this.setState({name: event.target.value});
   };
 
   onPasswordFieldChange = (event) => {
@@ -67,13 +67,13 @@ class SignUp extends Component {
     const data = {
       email: this.state.email,
       password: this.state.password,
-      fullname: this.state.fullname
+      name: this.state.name
     };
     const errorMessage = data.email && data.password ? null : data.email ? 'Введите пароль' :
       data.password ? 'Введите email' : 'Введите email и пароль';
     this.setState(errorMessage);
     if (this.state.errorMessage) return;
-    Application.userUseCase.logIn(data.email, data.password)
+    Application.userUseCase.signUp(data.name, data.email, data.password)
       .subscribe(() => this.props.history.push('/profile'))
   };
 }
