@@ -34,6 +34,12 @@ export default class TimeSheetUseCase {
   }
 
   updateOneDayOfTimeSheet(timeSheetId, day, value) {
-    return this.repository.updateOneDayOfTimeSheet(timeSheetId, day, value);
+    return this.repository.updateOneDayOfTimeSheet(timeSheetId, day, value)
+      .map(timeSheet => {
+          const date = new Date(timeSheet.year, timeSheet.month - 1, 1);
+          timeSheet.sheetsDay = this.controller.createBySheet(date, timeSheet.sheet);
+          return timeSheet;
+        }
+      );
   }
 }
