@@ -3,59 +3,47 @@ import Application from "../../Application";
 import '../workingDaysTable/WorkingDaysTable.css'
 
 class UserStats extends Component {
-  state = {
-    vacation: '',
-    rate: '',
-    employment_date: '',
-    acceptance_date: '',
-    activated: '',
-    closed: '',
-    norm: ''
+  constructor() {
+    super();
+    this.fetchProfile();
+    this.state = {
+      profile: null
+    };
+  }
 
-  };
-
-  componentWillMount() {
-    Application.timeSheetsUseCase.getTimeSheetForCurrentDate()
-      .subscribe(timeSheet => {
-        this.setState({rate: timeSheet.rate});
-        this.setState({closed: timeSheet.closed});
-        this.setState({norm: timeSheet.norm});
-      });
-  };
-
-  componentDidMount = () => {
+  fetchProfile = () => {
     Application.userUseCase.getProfile()
-      .subscribe(profile => {
-        this.setState({vacation: profile.vacation});
-        this.setState({employment_date: profile.employment_date});
-        this.setState({acceptance_date: profile.acceptance_date});
-        this.setState({activated: profile.activated});
-      });
+      .subscribe(profile => this.setState({profile}))
   };
 
   render() {
+    const {timeSheet} = this.props;
+    const profile = this.state.profile;
+    if (!timeSheet || !profile)
+      return (<div className="userStats">loading</div>);
     return (
       <div className="userStats">
         <div>
-          <p>Зачислено отпускных дней: <b>{this.state.vacation === null ? "0" : this.state.vacation }</b></p>
+          <p>Зачислено отпускных дней:
+            <b>{timeSheet.vacation === null ? "0" : timeSheet.vacation}</b></p>
         </div>
         <div>
-          <p>Тариф отпускных дней: <b>{this.state.rate}</b></p>
+          <p>Тариф отпускных дней: <b>{timeSheet.rate}</b></p>
         </div>
         <div>
-          <p>Дата приема: <b>{this.state.employment_date}</b></p>
+          <p>Дата приема: <b>{profile.employment_date}</b></p>
         </div>
         <div>
-          <p>Дата регистрации: <b>{this.state.acceptance_date}</b></p>
+          <p>Дата регистрации: <b>{profile.acceptance_date}</b></p>
         </div>
         <div>
-          <p>Активирован: <b>{this.state.activated === true ? "Да" : 'Нет'}</b></p>
+          <p>Активирован: <b>{profile.activated === true ? "Да" : 'Нет'}</b></p>
         </div>
         <div>
-          <p>Норма рабочих дней: <b>{this.state.norm}</b></p>
+          <p>Норма рабочих дней: <b>{timeSheet.norm}</b></p>
         </div>
         <div>
-          <p>Закрыт период: <b>{this.state.closed === true ? "Да" : 'Нет'}</b></p>
+          <p>Закрыт период: <b>{timeSheet.closed === true ? "Да" : 'Нет'}</b></p>
         </div>
       </div>
     );
