@@ -86,7 +86,11 @@ class UpdateTimeSheetUseCase:
         sheet = time_sheet.sheet[:]
         sheet[day - 1] = value
         time_sheet.sheet = sheet
-        norm = self._calculate_norm_for_day(time_sheet, day)
+        now = datetime.now()
+        if time_sheet.month == now.month:
+            norm = self._calculate_norm_for_day(time_sheet, now.day)
+        else:
+            norm = time_sheet.norm
         time_sheet = self.calculator.calculate_vacation(time_sheet, norm)
         self.storage.update(time_sheet)
 
