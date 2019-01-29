@@ -24,9 +24,8 @@ export default class TimeSheetUseCase {
   getTimeSheetsForDate(date) {
     return this.repository.getTimeSheetsForDate(date)
       .map(timeSheets => {
-        for (const timeSheet of timeSheets) {
-          timeSheet.sheetsDay= this.controller.createBySheet(date, timeSheet.sheet);
-        }
+        for (const timeSheet of timeSheets)
+          timeSheet.sheetsDay = this.controller.createBySheet(date, timeSheet.sheet);
         return timeSheets;
       })
   }
