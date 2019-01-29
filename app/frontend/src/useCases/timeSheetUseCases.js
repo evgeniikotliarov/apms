@@ -8,6 +8,7 @@ export default class TimeSheetUseCase {
     return this.repository.getTimeSheetForCurrentDate()
       .map(timeSheets => {
         const timeSheet = timeSheets[0];
+        if (timeSheet === undefined) return;
         timeSheet['sheetsDay'] = this.controller.createBySheet(new Date(), timeSheet.sheet);
         return timeSheet;
       })
