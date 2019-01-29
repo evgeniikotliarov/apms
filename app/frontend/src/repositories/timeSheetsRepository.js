@@ -20,7 +20,7 @@ export default class TimeSheetsRepository {
     const month = date.getMonth() + 1;
     return this.api.getTimeSheet(token, profileId, year, month)
       .map(data => {
-          this.saveTimeSheets(`${month}.${year}`, data);
+          this.saveTimeSheet(data);
           return data;
         }
       );
@@ -33,9 +33,7 @@ export default class TimeSheetsRepository {
     const month = date.getMonth() + 1;
     return this.api.updateTimeSheet(token, profileId, year, month, sheet)
       .map(timeSheet => {
-        const loadedTimeSheets = this.storage.loadData(TIME_SHEETS);
-        loadedTimeSheets[`${month}.${year}`] = timeSheet;
-        this.storage.saveData(TIME_SHEETS, loadedTimeSheets);
+        this.saveTimeSheet(timeSheet);
         return timeSheet;
       });
   };
@@ -44,9 +42,7 @@ export default class TimeSheetsRepository {
     const token = this.storage.loadData(TOKEN);
     return this.api.updateOneDayOfTimeSheet(token, timeSheetId, day, value)
       .map(timeSheet => {
-        const loadedTimeSheets = this.storage.loadData(TIME_SHEETS);
-        loadedTimeSheets[`${timeSheet.month}.${timeSheet.year}`] = timeSheet;
-        this.storage.saveData(TIME_SHEETS, loadedTimeSheets);
+        this.saveTimeSheet(timeSheet);
         return timeSheet;
       });
   };
@@ -56,18 +52,17 @@ export default class TimeSheetsRepository {
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     return this.api.getTimeSheets(token, year, month)
-      .map(data => {
-          this.saveTimeSheets(`${month}.${year}`, data);
-          return data;
+      .map(timeSheets => {
+          for (const timeSheet of timeSheets)
+            this.saveTimeSheet(timeSheet);
+          return timeSheets;
         }
       )
   };
 
-  saveTimeSheets(name, timeSheets) {
-    const loadedData = this.storage.loadData(TIME_SHEETS);
-    const loadedTimeSheets = loadedData === null ? {} : loadedData;
-    for (const timeSheet of timeSheets)
-      loadedTimeSheets[name] = timeSheet;
+  saveTimeSheet(timeSheet) {
+    const loadedTimeSheets = this.storage.loadData(TIME_SHEETS);
+    loadedTimeSheets[`${timeSheet.month}.${timeSheet.year}`] = timeSheet;
     this.storage.saveData(TIME_SHEETS, loadedTimeSheets);
   }
 }
