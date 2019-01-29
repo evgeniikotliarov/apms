@@ -17,10 +17,10 @@ class Navbar extends Component {
     return (
       <div className="Navbar">
         <ul className="ul">
-          <li className="li"><a href="#">My statistic</a></li>
-          <li className="li"><a href="#">Other</a></li>
-          <li className="li name"><a href="#"> {this.state.name}</a>
-            <span><a href="#">Logout</a></span>
+          <li className="li"><a href="">My statistic</a></li>
+          <li className="li"><a href="">Other</a></li>
+          <li className="li name"><a href=""> {this.state.name}</a>
+            <span><a href="">Logout</a></span>
           </li>
         </ul>
       </div>

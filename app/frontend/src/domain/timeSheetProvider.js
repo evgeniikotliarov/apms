@@ -1,4 +1,6 @@
 class TimeSheetProvider {
+  textDayInWeek = ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
+
   createEmpty = (date) => {
     const timeSheet = [];
     const daysInMonth = this.daysInMonth(date.getFullYear(), date.getMonth());
@@ -24,19 +26,18 @@ class TimeSheetProvider {
   getByTimeSheet = (timeSheet) => {
     const sheet = [];
     for (const sheetDay in timeSheet) { // noinspection JSUnfilteredForInLoop
-      sheet.push(sheetDay['value']);
+      sheet.push(sheetDay.value);
     }
     return sheet;
   };
 
-  daysInMonth = (month, year) => {
-    return new Date(year, month , 0).getDate();
+  daysInMonth = (year, month) => {
+    return new Date(year, month + 1 , 0).getDate();
   };
 
   getDayOfWeek = (year, month, day) => {
-    const textDayInWeek = ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
     const dayWeek = new Date(year, month, day).getDay();
-    return textDayInWeek[dayWeek];
+    return this.textDayInWeek[dayWeek];
   }
 }
 
