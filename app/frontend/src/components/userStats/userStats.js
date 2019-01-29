@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Application from "../../Application";
-import '../working_days_table/WorkingDaysTable.css'
+import '../workingDaysTable/WorkingDaysTable.css'
 
 class UserStats extends Component {
   state = {
@@ -15,13 +15,13 @@ class UserStats extends Component {
   };
 
   componentWillMount() {
-    // Application.timeSheetsUseCase.getTimeSheetForCurrentDate()
-    //   .subscribe(timeSheet => {
-    //     this.setState({rate: timeSheet.rate});
-    //     this.setState({closed: timeSheet.closed});
-    //     this.setState({norm: timeSheet.norm});
-    //   });
-  }
+    Application.timeSheetsUseCase.getTimeSheetForCurrentDate()
+      .subscribe(timeSheet => {
+        this.setState({rate: timeSheet.rate});
+        this.setState({closed: timeSheet.closed});
+        this.setState({norm: timeSheet.norm});
+      });
+  };
 
   componentDidMount = () => {
     Application.userUseCase.getProfile()
