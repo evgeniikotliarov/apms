@@ -1,0 +1,59 @@
+.Navbar {
+}
+
+.navigation-bar {
+    display: block;
+    background: #2a4;
+    margin: 0;
+    padding: 0 32px;
+}
+
+.tab, .log-box {
+    font-family: sans-serif;
+    font-variant-caps: all-petite-caps;
+    display: inline-block;
+    text-align: center;
+    margin: 24px 0;
+}
+
+.tab a, .tab a:visited, .tab a:hover,
+.log-box a, .log-box a:visited, .log-box a:hover {
+    text-decoration: none;
+    border: none;
+    font-size: 18px;
+    padding: 12px 16px;
+}
+
+.tab a, .tab a:visited {
+    color: #222;
+}
+
+.tab a:hover {
+    background: #cfc7b7;
+    border-radius: 3px;
+}
+
+.log-box {
+    float: right;
+}
+
+.log-box span {
+    border-right: solid 1px #111;
+    padding: 3px 0;
+}
+
+.login, .login:visited {
+    color: #ddd;
+}
+
+.log-out, .log-out:visited {
+    color: #222;
+}
+
+.login:hover {
+    color: #129;;
+}
+
+.log-out:hover {
+    color: #900;;
+}

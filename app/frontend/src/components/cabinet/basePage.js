@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Navbar from "./navbar/Navbar";
+import NavBar from "./navbar/NavBar";
 
 export default class BaseCabinetPage extends Component {
   renderContent = () => {
@@ -9,7 +9,7 @@ export default class BaseCabinetPage extends Component {
   render = () => {
     return(
       <div>
-        <Navbar/>
+        <NavBar/>
         {this.renderContent()}
       </div>
     );
