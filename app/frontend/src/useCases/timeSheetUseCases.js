@@ -6,20 +6,17 @@ export default class TimeSheetUseCase {
 
   getTimeSheetForCurrentDate() {
     return this.repository.getTimeSheetForCurrentDate()
-      .map(timeSheets => {
-        const timeSheet = timeSheets[0];
+      .map(timeSheet => {
         if (timeSheet === undefined) return;
-        timeSheet['sheetsDay'] = this.controller.createBySheet(new Date(), timeSheet.sheet);
+        timeSheet.sheetsDay = this.controller.createBySheet(new Date(), timeSheet.sheet);
         return timeSheet;
       })
   }
 
   getTimeSheetForDate(date) {
     return this.repository.getTimeSheetForDate(date)
-      .map(timeSheets => {
-        const timeSheet = timeSheets[0];
-        console.log(timeSheet, 'asdasd');
-        timeSheet['sheetsDay'] = this.controller.createBySheet(date, timeSheet.sheet);
+      .map(timeSheet => {
+        timeSheet.sheetsDay = this.controller.createBySheet(date, timeSheet.sheet);
         return timeSheet;
       })
   }
@@ -27,8 +24,8 @@ export default class TimeSheetUseCase {
   getTimeSheetsForDate(date) {
     return this.repository.getTimeSheetsForDate(date)
       .map(timeSheets => {
-        for (const timeSheet of timeSheets) { // noinspection JSUnfilteredForInLoop
-          timeSheet['sheetsDay'] = this.controller.createBySheet(date, timeSheet.sheet);
+        for (const timeSheet of timeSheets) {
+          timeSheet.sheetsDay= this.controller.createBySheet(date, timeSheet.sheet);
         }
         return timeSheets;
       })

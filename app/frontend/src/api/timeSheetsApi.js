@@ -20,7 +20,7 @@ export default class TimeSheetsApi {
           {headers: {Authorization: token}}
         )
       )
-      .map((response) => response.data);
+      .map((response) => response.data[0]);
   }
 
   updateTimeSheet(token, userId, year, month, sheet) {
@@ -33,7 +33,7 @@ export default class TimeSheetsApi {
           {headers: {Authorization: token}}
         )
       )
-      .map((response) => response.status);
+      .map((response) => response.data);
   }
 
   updateOneDayOfTimeSheet(token, timeSheetId, day, value) {
@@ -46,7 +46,7 @@ export default class TimeSheetsApi {
           {headers: {Authorization: token}}
         )
       )
-      .map((response) => response.status);
+      .map((response) => response.data);
   }
 
   getTimeSheets(token, year, month) {

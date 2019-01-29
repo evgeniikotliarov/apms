@@ -31,27 +31,23 @@ export default class TimeSheetsRepository {
     const profileId = this.storage.loadData(PROFILE).id;
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
-    // noinspection JSUnusedLocalSymbols
     return this.api.updateTimeSheet(token, profileId, year, month, sheet)
-      .map(response => {
+      .map(timeSheet => {
         const loadedTimeSheets = this.storage.loadData(TIME_SHEETS);
-        loadedTimeSheets[`${month}.${year}`].sheet = sheet;
+        loadedTimeSheets[`${month}.${year}`] = timeSheet;
         this.storage.saveData(TIME_SHEETS, loadedTimeSheets);
-        return response;
+        return timeSheet;
       });
   };
 
   updateOneDayOfTimeSheet = (timeSheetId, day, value) => {
     const token = this.storage.loadData(TOKEN);
     return this.api.updateOneDayOfTimeSheet(token, timeSheetId, day, value)
-      .map(status => {
+      .map(timeSheet => {
         const loadedTimeSheets = this.storage.loadData(TIME_SHEETS);
-        Object.entries(loadedTimeSheets, entry => {
-          const key = entry[0];
-          loadedTimeSheets[key].sheet[day - 1] = entry[1];
-        });
+        loadedTimeSheets[`${timeSheet.month}.${timeSheet.year}`] = timeSheet;
         this.storage.saveData(TIME_SHEETS, loadedTimeSheets);
-        return status;
+        return timeSheet;
       });
   };
 
