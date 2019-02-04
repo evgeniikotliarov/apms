@@ -1,19 +1,21 @@
 import React from 'react';
 import {BrowserRouter, Route} from 'react-router-dom';
+import NotFound from "./components/not-found/NotFound";
 import Login from "./components/login/Login";
-import Signup from "./components/signup/SignUp";
-import NotFound from "./components/not_found/NotFound";
+import SignUp from "./components/signup/Signup";
 import Profile from "./components/cabinet/profile/Profile";
-
+import Logout from "./components/cabinet/navbar/Logout";
 
 class Router {
   static create() {
     return (<BrowserRouter>
       <div>
         <Route exact path="/" component={(props) => <Login {...props}/>}/>
-        <Route exact path="/sign-up" component={(props) => <Signup {...props}/>}/>
+        <Route exact path="/log-out" component={(props) => <Logout {...props}/>}/>
+        <Route exact path="/log-in" component={(props) => <Login {...props}/>}/>
+        <Route exact path="/sign-up" component={(props) => <SignUp {...props}/>}/>
         <Route exact path="/profile" component={(props) => <Profile {...props}/>}/>
-        <Route exact path="*" component={(props) => <NotFound {...props}/>}/>
+        <Route path="*" component={(props) => <NotFound {...props} />}/>
       </div>
     </BrowserRouter>)
   }

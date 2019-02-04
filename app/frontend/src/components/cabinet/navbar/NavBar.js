@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import Application from "../../../Application";
+import './NavBar.css';
+import Logout from "./Logout";
 
-export default class NavBar extends Component {
+class NavBar extends Component {
   state = {
     login: ''
   };
@@ -12,6 +14,13 @@ export default class NavBar extends Component {
         this.setState({login: profile.email});
       });
   };
+
+  handleLogout = (event) => {
+    event.preventDefault();
+    Application.userUseCase.logOut();
+    this.props.props.history.push("/log-in");
+  };
+
   render = () => {
     return (
       <div className="Navbar">
@@ -22,10 +31,14 @@ export default class NavBar extends Component {
           <li className="log-box">
             <a className="login" href="#">{this.state.login}</a>
             <span/>
-            <a className="log-out" href="#">Log out</a>
+            <a className="log-out" href="/">
+              <Logout handleLogout={this.handleLogout}/>
+            </a>
           </li>
         </ul>
       </div>
     )
   }
 }
+
+export default NavBar;

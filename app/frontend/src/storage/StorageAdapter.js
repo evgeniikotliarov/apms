@@ -12,5 +12,9 @@ export default class StorageAdapter {
   saveData = (key, data) => {
     const parsedData = JSON.stringify(data);
     this.storage.setItem(key, parsedData);
-  }
+  };
+
+  removeData = (key) => {
+    this.storage.removeItem(key);
+  };
 };

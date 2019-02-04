@@ -11,6 +11,10 @@ export default class UsersUseCase {
     return this.repository.signUp(name, email, password);
   }
 
+  logOut() {
+    this.repository.logOut();
+  }
+
   getProfile() {
     return this.repository.getProfileData();
   }

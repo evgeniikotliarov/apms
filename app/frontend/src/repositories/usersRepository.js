@@ -1,5 +1,6 @@
 const TOKEN = 'token';
 const PROFILE = 'profile';
+const TIME_SHEETS = 'timeSheets';
 
 export default class UsersRepository {
   constructor(storage, api) {
@@ -23,6 +24,12 @@ export default class UsersRepository {
           return data;
         }
       )
+  };
+
+  logOut = () => {
+    this.storage.removeData(TIME_SHEETS);
+    this.storage.removeData(PROFILE);
+    this.storage.removeData(TOKEN);
   };
 
   getProfileData = () => {
