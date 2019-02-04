@@ -1,4 +1,5 @@
 const TOKEN = 'token';
+const USERS = 'users';
 const PROFILE = 'profile';
 const TIME_SHEETS = 'timeSheets';
 
@@ -41,4 +42,14 @@ export default class UsersRepository {
         }
       )
   };
+
+  getUsers = () => {
+    const token = this.storage.loadData(TOKEN);
+    return this.api.getUsers(token)
+      .map(data => {
+          this.storage.saveData(USERS, data);
+          return data;
+        }
+      )
+  }
 }

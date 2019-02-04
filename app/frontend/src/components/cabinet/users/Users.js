@@ -24,10 +24,10 @@ class UsersPage extends BaseCabinetPage {
         <thead>
         <tr>
           <th className="tdTh">Имя</th>
-          <th className="tdTh">Активирован</th>
+          <th className="tdTh">Ативирован</th>
           <th className="tdTh">Тариф отпуска</th>
           <th className="tdTh">Всего отпускных дней</th>
-          <th className="tdTh">Админ</th>
+          <th className="tdTh">Амин</th>
           <th className="tdTh">Норма рабочих дней</th>
           <th className="tdTh">Действия</th>
         </tr>
@@ -38,11 +38,11 @@ class UsersPage extends BaseCabinetPage {
             <td className="tdTd">{user.name}</td>
             <td className="tdTd">{user.activated === true ? 'Да' : 'Нет'}</td>
             <td className="tdTd">{user.rate === 0 ? "-" : user.rate}</td>
-            <td className="tdTd">{user.vacation}</td>
+            <td className="tdTd">{user.vacation === null ? '0' : user.vacation}</td>
             <td className="tdTd">{user.is_admin === true ? 'Да' : 'Нет'}</td>
             <td className="tdTd">Work_norm</td>
             <td className="tdTd">
-              <button className="btn button-edit" onClick="">
+              <button className="btn button-edit" onClick={() => this.showModal(user.user_id, 'EDIT_USER')}>
                 <i className="material-icons edit">edit</i>Редактировать
               </button>
               <button className="btn button-delete" onClick="">

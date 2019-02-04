@@ -45,7 +45,7 @@
     cursor: pointer;
     transform: scale(1.02);
 }
-button:focus {
+.btn:focus {
     border:none;
     outline: none;
 }
