@@ -1,3 +1,4 @@
+import DateConstants from "./Constants"
 class TimeSheetProvider {
   textDayInWeek = ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
 
@@ -37,7 +38,7 @@ class TimeSheetProvider {
 
   getDayOfWeek = (year, month, day) => {
     const dayWeek = new Date(year, month, day).getDay();
-    return this.textDayInWeek[dayWeek];
+    return DateConstants.TEXT_DAY_IN_WEEK[dayWeek];
   }
 }
 

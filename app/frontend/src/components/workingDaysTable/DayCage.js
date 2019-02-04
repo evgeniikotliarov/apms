@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './WorkingDaysTable.css';
 import Application from "../../Application";
+import DateConstants from "../../domain/Constants"
 
 
 export default class DayCage extends Component {
@@ -8,22 +9,21 @@ export default class DayCage extends Component {
     0: '#ffd6cc',
     0.5: '#ffffb3',
     1: '#d9ffcc',
-    weekend: '#aaa',
-    workday: '#ddd'
+    weekend: '#dedede',
+    workday: '#ddd',
+    default: '#999'
   };
 
-  state = {
-    timeSheetId: this.props.timeSheetId,
-    day: this.props.day.day,
-    dayOfWeek: this.props.day.dayOfWeek,
-    value: this.props.day.value,
-    color: this.COLORS[this.props.day.value]
+  getBackground = (day) => {
+    const isNotWorkedWeekend = DateConstants.WEEKENDS.includes(day.dayOfWeek) && day.value === 0;
+    if (isNotWorkedWeekend) return this.COLORS.weekend;
+    else return this.COLORS[day.value];
   };
 
   handleUpdateDay(event) {
     const value = event.target.value;
     const timeSheetId = this.props.timeSheetId;
-    const day = this.state.day;
+    const day = this.props.day.day;
     Application.timeSheetsUseCase.updateOneDayOfTimeSheet(timeSheetId, day, value)
       .subscribe(timeSheet => {
         this.setState({value});
@@ -34,8 +34,8 @@ export default class DayCage extends Component {
 
   render() {
     const day = this.props.day;
-    this.state.color = this.COLORS[day.value];
-    const style = {backgroundColor: this.state.color};
+    const color = this.getBackground(day);
+    const style = {backgroundColor: color};
     return (
       <div style={style}>
         <p>{day.dayOfWeek}</p>
