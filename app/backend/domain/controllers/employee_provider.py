@@ -62,6 +62,7 @@ class EmployeeProvider:
             'id': employee.id,
             'name': employee.name,
             'email': employee.email,
+            'rate': employee.rate,
             'vacation': employee.vacation,
             'is_admin': employee.is_admin,
             'activated': employee.activated,
