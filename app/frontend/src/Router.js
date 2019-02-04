@@ -4,6 +4,7 @@ import NotFound from "./components/not-found/NotFound";
 import Login from "./components/login/Login";
 import SignUp from "./components/signup/Signup";
 import Profile from "./components/cabinet/profile/Profile";
+import UsersPage from "./components/cabinet/users/Users";
 import Logout from "./components/cabinet/navbar/Logout";
 
 class Router {
@@ -15,6 +16,7 @@ class Router {
         <Route exact path="/log-in" component={(props) => <Login {...props}/>}/>
         <Route exact path="/sign-up" component={(props) => <SignUp {...props}/>}/>
         <Route exact path="/profile" component={(props) => <Profile {...props}/>}/>
+        <Route exact path="/users" component={(props) => <UsersPage {...props}/>}/>
         <Route path="*" component={(props) => <NotFound {...props} />}/>
       </div>
     </BrowserRouter>)

@@ -25,8 +25,8 @@ class NavBar extends Component {
     return (
       <div className="Navbar">
         <ul className="navigation-bar">
-          <li className="tab active-tab"><a href="#">Time sheet</a></li>
-          <li className="tab"><a href="#">Users</a></li>
+          <li className="tab active-tab"><a href="/profile">Time sheet</a></li>
+          <li className="tab"><a href="/users">Users</a></li>
           <li className="tab"><a href="#">Statistic</a></li>
           <li className="log-box">
             <a className="login" href="#">{this.state.login}</a>

@@ -20,7 +20,7 @@ export default class TimeSheetsRepository {
     const month = date.getMonth() + 1;
     return this.api.getTimeSheet(token, profileId, year, month)
       .map(data => {
-          this.saveTimeSheet(data);
+          this.saveTimeSheet(date);
           return data;
         }
       );

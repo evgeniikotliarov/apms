@@ -16,6 +16,7 @@ export default class TimeSheetUseCase {
   getTimeSheetForDate(date) {
     return this.repository.getTimeSheetForDate(date)
       .map(timeSheet => {
+        if (timeSheet === undefined) return;
         timeSheet.sheetsDay = this.controller.createBySheet(date, timeSheet.sheet);
         return timeSheet;
       })

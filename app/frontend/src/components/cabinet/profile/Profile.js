@@ -3,6 +3,7 @@ import {withRouter} from 'react-router-dom';
 import './Profile.css';
 import BaseCabinetPage from "../basePage";
 import WorkingDaysTable from "../../workingDaysTable/WorkingDaysTable";
+import UsersPage from "../users/Users";
 
 class UserPage extends BaseCabinetPage {
   renderContent = () => {
