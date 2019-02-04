@@ -6,12 +6,16 @@ import Application from "../../../Application";
 
 class UsersPage extends BaseCabinetPage {
   state = {
-    users: []
+    users: [],
   };
 
   componentWillMount() {
     Application.userUseCase.getUsers()
       .subscribe(users => this.setState({users}))
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
   }
 
   renderContent = () => {
@@ -20,12 +24,12 @@ class UsersPage extends BaseCabinetPage {
         <thead>
         <tr>
           <th className="tdTh">Имя</th>
-          <th className="tdTh">Ативирован</th>
+          <th className="tdTh">Активирован</th>
           <th className="tdTh">Тариф отпуска</th>
           <th className="tdTh">Всего отпускных дней</th>
-          <th className="tdTh">Амин</th>
+          <th className="tdTh">Админ</th>
           <th className="tdTh">Норма рабочих дней</th>
-          <th className="tdTh">Actions</th>
+          <th className="tdTh">Действия</th>
         </tr>
         </thead>
         <tbody>
@@ -37,7 +41,14 @@ class UsersPage extends BaseCabinetPage {
             <td className="tdTd">{user.vacation}</td>
             <td className="tdTd">{user.is_admin === true ? 'Да' : 'Нет'}</td>
             <td className="tdTd">Work_norm</td>
-            <td className="tdTd"><a href="#">Actions</a></td>
+            <td className="tdTd">
+              <button className="btn button-edit" onClick="">
+                <i className="material-icons edit">edit</i>Редактировать
+              </button>
+              <button className="btn button-delete" onClick="">
+                <i className="material-icons edit">delete</i>Удалить
+              </button>
+            </td>
           </tr>
         ))}
         </tbody>

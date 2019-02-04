@@ -22,3 +22,30 @@
     padding: 10px;
     text-align: center;
 }
+.edit {
+    display: block;
+}
+.btn {
+    text-align: center;
+    padding: 2px;
+    margin: 5px;
+    border-radius: 3px;
+    border: 1px solid #639eff;
+    background-color: #b7d2ff;
+}
+.button-edit {
+    border: 1px solid #639eff;
+    background-color: #b7d2ff;
+}
+.button-delete {
+    border: #f97070 solid 1px;
+    background-color: #f7d4d4;
+}
+.btn:hover {
+    cursor: pointer;
+    transform: scale(1.02);
+}
+button:focus {
+    border:none;
+    outline: none;
+}
