@@ -3,7 +3,7 @@ import './WorkingDaysTable.css';
 import Application from "../../Application";
 import DayCage from "./DayCage";
 import DateSlider from "../date-slider/DateSlider";
-import UserStats from "../userStats/UserStats";
+// import UserStats from "../userStats/UserStats";
 
 export default class WorkingDaysTable extends Component {
   state = {
@@ -36,7 +36,7 @@ export default class WorkingDaysTable extends Component {
         <div className="sheet panel-body">
           {this.renderCages()}
         </div>
-        <UserStats timeSheet={this.state.timeSheet}/>
+        {/*<UserStats timeSheet={this.state.timeSheet}/>*/}
       </div>
     )
   };

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
-import './SignUp.css';
+import './Signup.css';
 import Application from "../../Application";
 
 
