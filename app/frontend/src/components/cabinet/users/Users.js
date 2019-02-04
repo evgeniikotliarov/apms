@@ -15,7 +15,6 @@ class UsersPage extends BaseCabinetPage {
   }
 
   renderContent = () => {
-
     const table = this.state.users.length ? (
       <table className="users-table">
         <thead>
@@ -25,6 +24,7 @@ class UsersPage extends BaseCabinetPage {
           <th className="tdTh">Тариф отпуска</th>
           <th className="tdTh">Всего отпускных дней</th>
           <th className="tdTh">Амин</th>
+          <th className="tdTh">Норма рабочих дней</th>
           <th className="tdTh">Actions</th>
         </tr>
         </thead>
@@ -36,6 +36,7 @@ class UsersPage extends BaseCabinetPage {
             <td className="tdTd">{user.rate === 0 ? "-" : user.rate}</td>
             <td className="tdTd">{user.vacation}</td>
             <td className="tdTd">{user.is_admin === true ? 'Да' : 'Нет'}</td>
+            <td className="tdTd">Work_norm</td>
             <td className="tdTd"><a href="#">Actions</a></td>
           </tr>
         ))}
@@ -49,15 +50,6 @@ class UsersPage extends BaseCabinetPage {
       </div>
     )
   };
-
-  // renderUsers() {
-  //   return this.state.users.map(user =>
-  //     (<div>
-  //       <p>{user.name}</p>
-  //       <p>{user.acceptence_date}</p>
-  //     </div>)
-  //   )
-  // }
 }
 
 
