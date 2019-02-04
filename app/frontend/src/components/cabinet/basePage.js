@@ -1,15 +1,15 @@
-import React, {Component} from 'react';
+import React, {Component} from "react";
 import NavBar from "./navbar/NavBar";
 
 export default class BaseCabinetPage extends Component {
   renderContent = () => {
-    throw new Error('You have to implement the method doSomething');
+    throw new Error('You have to implement the method doSomething!');
   };
 
   render = () => {
-    return(
+    return (
       <div>
-        <NavBar/>
+        <NavBar props={this.props}/>
         {this.renderContent()}
       </div>
     );

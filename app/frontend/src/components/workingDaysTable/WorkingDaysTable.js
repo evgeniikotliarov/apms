@@ -30,10 +30,10 @@ export default class WorkingDaysTable extends Component {
   render = () => {
     return (
       <div>
-        <div className="date">
+        <div className="date panel-header">
           <DateSlider handler={this.handleFetchTimeSheet}/>
         </div>
-        <div className="dayCage">
+        <div className="sheet panel-body">
           {this.renderCages()}
         </div>
         <UserStats timeSheet={this.state.timeSheet}/>
