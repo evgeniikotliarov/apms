@@ -1,4 +1,7 @@
-class NavBar extends Component {
+import React, {Component} from 'react';
+import Application from "../../../Application";
+
+export default class NavBar extends Component {
   state = {
     login: ''
   };
@@ -26,5 +29,3 @@ class NavBar extends Component {
     )
   }
 }
-
-export default NavBar;

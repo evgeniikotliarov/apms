@@ -5,5 +5,4 @@ const DateConstants = {
     "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"]
 };
 
-
 export default DateConstants;
