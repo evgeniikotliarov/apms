@@ -45,8 +45,8 @@ class UsersPage extends BaseCabinetPage {
               <button className="btn button-edit" onClick={() => this.showModal(user.user_id, 'EDIT_USER')}>
                 <i className="material-icons edit">edit</i>Редактировать
               </button>
-              <button className="btn button-delete" onClick="">
-                <i className="material-icons edit">delete</i>Удалить
+              <button className="btn button-more" onClick="">
+                <i className="material-icons edit">more_horiz</i>Подробнее
               </button>
             </td>
           </tr>
