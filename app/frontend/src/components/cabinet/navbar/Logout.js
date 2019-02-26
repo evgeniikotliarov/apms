@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 const Logout = props => {
-  return <a href="#" className="log-out"
+  return <a href="/log-out" className="log-out"
             onClick={props.handleLogout}>Log out</a>
 };
 

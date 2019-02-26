@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import Application from "../../../Application";
 import './NavBar.css';
-import Logout from "./Logout";
 
 class NavBar extends Component {
   state = {
@@ -30,10 +29,7 @@ class NavBar extends Component {
           <li className="tab"><a href="#">Statistic</a></li>
           <li className="log-box">
             <a className="login" href="#">{this.state.login}</a>
-            <span/>
-            <a className="log-out" href="/">
-              <Logout handleLogout={this.handleLogout}/>
-            </a>
+            <a className="log-out" href="/log-out" onClick={this.handleLogout()}>Log out</a>
           </li>
         </ul>
       </div>
