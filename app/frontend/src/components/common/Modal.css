@@ -1,6 +1,28 @@
-
 .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+
+}
+.modal-content {
     width: 500px;
     height: auto;
-    border: red 1px solid;
+    margin: 200px auto 0;
+    background-color: #fff;
+    overflow: auto;
+    outline: none;
+}
+.modal-head {
+    border: 1px solid red;
+    display: flex;
+}
+.modal-head button{
+    display: block;
+    border: solid 1px blue;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    align-items: flex-end;
 }

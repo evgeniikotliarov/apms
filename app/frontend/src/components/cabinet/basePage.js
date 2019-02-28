@@ -1,16 +1,18 @@
 import React, {Component} from "react";
 import NavBar from "./navbar/NavBar";
-import Modal from "../common/Modal"
+import Modal from "../common/Modal";
 
 export default class BaseCabinetPage extends Component {
   state = {
     needToShowModal: false,
-    modalRender: null
+    modalRenderHead: null,
+    modalRenderContent: null
   };
 
-  showModal(modalRender) {
+  showModal(modalRenderHead, modalRenderContent) {
     this.setState({needToShowModal: true});
-    this.setState({modalRender})
+    this.setState({modalRenderHead: modalRenderHead});
+    this.setState({modalRenderContent: modalRenderContent});
   }
 
   hideModal() {
@@ -27,7 +29,8 @@ export default class BaseCabinetPage extends Component {
         <NavBar props={this.props}/>
         <Modal
           showModal={this.state.needToShowModal}
-          renderContent={this.state.modalRender}/>
+          renderHead={this.state.modalRenderHead}
+          renderContent={this.state.modalRenderContent}/>
         {this.renderContent()}
       </div>
     );
