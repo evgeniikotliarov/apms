@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './WorkingDaysTable.css';
-import Application from "../../Application";
+import Application from "../../../../Application";
 import DayCage from "./DayCage";
 import DateSlider from "../date-slider/DateSlider";
 // import UserStats from "../userStats/UserStats";

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import DateConstants from "../../domain/Constants";
+import DateConstants from "../../../../domain/Constants";
 
 class DateSlider extends Component {
   constructor() {
