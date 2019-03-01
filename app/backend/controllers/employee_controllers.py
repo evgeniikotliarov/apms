@@ -41,14 +41,29 @@ class AuthenticationEmployeeController:
 
 
 # noinspection PyUnusedLocal
-class GetProfileController:
-    def __init__(self, use_case: GetEmployeeUseCase):
-        self.use_case = use_case
+class ProfileController:
+    def __init__(self,
+                 get_use_case: GetEmployeeUseCase,
+                 update_use_case: UpdateEmployeeUseCase):
+        self.get_use_case = get_use_case
+        self.update_use_case = update_use_case
         self.user_email = None
 
     @authorized_controller_handler
     def on_get(self, request, response):
-        employee = self.use_case.get_employee_by_email(self.user_email)
+        employee = self.get_use_case.get_employee_by_email(self.user_email)
+        response.body = json.dumps(employee)
+
+    @authorized_controller_handler
+    def on_patch(self, request, response):
+        converter = ToNum()
+        employee = self.get_use_case.get_employee_by_email(self.user_email)
+        employee_id = converter.to_num(employee['id'])
+        email = request.media.get('email')
+        name = request.media.get('name')
+        password = request.media.get('password')
+        self.update_use_case.update_employee(employee_id, name=name, email=email, password=password)
+        employee = self.get_use_case.get_employee(employee_id)
         response.body = json.dumps(employee)
 
 
@@ -74,30 +89,16 @@ class AcceptEmployeeController:
 
 
 # noinspection PyUnusedLocal
-class EmployeeController:
-    def __init__(self,
-                 get_use_case: GetEmployeeUseCase,
-                 update_use_case: UpdateEmployeeUseCase):
-        self.get_use_case = get_use_case
-        self.update_use_case = update_use_case
+class GetEmployeeController:
+    def __init__(self, use_case: GetEmployeeUseCase):
+        self.use_case = use_case
         self.user_email = None
 
     @authorized_controller_handler
     def on_get(self, request, response, employee_id):
         converter = ToNum()
         employee_id = converter.to_num(employee_id)
-        employee = self.get_use_case.get_employee(employee_id)
-        response.body = json.dumps(employee)
-
-    @authorized_controller_handler
-    def on_patch(self, request, response, employee_id):
-        converter = ToNum()
-        employee_id = converter.to_num(employee_id)
-        email = request.media.get('email')
-        name = request.media.get('name')
-        password = request.media.get('password')
-        self.update_use_case.update_employee(employee_id, name=name, email=email, password=password)
-        employee = self.get_use_case.get_employee(employee_id)
+        employee = self.use_case.get_employee(employee_id)
         response.body = json.dumps(employee)
 
 

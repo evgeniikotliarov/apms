@@ -2,7 +2,8 @@ from app import App
 from controllers.calculation_controller import VacationCalculatorController
 from controllers.employee_controllers import RegistrationEmployeeController, \
     GetEmployeesController, AuthenticationEmployeeController, \
-    AcceptEmployeeController, GetProfileController, EmployeeController
+    AcceptEmployeeController, ProfileController, \
+    GetEmployeeController
 from controllers.time_sheet_controllers import TimeSheetController, \
     EmployeeTimeSheetsController, GetEmployeesTimeSheetsController, DayOfTimeSheetController
 from domain.controllers.employee_provider import EmployeeProvider
@@ -89,15 +90,13 @@ class AppFactory(IAppFactory):
             self.app.create_employee_use_case)
         self.authentication_employee_controller = AuthenticationEmployeeController(
             self.app.check_employee_use_case)
-        self.get_employee_profile_controller = GetProfileController(
-            self.app.get_employee_use_case)
+        self.get_employee_profile_controller = ProfileController(
+            self.app.get_employee_use_case,
+            self.app.update_employee_use_case)
         self.accept_employee_controller = AcceptEmployeeController(
             self.app.check_admin_rights_use_case,
             self.app.register_employee_use_case)
-        self.employee_controller = EmployeeController(
-            self.app.get_employee_use_case,
-            self.app.update_employee_use_case
-        )
+        self.employee_controller = GetEmployeeController(self.app.get_employee_use_case)
         self.get_employees_controller = GetEmployeesController(self.app.get_employees_use_case)
 
         self.time_sheet_controller = TimeSheetController(

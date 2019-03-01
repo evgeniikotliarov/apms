@@ -66,6 +66,7 @@ class TestEmployeesControllers(unittest.TestCase):
         headers = self.__get_authorization_header_for(employee)
         response = self.client.simulate_get('/api/profile', headers=headers)
         del employee['password']
+        employee['rate'] = 10
         self.assertEqual(response.json, employee)
 
     def test_get_employee(self):
@@ -73,6 +74,7 @@ class TestEmployeesControllers(unittest.TestCase):
         headers = self.__get_authorization_header_for(employee)
         response = self.client.simulate_get('/api/employees/0', headers=headers)
         del employee['password']
+        employee['rate'] = 10
         self.assertEqual(response.json, employee)
 
     def test_get_employees(self):
@@ -82,7 +84,43 @@ class TestEmployeesControllers(unittest.TestCase):
         self.assertTrue(response.json.__len__() > 0)
         first_employee = response.json[0]
         del employee['password']
+        employee['rate'] = 10
         self.assertEqual(first_employee, employee)
+
+    def test_update_profile(self):
+        employee = fixtures.load('admin_user')
+        headers = self.__get_authorization_header_for(employee)
+
+        body = json.dumps({'name': 'new name', 'password': 'new pass'})
+        response = self.client.simulate_patch('/api/profile', headers=headers, body=body)
+
+        self.assertEqual(response.json['name'], 'new name')
+        self.assertEqual(response.json['email'], employee['email'])
+
+        updated_employee = self.factory.employee_storage.find_by_id(0)
+        self.assertEqual(updated_employee.password, 'new pass')
+
+        body = json.dumps({'name': 'the newest name'})
+        response = self.client.simulate_patch('/api/profile', headers=headers, body=body)
+
+        self.assertEqual(response.json['name'], 'the newest name')
+        self.assertEqual(response.json['email'], employee['email'])
+
+        updated_employee = self.factory.employee_storage.find_by_id(0)
+        self.assertEqual(updated_employee.password, 'new pass')
+
+        body = json.dumps({
+            'name': 'admin',
+            'email': 'admin@email.com',
+            'password': 'admin'
+        })
+        response = self.client.simulate_patch('/api/profile', headers=headers, body=body)
+
+        self.assertEqual(response.json['name'], 'admin')
+        self.assertEqual(response.json['email'], 'admin@email.com')
+
+        updated_employee = self.factory.employee_storage.find_by_id(0)
+        self.assertEqual(updated_employee.password, 'admin')
 
     def __get_authorization_header_for(self, employee):
         email = employee['email']
