@@ -3,7 +3,7 @@ import unittest
 
 from falcon import testing, falcon
 
-from domain.controllers.rate_calculator import RateCalculator
+from exceptions import DeactivatedEmployeeError
 from tests import fixtures
 from tests.fake_app_factory import TestCopyOriginalAppFactory
 
@@ -14,124 +14,110 @@ class TestEmployeesControllers(unittest.TestCase):
         self.app = self.factory.create_app()
         self.client = testing.TestClient(self.app)
 
-    def test_get_time_sheets_for_employee(self):
-        employee = fixtures.load('admin_user')
-        headers = self.__get_authorization_header_for(employee)
-        path = '/api/employees/{}/time-sheets'.format(employee['id'])
-        body = json.dumps({'year': 2018, 'month': 1})
+    def test_registration_user(self):
+        data = {
+            'name': 'employee_2',
+            'password': 'password',
+            'email': 'empl2@mail.com',
+        }
+        body = json.dumps(data)
+        response = self.client.simulate_post('/api/sign-up', body=body)
+        self.assertEqual(response.status, falcon.HTTP_201)
+        self.assertIsNotNone(response.json['token'])
+
+    def test_authentication_user(self):
+        data = {
+            'password': 'admin',
+            'email': 'admin@email.com',
+        }
+
+        response = self.client.simulate_post('/api/log-in', body=json.dumps(data))
+        self.assertEqual(response.status, falcon.HTTP_200)
+        self.assertIsNotNone(response.json['token'])
+
+    def test_authentication_deactivated_user(self):
+        data = {
+            'password': 'user',
+            'email': 'unactivated@email.com',
+        }
+
+        response = self.client.simulate_post('/api/log-in', body=json.dumps(data))
+        self.assertEqual(response.status, DeactivatedEmployeeError().get_http_code())
+
+    def test_register_user(self):
+        admin = fixtures.load('admin_user')
+        headers = self.__get_authorization_header_for(admin)
+
+        unaccepted = fixtures.load('unaccepted_user')
+        path = '/api/employees/{}/register'.format(unaccepted['id'])
+
+        body = json.dumps({'employment_date': '2018.1.2', 'vacation': '1'})
         response = self.client.simulate_post(path=path, body=body, headers=headers)
+        self.assertEqual(response.status, falcon.HTTP_201)
+        accepted_employee = self.factory.employee_storage.find_by_email(unaccepted['email'])
+        self.assertEqual(accepted_employee.vacation, 1)
+        self.assertEqual(accepted_employee.employment_date.year, 2018)
+        self.assertEqual(accepted_employee.employment_date.month, 1)
+        self.assertEqual(accepted_employee.employment_date.day, 2)
+        self.assertTrue(accepted_employee.activated)
 
-        self.assertEqual(response.status, falcon.HTTP_200)
-        time_sheet = response.json[0]
-        self.assertEqual(time_sheet['employee_id'], employee['id'])
-        self.assertEqual(time_sheet['norm'], 23)
-        self.assertEqual(time_sheet['rate'], RateCalculator.MIN_DAYS)
-        self.assertEqual(time_sheet['year'], 2018)
-        self.assertEqual(time_sheet['month'], 1)
-        self.assertEqual(time_sheet['closed'], False)
-
-        body = json.dumps({'year': 2018})
-        response = self.client.simulate_post(path=path, body=body, headers=headers)
-
-        self.assertEqual(response.status, falcon.HTTP_200)
-        time_sheet = response.json[0]
-        self.assertEqual(time_sheet['employee_id'], employee['id'])
-        self.assertEqual(time_sheet['norm'], 23)
-        self.assertEqual(time_sheet['rate'], RateCalculator.MIN_DAYS)
-        self.assertEqual(time_sheet['year'], 2018)
-        self.assertEqual(time_sheet['month'], 1)
-        self.assertEqual(time_sheet['closed'], False)
-
-    def test_get_time_sheet_for_employees(self):
+    def test_get_profile(self):
         employee = fixtures.load('admin_user')
         headers = self.__get_authorization_header_for(employee)
-        path = '/api/employees/time-sheets'
-        body = json.dumps({'year': 2018, 'month': 1})
-        response = self.client.simulate_post(path=path, body=body, headers=headers)
+        response = self.client.simulate_get('/api/profile', headers=headers)
+        del employee['password']
+        self.assertEqual(response.json, employee)
 
-        self.assertEqual(response.status, falcon.HTTP_200)
-        time_sheet = response.json[0]
-        self.assertEqual(time_sheet['norm'], 23)
-        self.assertEqual(time_sheet['rate'], RateCalculator.MIN_DAYS)
-        self.assertEqual(time_sheet['year'], 2018)
-        self.assertEqual(time_sheet['month'], 1)
-        self.assertEqual(time_sheet['closed'], False)
-
-    def test_get_time_sheet(self):
+    def test_get_employee(self):
         employee = fixtures.load('admin_user')
         headers = self.__get_authorization_header_for(employee)
-        path = '/api/time-sheets/{}'.format(1)
-        response = self.client.simulate_get(path=path, headers=headers)
+        response = self.client.simulate_get('/api/employees/0', headers=headers)
+        del employee['password']
+        self.assertEqual(response.json, employee)
 
-        self.assertEqual(response.status, falcon.HTTP_200)
-
-        time_sheet = response.json
-        saved_time_sheet = self.factory.time_sheet_storage.find_by_id(1)
-
-        self.assertEqual(time_sheet['sheet'], saved_time_sheet.sheet)
-
-    def test_get_day_of_time_sheet(self):
+    def test_get_employees(self):
         employee = fixtures.load('admin_user')
         headers = self.__get_authorization_header_for(employee)
-        path = '/api/time-sheets/{}/day/{}'.format(1, 1)
-        response = self.client.simulate_get(path=path, headers=headers)
+        response = self.client.simulate_get('/api/employees/', headers=headers)
+        self.assertTrue(response.json.__len__() > 0)
+        first_employee = response.json[0]
+        del employee['password']
+        self.assertEqual(first_employee, employee)
 
-        self.assertEqual(response.status, falcon.HTTP_200)
-        day_value = response.json
-        self.assertEqual(day_value, 1)
-
-    def test_update_one_day(self):
+    def test_update_employee(self):
         employee = fixtures.load('admin_user')
         headers = self.__get_authorization_header_for(employee)
-        path = '/api/time-sheets/{}/day/{}'.format(1, 1)
-        body = json.dumps({'value': 0.5})
-        response = self.client.simulate_patch(path=path, body=body, headers=headers)
 
-        self.assertEqual(response.status, falcon.HTTP_200)
-        time_sheet = response.json
-        self.assertEqual(time_sheet['sheet'][0], 0.5)
-        self.assertNotEqual(time_sheet['vacation'], 1.)
+        body = json.dumps({'name': 'new name', 'password': 'new pass'})
+        response = self.client.simulate_patch('/api/employees/0', headers=headers, body=body)
 
-    def test_update_time_sheet_by_time_sheet_id(self):
-        employee = fixtures.load('admin_user')
-        headers = self.__get_authorization_header_for(employee)
-        path = '/api/time-sheets/{}'.format(1)
-        sheet = fixtures.load('full_january')
-        body = json.dumps({'year': 2018, 'month': 1, 'sheet': sheet})
-        response = self.client.simulate_patch(path=path, body=body, headers=headers)
+        self.assertEqual(response.json['name'], 'new name')
+        self.assertEqual(response.json['email'], employee['email'])
 
-        self.assertEqual(response.status, falcon.HTTP_200)
-        time_sheet = response.json
-        self.assertEqual(time_sheet['sheet'], sheet)
+        updated_employee = self.factory.employee_storage.find_by_id(0)
+        self.assertEqual(updated_employee.password, 'new pass')
 
-    def test_update_time_sheet(self):
-        employee = fixtures.load('admin_user')
-        headers = self.__get_authorization_header_for(employee)
-        path = '/api/employees/{}/time-sheets'.format(employee['id'])
-        sheet = fixtures.load('full_january')
-        body = json.dumps({'year': 2018, 'month': 1, 'sheet': sheet})
-        response = self.client.simulate_patch(path=path, body=body, headers=headers)
+        body = json.dumps({'name': 'the newest name'})
+        response = self.client.simulate_patch('/api/employees/0', headers=headers, body=body)
 
-        self.assertEqual(response.status, falcon.HTTP_200)
-        time_sheet = response.json
-        self.assertEqual(time_sheet['sheet'], sheet)
+        self.assertEqual(response.json['name'], 'the newest name')
+        self.assertEqual(response.json['email'], employee['email'])
 
-    def test_update_time_sheet_without_data(self):
-        employee = fixtures.load('admin_user')
-        headers = self.__get_authorization_header_for(employee)
-        path = '/api/employees/{}/time-sheets'.format(employee['id'])
-        sheet = fixtures.load('full_january')
-        body = json.dumps({'year': 2018, 'sheet': sheet})
-        response = self.client.simulate_patch(path=path, body=body, headers=headers)
-        self.assertEqual(response.status, falcon.HTTP_400)
+        updated_employee = self.factory.employee_storage.find_by_id(0)
+        self.assertEqual(updated_employee.password, 'new pass')
 
-        body = json.dumps({'month': 1, 'sheet': sheet})
-        response = self.client.simulate_patch(path=path, body=body, headers=headers)
-        self.assertEqual(response.status, falcon.HTTP_400)
+        body = json.dumps({
+            'name': 'admin',
+            'email': 'admin@email.com',
+            'password': 'admin'
+        })
+        response = self.client.simulate_patch('/api/employees/0', headers=headers, body=body)
 
-        body = json.dumps({'year': 2018, 'month': 1})
-        response = self.client.simulate_patch(path=path, body=body, headers=headers)
-        self.assertEqual(response.status, falcon.HTTP_400)
+        self.assertEqual(response.json['name'], 'admin')
+        self.assertEqual(response.json['email'], 'admin@email.com')
+
+        updated_employee = self.factory.employee_storage.find_by_id(0)
+        self.assertEqual(updated_employee.password, 'admin')
 
     def __get_authorization_header_for(self, employee):
         email = employee['email']

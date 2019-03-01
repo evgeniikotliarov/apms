@@ -1,8 +1,8 @@
 from app import App
 from controllers.calculation_controller import VacationCalculatorController
 from controllers.employee_controllers import RegistrationEmployeeController, \
-    GetEmployeeController, GetEmployeesController, AuthenticationEmployeeController, \
-    AcceptEmployeeController, GetProfileController
+    GetEmployeesController, AuthenticationEmployeeController, \
+    AcceptEmployeeController, GetProfileController, EmployeeController
 from controllers.time_sheet_controllers import TimeSheetController, \
     EmployeeTimeSheetsController, GetEmployeesTimeSheetsController, DayOfTimeSheetController
 from domain.controllers.employee_provider import EmployeeProvider
@@ -31,6 +31,7 @@ class AppFactory(IAppFactory):
         self.db = None
         self.app = None
 
+    @property
     def create_app(self):
         if self.app is None:
             self.app = App()
@@ -93,7 +94,10 @@ class AppFactory(IAppFactory):
         self.accept_employee_controller = AcceptEmployeeController(
             self.app.check_admin_rights_use_case,
             self.app.register_employee_use_case)
-        self.get_employee_controller = GetEmployeeController(self.app.get_employee_use_case)
+        self.employee_controller = EmployeeController(
+            self.app.get_employee_use_case,
+            self.app.update_employee_use_case
+        )
         self.get_employees_controller = GetEmployeesController(self.app.get_employees_use_case)
 
         self.time_sheet_controller = TimeSheetController(
@@ -120,7 +124,7 @@ class AppFactory(IAppFactory):
         self.app.add_route('/api/log-in', self.authentication_employee_controller)
         self.app.add_route('/api/profile', self.get_employee_profile_controller)
         self.app.add_route('/api/employees/{employee_id}/register', self.accept_employee_controller)
-        self.app.add_route('/api/employees/{employee_id}', self.get_employee_controller)
+        self.app.add_route('/api/employees/{employee_id}', self.employee_controller)
         self.app.add_route('/api/employees', self.get_employees_controller)
 
         self.app.add_route('/api/time-sheets/{time_sheet_id}/day/{day}',
