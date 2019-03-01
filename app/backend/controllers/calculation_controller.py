@@ -12,8 +12,8 @@ class VacationCalculatorController:
 
     @authorized_controller_handler
     def on_post(self, request, response, employee_id):
-        year = request.media['year']
-        month = request.media['month']
+        year = request.media.get('year')
+        month = request.media.get('month')
         norm = request.media.get('norm')
         converter = ToNum()
         year = converter.to_num(year)

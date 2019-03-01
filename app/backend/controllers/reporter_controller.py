@@ -19,8 +19,8 @@ class ReporterController:
         # TODO: добавил для примера, необходимо дописать тесты и проверить на скачивание файла
         # TODO, возможно изменить способ прикрепления файла к response
         # TODO: http://falcon.readthedocs.io/en/stable/user/tutorial.html#creating-resources
-        year = request.media['year']
-        month = request.media['month']
+        year = request.media.get('year')
+        month = request.media.get('month')
         converter = ToNum()
         year = converter.to_num(year)
         month = converter.to_num(month)
