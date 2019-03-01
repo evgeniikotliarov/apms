@@ -32,7 +32,6 @@ class AppFactory(IAppFactory):
         self.db = None
         self.app = None
 
-    @property
     def create_app(self):
         if self.app is None:
             self.app = App()
