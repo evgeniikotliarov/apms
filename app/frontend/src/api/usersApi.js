@@ -67,6 +67,19 @@ class UsersApi {
       )
       .map((response) => response.data);
   }
+
+  updateProfile(token, name, email, oldPassword, newPassword) {
+    const data = {name: name, email: email, oldPassword: oldPassword, newPassword: newPassword};
+    return Rx.Observable
+      .fromPromise(
+        this.client.patch(
+          'api/profile',
+          JSON.stringify(data),
+          {headers: {Authorization: token}}
+        )
+      )
+      .map((response) => response.data);
+  }
 }
 
 export default UsersApi;

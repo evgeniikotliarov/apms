@@ -18,4 +18,8 @@ export default class UsersUseCase {
   getProfile() {
     return this.repository.getProfileData();
   }
+
+  updateProfile(name, email, oldPassword, newPassword) {
+    return this.repository.updateProfile(name, email, oldPassword, newPassword)
+  }
 }
