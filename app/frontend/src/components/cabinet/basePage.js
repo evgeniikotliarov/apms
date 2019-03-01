@@ -5,14 +5,12 @@ import Modal from "../common/Modal";
 export default class BaseCabinetPage extends Component {
   state = {
     needToShowModal: false,
-    modalRenderHead: null,
-    modalRenderContent: null
+    modalRender: null
   };
 
-  showModal(modalRenderHead, modalRenderContent) {
+  showModal(modalRender) {
     this.setState({needToShowModal: true});
-    this.setState({modalRenderHead: modalRenderHead});
-    this.setState({modalRenderContent: modalRenderContent});
+    this.setState({modalRender: modalRender});
   }
 
   hideModal() {
@@ -29,8 +27,7 @@ export default class BaseCabinetPage extends Component {
         <NavBar props={this.props}/>
         <Modal
           showModal={this.state.needToShowModal}
-          renderHead={this.state.modalRenderHead}
-          renderContent={this.state.modalRenderContent}/>
+          render={this.state.modalRender} />
         {this.renderContent()}
       </div>
     );

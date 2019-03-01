@@ -4,11 +4,11 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.3);
 
 }
 .modal-content {
-    width: 500px;
+    width: 900px;
     height: auto;
     margin: 200px auto 0;
     background-color: #fff;
@@ -16,13 +16,13 @@
     outline: none;
 }
 .modal-head {
-    border: 1px solid red;
-    display: flex;
+    text-align: center;
+    border-bottom: solid 1px #ddd;
 }
-.modal-head button{
-    display: block;
-    border: solid 1px blue;
-    flex-direction: column-reverse;
-    justify-content: flex-end;
-    align-items: flex-end;
+.modal-body {
+    border-bottom: solid 1px #ddd;
+
+}
+.modal-foot{
+    text-align: center;
 }

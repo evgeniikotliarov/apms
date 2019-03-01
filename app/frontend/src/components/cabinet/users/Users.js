@@ -17,10 +17,8 @@ class UsersPage extends BaseCabinetPage {
 
   handleEdit(event, user) {
     event.preventDefault();
-    const userModalContent = new UserEditingModalContent(user);
-    const head = dialogMethods => userModalContent.renderHead();
-    const content = dialogMethods => userModalContent.renderContent(dialogMethods);
-    this.showModal(head, content);
+    const userModal = new UserEditingModalContent(user);
+    this.showModal(userModal);
   }
 
   renderContent = () => {

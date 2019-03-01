@@ -1,27 +1,41 @@
 import React from 'react';
+import BaseModalContentRender from "../../common/ModalContentRender";
 
-export default class UserEditingModalContent {
+export default class UserEditingModal extends BaseModalContentRender{
   constructor(user) {
+    super();
     this.user = user;
   }
 
-  renderHead() {
+  head() {
     return (
       <div>
-        <p>HEAD</p>
+        <h4>Редактирование пользователя</h4>
       </div>
-    )
+    );
   }
 
-  renderContent(closeDialog) {
+  content() {
     return (
       <div>
         <p>{this.user.name}</p>
         <p>{this.user.email}</p>
         <p>{this.user.is_admin === true ? "Да" : "Нет"}</p>
         <p>{this.user.activated}</p>
-        <button onClick={closeDialog}> close </button>
+      </div>
+    );
+  }
+
+  foot() {
+    return (
+      <div className="control">
+        <button onClick={event => this.onSubmit()} type="submit">Сохранить</button>
+        <button onClick={event => this.dialog.close()}>Отмена</button>
       </div>
     )
+  }
+
+  onSubmit() {
+    this.dialog.close();
   }
 }
