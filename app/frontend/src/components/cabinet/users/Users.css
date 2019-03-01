@@ -38,14 +38,41 @@
     background-color: #b7d2ff;
 }
 .button-more {
-    border: #f97070 solid 1px;
-    background-color: #f7d4d4;
+    border: 1px solid #84ff5e;
+    background-color: #abff91;
 }
 .btn:hover {
     cursor: pointer;
-    transform: scale(1.02);
 }
 .btn:focus {
     border:none;
     outline: none;
+}
+.form {
+    padding-bottom: 50px;
+}
+.form label {
+    padding: 10px;
+}
+.form input {
+    width: 35%;
+    font-size: 18px;
+    display: block;
+    text-align: left;
+    padding: 10px;
+    margin: 5px 5px 5px 10px;
+    border: none;
+    border-bottom: solid 2px #222;
+    background-color: #ddd;
+}
+#passwords {
+    display: none;
+}
+.change-password button {
+    font-size: 18px;
+    padding: 10px;
+    margin: 5px 10px;
+    border-radius: 3px;
+    border: 1px solid #639eff;
+    background-color: #b7d2ff;
 }

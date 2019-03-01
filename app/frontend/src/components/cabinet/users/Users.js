@@ -3,24 +3,32 @@ import {withRouter} from 'react-router-dom';
 import BaseCabinetPage from "../basePage";
 import "./Users.css"
 import Application from "../../../Application";
-import UserEditingModalContent from "./UserEditingModalContent";
+import UserEditingModal from "./UserEditingModal";
 
 class UsersPage extends BaseCabinetPage {
   state = {
     users: [],
+    showEditingUserModal: false,
+    currentUser: null
   };
 
   componentWillMount() {
+    this.fetchUsers();
+  }
+
+  fetchUsers() {
+    this.setState({showEditingUserModal: false});
     Application.userUseCase.getUsers()
       .subscribe(users => this.setState({users}))
   }
 
   handleEdit(event, user) {
     event.preventDefault();
-    const userModal = new UserEditingModalContent(user);
-    this.showModal(userModal);
+    this.setState({currentUser: user});
+    this.setState({showEditingUserModal: true});
   }
 
+  // noinspection JSUnusedGlobalSymbols
   renderContent = () => {
     const table = this.state.users.length ? (
       <table className="users-table">
@@ -42,6 +50,10 @@ class UsersPage extends BaseCabinetPage {
     ) : <div>Пользователей нет</div>;
     return (
       <div className="users">
+        <UserEditingModal
+          updateMethod={() => this.fetchUsers()}
+          showModal={this.state.showEditingUserModal}
+          user={this.state.currentUser}/>
         <h3>Список пользователей</h3>
         {table}
       </div>
@@ -69,6 +81,5 @@ class UsersPage extends BaseCabinetPage {
     ));
   }
 }
-
 
 export default withRouter(UsersPage);
