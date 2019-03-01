@@ -2,37 +2,45 @@ import React, {Component} from 'react';
 import './Modal.css';
 
 
-class Modal extends Component {
+class BaseModal extends Component {
   state = {
     closed: false
-  };
-
-  onCloseModal(event) {
-    event.preventDefault();
-    this.close();
   };
 
   close() {
     this.setState({closed: true});
   }
 
-  render = () => {
-    if (this.props.render === undefined) return null;
+  // noinspection JSMethodCanBeStatic
+  head() {
+    return null;
+  }
 
+  // noinspection JSMethodCanBeStatic
+  content() {
+    return null;
+  }
+
+  // noinspection JSMethodCanBeStatic
+  foot() {
+    return null;
+  }
+
+  render = () => {
     const display = this.props.showModal && !this.state.closed;
     this.state.closed = false;
-    this.props.render.setDialog(this);
+
     return display ? (
       <div className="modal">
         <div className="modal-content">
           <div className="modal-head">
-            {this.props.render.head()}
+            {this.head()}
           </div>
           <div className="modal-body">
-            {this.props.render.content()}
+            {this.content()}
           </div>
           <div className="modal-foot">
-            {this.props.render.foot()}
+            {this.foot()}
           </div>
         </div>
       </div>
@@ -40,4 +48,4 @@ class Modal extends Component {
   }
 }
 
-export default Modal;
+export default BaseModal;

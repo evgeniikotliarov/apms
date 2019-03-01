@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import NavBar from "./navbar/NavBar";
-import Modal from "../common/Modal";
+import Modal from "../common/BaseModal";
 
 export default class BaseCabinetPage extends Component {
   state = {

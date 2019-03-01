@@ -14,6 +14,11 @@
     background-color: #fff;
     overflow: auto;
     outline: none;
+    border-radius: 3px;
+    border: solid 1px #ddd;
+    -webkit-box-shadow: 0 3px 3px 0 rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    0 3px 3px 0 rgba(50, 50, 50, 0.75);
+    box-shadow:         0 3px 3px 0 rgba(50, 50, 50, 0.75);
 }
 .modal-head {
     text-align: center;
@@ -24,5 +29,15 @@
 
 }
 .modal-foot{
+    padding-top: 50px;
     text-align: center;
+}
+.modal-foot button {
+    font-size: 20px;
+    padding: 10px 10px;
+    margin: 5px;
+    border-radius: 3px;
+}
+.modal-foot button:hover {
+    cursor: pointer;
 }
