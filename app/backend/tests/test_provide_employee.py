@@ -60,7 +60,8 @@ class ProvideEmployeeTestCase(unittest.TestCase):
         employee = EmployeeProvider.update_with(employee, email="new@mail.com")
         self.assertEqual(employee.email, "new@mail.com")
 
-        employee = EmployeeProvider.update_with(employee, password="new_password")
+        employee = EmployeeProvider.update_with(employee,
+                                                password="new_password")
         self.assertEqual(employee.password, "new_password")
 
         employee = EmployeeProvider.activate(employee)

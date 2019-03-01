@@ -2,9 +2,11 @@ import unittest
 from datetime import datetime
 
 from domain.controllers.employee_provider import EmployeeProvider
+from exceptions import UpdatingError, EmailIsBusyError
 from storages.storages import EmployeesStorage
 from tests import fixtures
 from tests.fake_db import FakeDb
+from tests.fake_to_hash import FakeToHash
 from usecases.employee_use_cases import CreateEmployeeUseCase, RegisterEmployeeUseCase, \
     UpdateEmployeeUseCase, AdminRightsEmployeeUseCase, GetEmployeeUseCase, GetAllEmployeeUseCase
 from utils.hash_maker import ToHash
@@ -73,16 +75,34 @@ class TestProvideEmployeeUseCase(unittest.TestCase):
         self.assertEqual(saved_employee.activated, True)
 
     def test_update_employee(self):
+        to_hash = FakeToHash()
         storage = EmployeesStorage(FakeDb().build())
         controller = EmployeeProvider()
-        use_case = UpdateEmployeeUseCase(controller, storage)
-        use_case.update_employee(0, "new name", "new password", "new@email.com")
+        use_case = UpdateEmployeeUseCase(to_hash, controller, storage)
+        use_case.update_employee(0, name="new name",
+                                 old_password="admin",
+                                 new_password="new password",
+                                 email="new@email.com")
 
         saved_employee = storage.find_by_id(0)
         self.assertIsNotNone(saved_employee.password)
         self.assertEqual(saved_employee.name, "new name")
         self.assertEqual(saved_employee.email, "new@email.com")
         self.assertEqual(saved_employee.activated, True)
+
+        try:
+            use_case.update_employee(employee_id=0,
+                                     old_password="another password",
+                                     new_password="new password")
+            raise Exception('Updating must be break')
+        except UpdatingError:
+            pass
+        try:
+            use_case.update_employee(employee_id=0,
+                                     email="unaccepted@email.com")
+            raise Exception('Updating must be break')
+        except EmailIsBusyError:
+            pass
 
     def test_admin_rights_employee(self):
         storage = EmployeesStorage(FakeDb().build())

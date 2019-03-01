@@ -6,6 +6,7 @@ from falcon import testing, falcon
 from exceptions import DeactivatedEmployeeError
 from tests import fixtures
 from tests.fake_app_factory import TestCopyOriginalAppFactory
+from utils.hash_maker import ToHash
 
 
 class TestEmployeesControllers(unittest.TestCase):
@@ -90,29 +91,36 @@ class TestEmployeesControllers(unittest.TestCase):
     def test_update_profile(self):
         employee = fixtures.load('admin_user')
         headers = self.__get_authorization_header_for(employee)
+        to_hash = ToHash()
 
-        body = json.dumps({'name': 'new name', 'password': 'new pass'})
+        body = json.dumps({
+            'name': 'new name',
+            'old_password': 'admin',
+            'new_password': 'new pass'
+        })
         response = self.client.simulate_patch('/api/profile', headers=headers, body=body)
 
         self.assertEqual(response.json['name'], 'new name')
         self.assertEqual(response.json['email'], employee['email'])
 
         updated_employee = self.factory.employee_storage.find_by_id(0)
-        self.assertEqual(updated_employee.password, 'new pass')
+        self.assertTrue(to_hash.check_with_hash('new pass', updated_employee.password))
 
         body = json.dumps({'name': 'the newest name'})
         response = self.client.simulate_patch('/api/profile', headers=headers, body=body)
 
+        self.assertEqual(response.status, falcon.HTTP_200)
         self.assertEqual(response.json['name'], 'the newest name')
         self.assertEqual(response.json['email'], employee['email'])
 
         updated_employee = self.factory.employee_storage.find_by_id(0)
-        self.assertEqual(updated_employee.password, 'new pass')
+        self.assertTrue(to_hash.check_with_hash('new pass', updated_employee.password))
 
         body = json.dumps({
             'name': 'admin',
             'email': 'admin@email.com',
-            'password': 'admin'
+            'old_password': 'new pass',
+            'new_password': 'admin',
         })
         response = self.client.simulate_patch('/api/profile', headers=headers, body=body)
 
@@ -120,7 +128,7 @@ class TestEmployeesControllers(unittest.TestCase):
         self.assertEqual(response.json['email'], 'admin@email.com')
 
         updated_employee = self.factory.employee_storage.find_by_id(0)
-        self.assertEqual(updated_employee.password, 'admin')
+        self.assertTrue(to_hash.check_with_hash('admin', updated_employee.password))
 
     def __get_authorization_header_for(self, employee):
         email = employee['email']
