@@ -61,8 +61,13 @@ class ProfileController:
         employee_id = converter.to_num(employee['id'])
         email = request.media.get('email')
         name = request.media.get('name')
-        password = request.media.get('password')
-        self.update_use_case.update_employee(employee_id, name=name, email=email, password=password)
+        old_password = request.media.get('old_password')
+        new_password = request.media.get('new_password')
+        self.update_use_case.update_employee(employee_id,
+                                             name=name,
+                                             email=email,
+                                             old_password=old_password,
+                                             new_password=new_password)
         employee = self.get_use_case.get_employee(employee_id)
         response.body = json.dumps(employee)
 

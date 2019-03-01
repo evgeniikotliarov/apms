@@ -11,11 +11,6 @@ class AccessDeniedToUpdateTimeSheetError(BaseError):
         return falcon.HTTP_403
 
 
-class DeactivatedEmployeeError(BaseError):
-    def get_http_code(self):
-        return '403 User is deactivated'
-
-
 class DbError(BaseError):
     def get_http_code(self):
         return falcon.HTTP_500
@@ -41,6 +36,11 @@ class AuthenticationError(BaseError):
         return falcon.HTTP_401
 
 
+class DeactivatedEmployeeError(BaseError):
+    def get_http_code(self):
+        return '403 User is deactivated'
+
+
 class AuthorizationError(BaseError):
     def get_http_code(self):
         return falcon.HTTP_403
@@ -54,3 +54,8 @@ class InvalidTokenError(BaseError):
 class TokenExpiredError(BaseError):
     def get_http_code(self):
         return '401 Token expired'
+
+
+class UpdatingError(BaseError):
+    def get_http_code(self):
+        return '400 Update error'

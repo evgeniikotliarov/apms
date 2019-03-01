@@ -2,7 +2,7 @@ from datetime import datetime
 
 from domain.controllers.employee_provider import EmployeeProvider
 from exceptions import AuthenticationError, NotFoundError, AuthorizationError, \
-    DeactivatedEmployeeError
+    DeactivatedEmployeeError, UpdatingError
 from storages.storages import EmployeesStorage
 from utils.hash_maker import ToHash
 from utils.tokenizer import Tokenizer
@@ -102,13 +102,29 @@ class RegisterEmployeeUseCase:
 
 
 class UpdateEmployeeUseCase:
-    def __init__(self, employee_provider: EmployeeProvider, storage: EmployeesStorage):
+    def __init__(self, to_hash: ToHash,
+                 employee_provider: EmployeeProvider,
+                 storage: EmployeesStorage):
         self.employee_provider = employee_provider
         self.storage = storage
+        self.to_hash = to_hash
 
-    def update_employee(self, employee_id, name=None, password=None, email=None):
+    def update_employee(self, employee_id,
+                        name=None,
+                        old_password=None,
+                        new_password=None,
+                        email=None):
         employee = self.storage.find_by_id(employee_id)
-        employee = self.employee_provider.update_with(employee, name, password, email)
+        password = None
+        if old_password:
+            if self.to_hash.check_with_hash(old_password, employee.password) and new_password:
+                password = self.to_hash.to_hash(new_password)
+            else:
+                raise UpdatingError()
+        employee = self.employee_provider.update_with(employee=employee,
+                                                      name=name,
+                                                      password=password,
+                                                      email=email)
         self.storage.update(employee)
 
 

@@ -65,7 +65,8 @@ class AppFactory(IAppFactory):
         self.app.check_admin_rights_use_case = CheckAdminRightsUseCase(self.employee_storage)
         self.app.register_employee_use_case = RegisterEmployeeUseCase(self.employee_provider,
                                                                       self.employee_storage)
-        self.app.update_employee_use_case = UpdateEmployeeUseCase(self.employee_provider,
+        self.app.update_employee_use_case = UpdateEmployeeUseCase(self.to_hash,
+                                                                  self.employee_provider,
                                                                   self.employee_storage)
         self.app.admin_rights_employee_use_case = AdminRightsEmployeeUseCase(self.employee_provider,
                                                                              self.employee_storage)
