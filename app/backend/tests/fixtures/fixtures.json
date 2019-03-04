@@ -7,8 +7,8 @@
     "activated": true,
     "is_admin": true,
     "vacation": 1.0,
-    "employment_date": "2018.01.01",
-    "acceptance_date": "2018.01.01"
+    "employment_date": "2019.01.01",
+    "acceptance_date": "2019.01.01"
   },
   "unaccepted_user": {
     "id": 1,
@@ -26,8 +26,8 @@
     "activated": false,
     "is_admin": false,
     "vacation": 1.0,
-    "employment_date": "2018.01.01",
-    "acceptance_date": "2018.01.01"
+    "employment_date": "2019.01.01",
+    "acceptance_date": "2019.01.01"
   },
   "user_with_vacation": {
     "id": 3,
@@ -37,14 +37,14 @@
     "activated": true,
     "is_admin": false,
     "vacation": 10.0,
-    "employment_date": "2018.01.01",
-    "acceptance_date": "2018.01.01"
+    "employment_date": "2019.01.01",
+    "acceptance_date": "2019.01.01"
   },
   "january_time_sheet": {
     "id": 0,
     "norm": 23,
     "rate": 10,
-    "year": 2018,
+    "year": 2019,
     "month": 1,
     "sheet": [
       1, 1, 1, 1, 1, 0, 0,
@@ -61,7 +61,7 @@
     "id": 1,
     "norm": 23,
     "rate": 10,
-    "year": 2018,
+    "year": 2019,
     "month": 1,
     "sheet": [
       1, 1, 1, 0, 0, 0, 0,
@@ -78,7 +78,7 @@
     "id": 2,
     "norm": 20,
     "rate": 10,
-    "year": 2018,
+    "year": 2019,
     "month": 2,
     "sheet": [
       1, 1, 0, 0,
