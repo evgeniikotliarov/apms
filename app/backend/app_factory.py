@@ -71,12 +71,15 @@ class AppFactory(IAppFactory):
                                                                              self.employee_storage)
 
         self.app.get_time_sheet_use_case = GetTimeSheetUseCase(self.time_sheet_provider,
+                                                               self.app.get_employee_use_case,
                                                                self.time_sheet_storage)
         self.app.get_time_sheets_use_case = GetTimeSheetsUseCase(self.time_sheet_provider,
+                                                                 self.app.get_employee_use_case,
                                                                  self.time_sheet_storage)
         self.app.create_time_sheet_use_case = CreateTimeSheetUseCase(self.time_sheet_provider,
                                                                      self.time_sheet_storage)
         self.app.update_time_sheet_use_case = UpdateTimeSheetUseCase(self.time_sheet_provider,
+                                                                     self.app.get_employee_use_case,
                                                                      self.vacation_calculator,
                                                                      self.time_sheet_storage)
         self.app.close_time_sheet_use_case = CloseTimeSheetUseCase(self.time_sheet_provider,
