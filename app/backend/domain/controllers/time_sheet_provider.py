@@ -20,12 +20,13 @@ class TimeSheetProvider:
         return time_sheet
 
     @staticmethod
-    def create_empty(date: datetime, employee_id):
+    def create_empty(date: datetime, employee_id, rate=None):
         initializer = TimeSheetInitHelper(date)
         time_sheet = TimeSheet()
         time_sheet.norm = initializer.norm
         time_sheet.vacation = 0
         time_sheet.year = date.year
+        time_sheet.rate = rate
         time_sheet.month = date.month
         time_sheet.sheet = initializer.empty_sheet
         time_sheet.employee_id = employee_id
