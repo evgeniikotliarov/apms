@@ -1,11 +1,7 @@
 import React, {Component} from 'react';
-import BaseModal from "../../common/BaseModal";
+import BaseCabinetPage from "../basePage";
 
-class ProfileInfo extends BaseModal {
-  state = {
-    showEditingUserModal: false
-  };
-
+class ProfileInfo extends BaseCabinetPage {
   render = () => {
     return this.props.profile !== undefined ? (
       <div className="profile-info">
@@ -33,12 +29,9 @@ class ProfileInfo extends BaseModal {
         <div className="user-data">
           <p>Количество отпускных дней:<span>{this.props.profile.vacation}</span></p>
         </div>
-        <div className="user-data">
-          <button className="info-edit">Редактировать</button>
-        </div>
       </div>
     ) : null
-  }
+  };
 }
 
 export default ProfileInfo;

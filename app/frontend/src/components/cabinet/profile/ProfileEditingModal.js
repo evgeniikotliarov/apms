@@ -1,9 +1,8 @@
 import React from 'react';
 import Application from "../../../Application";
-import "./Users.css";
 import BaseModal from "../../common/BaseModal";
 
-export default class UserEditingModal extends BaseModal {
+export default class ProfileEditingModal extends BaseModal {
   needToShowPasswordBlock = true;
 
   state = {
@@ -87,17 +86,17 @@ export default class UserEditingModal extends BaseModal {
     return (
       <div className="control">
         <button onClick={event => this.onSubmit()} type="submit">Сохранить</button>
-        <button onClick={() => {
-          this.close();
-          this.resetStates();
-        }}>Отмена
+        <button onClick={() => this.close()}>Отмена
         </button>
       </div>
     );
   }
 
   onSubmit() {
-    const correctFillPassword = this.newPassword === this.acceptPassword;
+    if (this.state.newPassword !== this.state.acceptPassword) {
+      alert('encorrect');
+    }
+    const correctFillPassword = this.state.newPassword === this.state.acceptPassword;
     if (this.needToShowPasswordBlock && !correctFillPassword) {
       //TODO notify about error
     } else {
@@ -119,9 +118,14 @@ export default class UserEditingModal extends BaseModal {
     this.state.email = this.state.email !== undefined ? this.state.email : this.props.user.email;
   }
 
+  close() {
+    super.close();
+    this.resetStates();
+  }
+
   resetStates() {
     if (!this.props.user) return;
-    this.state.name = this.props.user.name;
-    this.state.email = this.props.user.email;
+    this.state.name = undefined;
+    this.state.email = undefined;
   }
 }
