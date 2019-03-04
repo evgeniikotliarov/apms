@@ -1,10 +1,10 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
-import './Profile.css';
+import './TimeSheet';
 import BaseCabinetPage from "../basePage";
 import WorkingDaysTable from "./workingDaysTable/WorkingDaysTable";
 
-class UserPage extends BaseCabinetPage {
+class TimeSheet extends BaseCabinetPage {
   renderContent = () => {
     return (
       <div className="Profile">
@@ -14,4 +14,4 @@ class UserPage extends BaseCabinetPage {
   };
 }
 
-export default withRouter(UserPage);
+export default withRouter(TimeSheet);
