@@ -3,12 +3,10 @@ import {withRouter} from 'react-router-dom';
 import BaseCabinetPage from "../basePage";
 import "./Users.css"
 import Application from "../../../Application";
-import UserEditingModal from "./UserEditingModal";
 
 class UsersPage extends BaseCabinetPage {
   state = {
     users: [],
-    showEditingUserModal: false,
     currentUser: null
   };
 
@@ -17,7 +15,6 @@ class UsersPage extends BaseCabinetPage {
   }
 
   fetchUsers() {
-    this.setState({showEditingUserModal: false});
     Application.userUseCase.getUsers()
       .subscribe(users => this.setState({users}))
   }
@@ -25,7 +22,6 @@ class UsersPage extends BaseCabinetPage {
   handleEdit(event, user) {
     event.preventDefault();
     this.setState({currentUser: user});
-    this.setState({showEditingUserModal: true});
   }
 
   // noinspection JSUnusedGlobalSymbols
@@ -50,10 +46,6 @@ class UsersPage extends BaseCabinetPage {
     ) : <div>Пользователей нет</div>;
     return (
       <div className="users">
-        <UserEditingModal
-          updateMethod={() => this.fetchUsers()}
-          showModal={this.state.showEditingUserModal}
-          user={this.state.currentUser}/>
         <h3>Список пользователей</h3>
         {table}
       </div>
