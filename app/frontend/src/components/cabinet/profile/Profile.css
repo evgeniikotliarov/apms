@@ -1,7 +1,19 @@
 .profile-page{
-    border: 1px solid red;
     text-align: center;
 }
 .profile-info{
-    border: solid 1px blue;
+    text-align: left;
+}
+.user-data {
+    padding: 20px 50px;
+    border-bottom: solid 1px #ddd;
+}
+.user-data span {
+    font-weight: bold;
+    padding: 0 10px;
+}
+.info-edit {
+    padding: 5px;
+    border-radius: 3px;
+    font-size: 18px;
 }
