@@ -57,8 +57,9 @@ export default class UsersRepository {
     const token = this.storage.loadData(TOKEN);
     return this.api.updateProfile(token, name, email, oldPassword, newPassword)
       .map(data => {
-          this.storage.saveData(PROFILE, data);
-          return data;
+          this.storage.saveData(TOKEN, data.token);
+          this.storage.saveData(PROFILE, data.profile);
+          return data.profile;
         }
       )
   }

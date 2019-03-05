@@ -4,6 +4,7 @@ import axios from 'axios';
 class UsersApi {
   constructor() {
     this.client = axios;
+    this.client.defaults.withCredentials;
     this.client.defaults.headers.post['Content-Type'] = 'application/json';
     this.client.defaults.headers.post['Accept'] = 'application/json';
   }
