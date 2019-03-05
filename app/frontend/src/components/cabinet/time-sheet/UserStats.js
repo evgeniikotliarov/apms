@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import Application from "../../../Application";
-import '../workingDaysTable/WorkingDaysTable.css'
 
 class UserStats extends Component {
   constructor() {
