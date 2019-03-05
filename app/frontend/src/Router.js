@@ -3,7 +3,7 @@ import {BrowserRouter, Route} from 'react-router-dom';
 import NotFound from "./components/not-found/NotFound";
 import Login from "./components/login/Login";
 import SignUp from "./components/signup/Signup";
-import TimeSheet from "./components/cabinet/time-sheet/TimeSheet";
+import TimeSheet from "./components/cabinet/time-sheet/TimeSheetPage";
 import UsersPage from "./components/cabinet/users/Users";
 import Logout from "./components/cabinet/navbar/Logout";
 import ProfilePage from "./components/cabinet/profile/ProfilePage";

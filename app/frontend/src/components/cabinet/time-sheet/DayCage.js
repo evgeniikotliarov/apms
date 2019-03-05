@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './WorkingDaysTable.css';
-import Application from "../../../../Application";
-import DateConstants from "../../../../domain/Constants"
+import Application from "../../../Application";
+import DateConstants from "../../../domain/Constants"
 
 
 export default class DayCage extends Component {
