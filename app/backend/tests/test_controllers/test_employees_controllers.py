@@ -100,8 +100,11 @@ class TestEmployeesControllers(unittest.TestCase):
         })
         response = self.client.simulate_patch('/api/profile', headers=headers, body=body)
 
-        self.assertEqual(response.json['name'], 'new name')
-        self.assertEqual(response.json['email'], employee['email'])
+        profile = response.json['profile']
+        self.assertEqual(profile['name'], 'new name')
+        self.assertEqual(profile['email'], employee['email'])
+        token = response.json['token']
+        self.assertIsNotNone(token)
 
         updated_employee = self.factory.employee_storage.find_by_id(0)
         self.assertTrue(to_hash.check_with_hash('new pass', updated_employee.password))
@@ -109,9 +112,11 @@ class TestEmployeesControllers(unittest.TestCase):
         body = json.dumps({'name': 'the newest name'})
         response = self.client.simulate_patch('/api/profile', headers=headers, body=body)
 
-        self.assertEqual(response.status, falcon.HTTP_200)
-        self.assertEqual(response.json['name'], 'the newest name')
-        self.assertEqual(response.json['email'], employee['email'])
+        profile = response.json['profile']
+        self.assertEqual(profile['name'], 'the newest name')
+        self.assertEqual(profile['email'], employee['email'])
+        token = response.json['token']
+        self.assertIsNotNone(token)
 
         updated_employee = self.factory.employee_storage.find_by_id(0)
         self.assertTrue(to_hash.check_with_hash('new pass', updated_employee.password))
@@ -124,8 +129,11 @@ class TestEmployeesControllers(unittest.TestCase):
         })
         response = self.client.simulate_patch('/api/profile', headers=headers, body=body)
 
-        self.assertEqual(response.json['name'], 'admin')
-        self.assertEqual(response.json['email'], 'admin@email.com')
+        profile = response.json['profile']
+        self.assertEqual(profile['name'], 'admin')
+        self.assertEqual(profile['email'], 'admin@email.com')
+        token = response.json['token']
+        self.assertIsNotNone(token)
 
         updated_employee = self.factory.employee_storage.find_by_id(0)
         self.assertTrue(to_hash.check_with_hash('admin', updated_employee.password))

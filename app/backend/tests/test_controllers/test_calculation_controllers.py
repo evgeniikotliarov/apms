@@ -21,7 +21,7 @@ class TestCalculateVacationControllers(unittest.TestCase):
         self.factory.employee_storage.update(saved_employee)
         headers = self.__get_authorization_header_for(employee)
         path = '/api/employees/{}/vacation'.format(employee['id'])
-        body = json.dumps({'year': 2018, 'month': 1})
+        body = json.dumps({'year': 2019, 'month': 1})
         response = self.client.simulate_post(path=path, body=body, headers=headers)
 
         self.assertEqual(response.status, falcon.HTTP_200)
