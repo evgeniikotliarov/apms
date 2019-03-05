@@ -30,20 +30,35 @@ class TestCopyOriginalAppFactory(AppFactory):
         self.__create_and_load_time_sheet()
         self.__create_and_load_time_sheet(employee_id=3)
         self.__create_and_load_time_sheet(
-            date=datetime(2018, 2, 1),
-            sheet=fixtures.load('february')
+            date=datetime(2019, 2, 1),
+            sheet=fixtures.load('february'),
+            norm=20
         )
         self.__create_and_load_time_sheet(
-            date=datetime(2018, 3, 1),
-            sheet=fixtures.load('january')
+            date=datetime(2019, 3, 1),
+            sheet=[1, 1, 0, 0, 1,
+                   1, 1, 1, 1, 0,
+                   0, 1, 1, 1, 1,
+                   1, 0, 0, 1, 1,
+                   1, 1, 1, 0, 0,
+                   1, 1, 1, 1, 1,
+                   0],
+            norm=22
         )
         self.__create_and_load_time_sheet(
-            date=datetime(2017, 12, 1),
-            sheet=fixtures.load('january')
+            date=datetime(2018, 12, 1),
+            sheet=[1, 0, 0, 1,
+                   1, 1, 1, 1, 0,
+                   0, 1, 1, 1, 1,
+                   1, 0, 0, 1, 1,
+                   1, 1, 1, 0, 0,
+                   1, 1, 1, 1, 1,
+                   0, 0],
+            norm=21
         )
 
     def __create_and_load_time_sheet(self,
-                                     date: datetime = datetime(2018, 1, 1),
+                                     date: datetime = datetime(2019, 1, 1),
                                      sheet=fixtures.load('january'),
                                      employee_id=0,
                                      rate=RateCalculator.MIN_DAYS,
