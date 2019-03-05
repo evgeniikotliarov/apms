@@ -85,7 +85,7 @@ export default class ProfileEditingModal extends BaseModal {
   foot() {
     return (
       <div className="control">
-        <button onClick={event => this.onSubmit()} type="submit">Сохранить</button>
+        <button onClick={() => this.onSubmit()} type="submit">Сохранить</button>
         <button onClick={() => this.close()}>Отмена
         </button>
       </div>
