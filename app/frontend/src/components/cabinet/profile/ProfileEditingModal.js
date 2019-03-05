@@ -56,20 +56,20 @@ export default class ProfileEditingModal extends BaseModal {
             <form className="form">
               <input
                 id="user-old-password"
-                type="text"
+                type="password"
                 value={this.state.oldPassword}
                 placeholder="Введите старый пароль:"
                 onChange={event => this.setState({oldPassword: event.target.value})}
               />
               <input
                 id="user-new-password"
-                type="text"
+                type="password"
                 value={this.state.newPassword}
                 placeholder="Введите новый пароль:"
                 onChange={event => this.setState({newPassword: event.target.value})}
               />
               <input
-                type="text"
+                type="password"
                 id="user-accept-password"
                 value={this.state.acceptPassword}
                 placeholder="Подтвердите новый пароль:"
