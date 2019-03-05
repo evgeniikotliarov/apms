@@ -1,7 +1,7 @@
 import React from 'react';
 import './NotFound.css';
 
-const pathNames = ["/", "/log-in", "/sign-up", "/profile", "/users", "/time-sheet"];
+const pathNames = ["/", "/log-in", "/sign-up", "/profile", "/users", "/time-sheet", "/statistics"];
 
 const NotFound = props => {
   const checkPath = pathNames.indexOf(props.location.pathname);

@@ -7,6 +7,7 @@ import TimeSheet from "./components/cabinet/time-sheet/TimeSheet";
 import UsersPage from "./components/cabinet/users/Users";
 import Logout from "./components/cabinet/navbar/Logout";
 import ProfilePage from "./components/cabinet/profile/ProfilePage";
+import StatisticPage from "./components/cabinet/users-stats/StatisticsPage";
 
 class Router {
   static create() {
@@ -19,6 +20,7 @@ class Router {
         <Route exact path="/time-sheet" component={(props) => <TimeSheet {...props}/>}/>
         <Route exact path="/profile" component={(props) => <ProfilePage {...props}/>}/>
         <Route exact path="/users" component={(props) => <UsersPage {...props}/>}/>
+        <Route exact path="/statistics" component={(props) => <StatisticPage {...props}/>}/>
         <Route path="*" component={(props) => <NotFound {...props} />}/>
       </div>
     </BrowserRouter>)

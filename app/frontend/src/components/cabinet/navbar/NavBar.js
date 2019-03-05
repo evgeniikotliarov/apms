@@ -26,8 +26,8 @@ class NavBar extends Component {
         <ul className="navigation-bar">
           <li className="tab active-tab"><a href="/time-sheet">Time sheet</a></li>
           <li className="tab"><a href="/users">Users</a></li>
-          <li className="tab"><a href="#">Statistic</a></li>
-          <li className="tab"><a href="profile">Profile</a></li>
+          <li className="tab"><a href="/statistics">Statistic</a></li>
+          <li className="tab"><a href="/profile">Profile</a></li>
           <li className="log-box">
             <a className="login" href="#">{this.state.login}</a>
             <a className="log-out" href="/log-out" onClick={this.handleLogout}>Log out</a>
