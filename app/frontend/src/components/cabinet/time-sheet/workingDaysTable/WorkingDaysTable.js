@@ -2,23 +2,16 @@ import React, {Component} from 'react';
 import './WorkingDaysTable.css';
 import Application from "../../../../Application";
 import DayCage from "./DayCage";
-import DateSlider from "../date-slider/DateSlider";
-// import UserStats from "../userStats/UserStats";
+import DateSlider from "../../../common/DateSlider";
 
 export default class WorkingDaysTable extends Component {
   state = {
     timeSheet: null,
-    date: new Date()
   };
-
-  componentWillMount() {
-    this.handleFetchTimeSheet(this.state.date);
-  }
 
   handleFetchTimeSheet = (date) => {
     Application.timeSheetsUseCase.getTimeSheetForDate(date)
       .subscribe(timeSheet => {
-        if (timeSheet === undefined) return;
         this.setState({date, timeSheet});
       });
   };

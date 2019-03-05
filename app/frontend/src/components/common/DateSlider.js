@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import DateConstants from "../../../../domain/Constants";
+import DateConstants from "../../domain/Constants";
 
 class DateSlider extends Component {
   constructor() {
@@ -13,6 +13,8 @@ class DateSlider extends Component {
   }
 
   previousMonth = () => {
+    // if (this.state.currentDate.getMonth() - 1 === new Date().getMonth())
+    //   return;
     const currentDate = this.state.currentDate;
     const month = currentDate.getMonth();
     currentDate.setMonth(month - 1);
@@ -29,6 +31,10 @@ class DateSlider extends Component {
     currentDate.setMonth(month + 1);
     this.props.handler(currentDate);
     this.setState({currentDate});
+  };
+
+  componentWillMount = () => {
+    this.props.handler(this.state.currentDate);
   };
 
   render = () => {

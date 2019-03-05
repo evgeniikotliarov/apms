@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import BaseCabinetPage from "../basePage";
 import Application from "../../../Application";
-import DateSlider from "../time-sheet/date-slider/DateSlider";
+import DateSlider from "../../common/DateSlider";
 import StatisticsInfo from "./StatisticsInfo";
 
 class StatisticsPage extends BaseCabinetPage {
