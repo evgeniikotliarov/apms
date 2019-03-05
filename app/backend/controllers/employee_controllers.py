@@ -44,8 +44,10 @@ class AuthenticationEmployeeController:
 class ProfileController:
     def __init__(self,
                  get_use_case: GetEmployeeUseCase,
+                 check_use_case: CheckEmployeeUseCase,
                  update_use_case: UpdateEmployeeUseCase):
         self.get_use_case = get_use_case
+        self.check_use_case = check_use_case
         self.update_use_case = update_use_case
         self.user_email = None
 
@@ -69,7 +71,8 @@ class ProfileController:
                                              old_password=old_password,
                                              new_password=new_password)
         employee = self.get_use_case.get_employee(employee_id)
-        response.body = json.dumps(employee)
+        token = self.check_use_case.get_new_token(employee['email'])
+        response.body = json.dumps({'profile': employee, 'token': token})
 
 
 class AcceptEmployeeController:

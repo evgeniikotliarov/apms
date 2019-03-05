@@ -95,6 +95,7 @@ class AppFactory(IAppFactory):
             self.app.check_employee_use_case)
         self.get_employee_profile_controller = ProfileController(
             self.app.get_employee_use_case,
+            self.app.check_employee_use_case,
             self.app.update_employee_use_case)
         self.accept_employee_controller = AcceptEmployeeController(
             self.app.check_admin_rights_use_case,

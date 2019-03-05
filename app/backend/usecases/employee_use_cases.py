@@ -79,6 +79,16 @@ class CheckEmployeeUseCase:
         except NotFoundError:
             raise AuthenticationError()
 
+    def get_new_token(self, email=None, employee_id=None):
+        if email:
+            employee = self.storage.find_by_email(email)
+        elif employee_id:
+            employee = self.storage.find_by_id(employee_id)
+        else:
+            raise AuthenticationError()
+        token_data = {'email': employee.email, 'password': employee.password}
+        return self.tokenizer.get_token_by_data(token_data)
+
 
 class CheckAdminRightsUseCase:
     def __init__(self, storage: EmployeesStorage):
